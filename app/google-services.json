@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "580928792579",
+    "firebase_url": "https://lookup-ea30b.firebaseio.com",
+    "project_id": "lookup-ea30b",
+    "storage_bucket": "lookup-ea30b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580928792579:android:55c4f9577c4d17ea",
+        "android_client_info": {
+          "package_name": "edu.ucsb.cs48.lookup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580928792579-cj4mu8o7v39fd6kfabctgjpacn1mupe9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2YAhLZLHxdtMPaiMjprk89APh7UFcnqw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
