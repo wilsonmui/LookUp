@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/users_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="John Smith"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="33dp" />
+
+    <TextView
+        android:id="@+id/username_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="johnsmith69"
+        tools:layout_editor_absoluteX="165dp"
+        tools:layout_editor_absoluteY="74dp" />
+
+    <ImageView
+        android:id="@+id/user_avatar_image"
+        android:layout_width="146dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="93dp" />
+
+    <ScrollView
+        android:id="@+id/social_media_scroll"
+        android:layout_width="395dp"
+        android:layout_height="375dp"
+        android:scrollbarStyle="insideOverlay"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="220dp">
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:stretchColumns="1" >
+            <TableRow>
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dip"
+                    android:text="Snapchat" />
+                <TextView android:id="@+id/name1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="den-i" />
+            </TableRow>
+            <TableRow>
+                <TextView android:id="@+id/age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dip"
+                    android:text="Facebook" />
+
+                <TextView android:id="@+id/age1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="https://www.facebook.com/christina.taooo" />
+            </TableRow>
+            <TableRow>
+                <TextView android:id="@+id/gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dip"
+                    android:text="Github" />
+                <TextView android:id="@+id/gender1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="github.com/denistoyanova" />
+            </TableRow>
+            <TableRow>
+                <TextView android:id="@+id/profession"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dip"
+                    android:text="Instagram" />
+                <TextView android:id="@+id/profession1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="\@deni.1998" />
+            </TableRow>
+            <TableRow>
+                <TextView android:id="@+id/phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dip"
+                    android:text="Phone" />
+                <TextView android:id="@+id/phone1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="03333736767" />
+            </TableRow>
+            <TableRow>
+                <TextView android:id="@+id/email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="3dip"
+                    android:text="Email" />
+                <TextView android:id="@+id/email1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="dinkdongdoinks@gmail.com" />
+            </TableRow>
+        </TableLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
