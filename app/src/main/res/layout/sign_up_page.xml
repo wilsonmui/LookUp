@@ -19,35 +19,40 @@
             android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sign up for LookUp"
                 android:textSize="30sp"
-                tools:layout_editor_absoluteX="88dp"
-                tools:layout_editor_absoluteY="55dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" /
 
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="118dp"
+                android:layout_marginTop="118dp"
                 android:ems="10"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
-                tools:layout_editor_absoluteX="98dp"
-                tools:layout_editor_absoluteY="174dp" />
-
+                app:layout_constraintBottom_toTopOf="@+id/google_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView" />
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
                 android:ems="10"
                 android:hint="Password"
                 android:inputType="textPassword"
-                tools:layout_editor_absoluteX="98dp"
-                tools:layout_editor_absoluteY="237dp" />
-
+                app:layout_constraintStart_toStartOf="@+id/editTextEmail"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
             <Button
                 android:id="@+id/buttonSignUp"
                 android:layout_width="wrap_content"
