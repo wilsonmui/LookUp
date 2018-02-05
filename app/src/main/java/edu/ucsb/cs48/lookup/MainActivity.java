@@ -1,23 +1,33 @@
 package edu.ucsb.cs48.lookup;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 public class MainActivity extends AppCompatActivity {
+
+    //==============================================================================================
+    // On Create Setup
+    //==============================================================================================
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        findViewById(R.id.get_started_button).setOnClickListener(this);
+    }
+    //==============================================================================================
+    // Action Listeners
+    //==============================================================================================
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.get_started_button:
+                startActivity(new Intent(this, SignUpPageActivity.class));
+                break;
+        }
+    }
+
 
     private static final int SIGN_IN_REQUEST = 0;
     private FirebaseAuth mAuth;
@@ -51,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
@@ -87,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-             updateUI(null);
+            updateUI(null);
         }
     }
 
@@ -99,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     If GoogleSignIn.getLastSignedInAccount returns null, the user has not yet signed in to your app with
     Google. Update your UI to display the Google Sign-in button.
      */
-    void updateUI(GoogleSignInAccount acc){
+    void updateUI(GoogleSignInAccount acc) {
 
     }
 }

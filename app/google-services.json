@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "499747879832-38em79a3t2iecr22uoai7tk6oscoi1lp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.ucsb.cs48.lookup",
+            "certificate_hash": "bba34386f5f0f27ea8be27c58f0f6bc2c4174c8d"
+          }
+        },
+        {
           "client_id": "499747879832-msj1eepnnn6oj35anr9uvacubb0jtded.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
