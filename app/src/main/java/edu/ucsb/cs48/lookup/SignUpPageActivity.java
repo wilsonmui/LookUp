@@ -19,9 +19,11 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 
 import static android.content.ContentValues.TAG;
@@ -38,6 +40,10 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     EditText editTextEmail, editTextPassword;
     ProgressBar progressBar;
     private FirebaseAuth mAuth;
+    private static final int SIGN_IN_REQUEST = 0;
+    String default_web_client_id = "499747879832-a30hddrkc2pr3nstf2j428p1g3eu2cti.apps.googleusercontent.com";
+
+    GoogleSignInClient mGoogleSignInClient;
 
     //==============================================================================================
     // On Create Setup
@@ -56,6 +62,24 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
         // Initialize the FirebaseAuth Instance
         mAuth = FirebaseAuth.getInstance();
+
+        //setup Google sign-in options
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("499747879832-vaojkbm5j81thueo3m2k6miqhrn57rt6.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        //do if Google sign-in button clicked
+        SignInButton gbutton = (SignInButton) findViewById(R.id.sign_in_button);
+        gbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
     }
 
     //==============================================================================================
@@ -68,6 +92,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+
     }
 
     //==============================================================================================
@@ -162,49 +187,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-
-
-    private static final int SIGN_IN_REQUEST = 0;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    GoogleSignInClient mGoogleSignInClient;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        mAuth = FirebaseAuth.getInstance();
-
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-
-        SignInButton gbutton = (SignInButton) findViewById(R.id.sign_in_button);
-        gbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
-    }
-
-
+    //sign-in for Google
+    //note sign out: FirebaseAuth.getInstance().signOut();
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, SIGN_IN_REQUEST);
@@ -223,29 +207,42 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
+            firebaseAuthWithGoogle(account);
             // Signed in successfully, show authenticated UI.
-            updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            updateUI(null);
+            Log.w(TAG, "Google sign in failed", e);
         }
     }
 
-    /*
-    If GoogleSignIn.getLastSignedInAccount returns a GoogleSignInAccount object (rather than null),
-    the user has already signed in to your app with Google. Update your UI accordingly—that is, hide
-    the sign-in button, launch your main activity, or whatever is appropriate for your app.
+    //exchange Google ID token for Firebase credential
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct){
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
 
-    If GoogleSignIn.getLastSignedInAccount returns null, the user has not yet signed in to your app with
-    Google. Update your UI to display the Google Sign-in button.
-     */
-    void updateUI(GoogleSignInAccount acc) {
-
+                        // ...
+                    }
+                });
     }
+
 
 }
