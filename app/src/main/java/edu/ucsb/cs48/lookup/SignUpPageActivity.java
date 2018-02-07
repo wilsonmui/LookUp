@@ -51,13 +51,13 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in_page);
+        setContentView(R.layout.sign_up_page);
 
         // Set up UI variables and Listeners
         editTextEmail = (EditText)findViewById(R.id.editTextEmail);
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        //findViewById(R.id.buttonSignUp).setOnClickListener(this);
+        findViewById(R.id.buttonSignUp).setOnClickListener(this);
 
         // Initialize the FirebaseAuth Instance
         mAuth = FirebaseAuth.getInstance();
