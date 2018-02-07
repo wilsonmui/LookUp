@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\Such\AndroidStudioProjects\LookUpApp\LookUp.iml" filepath="C:\Users\Such\AndroidStudioProjects\LookUpApp\LookUp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/LookUpApp.iml" filepath="$PROJECT_DIR$/LookUpApp.iml" />
-      <module fileurl="file://C:\Users\Such\AndroidStudioProjects\LookUpApp\LookUpProject.iml" filepath="C:\Users\Such\AndroidStudioProjects\LookUpApp\LookUpProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LookUp.iml" filepath="$PROJECT_DIR$/LookUp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

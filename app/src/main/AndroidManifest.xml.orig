@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.ucsb.cs48.lookup">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,6 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
@@ -37,8 +36,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SignUpPageActivity" />
-        <activity android:name=".SignInPageActivity" />
+=======
+        <activity android:name=".SignUpPageActivity"/>
+>>>>>>> e0a6d13946378954a02b4636109fcd441dd98bcc
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
