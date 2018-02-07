@@ -31,6 +31,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="wrap_content"
@@ -84,6 +89,7 @@
                 tools:layout_editor_absoluteY="300dp"
                 android:visibility="gone" />
 
-        </RelativeLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>
