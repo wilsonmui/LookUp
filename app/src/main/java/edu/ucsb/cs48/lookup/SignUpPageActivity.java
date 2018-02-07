@@ -41,7 +41,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private static final int SIGN_IN_REQUEST = 0;
-    String default_web_client_id = "499747879832-a30hddrkc2pr3nstf2j428p1g3eu2cti.apps.googleusercontent.com";
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -52,13 +51,13 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_up_page);
+        setContentView(R.layout.sign_in_page);
 
         // Set up UI variables and Listeners
         editTextEmail = (EditText)findViewById(R.id.editTextEmail);
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        findViewById(R.id.buttonSignUp).setOnClickListener(this);
+        //findViewById(R.id.buttonSignUp).setOnClickListener(this);
 
         // Initialize the FirebaseAuth Instance
         mAuth = FirebaseAuth.getInstance();
@@ -72,7 +71,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
         //do if Google sign-in button clicked
+        /*
         SignInButton gbutton = (SignInButton) findViewById(R.id.sign_in_button);
         gbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +81,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                 signIn();
             }
         });
+        */
     }
 
     //==============================================================================================
@@ -107,6 +109,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             case R.id.textViewLogin:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
+            case R.id.sign_in_button:
+                signIn();
+                break;
         }
     }
 
@@ -117,8 +122,10 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
         if (currentUser != null) {
             // TODO:If user is logged in...
+            Log.d(TAG, "There is a current user");
         } else {
             // TODO:If user is not logged in...
+            Log.d(TAG, "current user is null");
         }
     }
 
