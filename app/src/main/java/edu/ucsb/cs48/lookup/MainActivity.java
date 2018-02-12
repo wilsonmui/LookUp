@@ -16,18 +16,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.get_started_button).setOnClickListener(this);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
     }
+
     //==============================================================================================
     // Action Listeners
     //==============================================================================================
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
+        switch(view.getId()) {
             case R.id.get_started_button:
                 startActivity(new Intent(this, SignUpPageActivity.class));
                 break;
+
+            case R.id.sign_in_button:
+                startActivity(new Intent(this, SignInPageActivity.class));
+                break;
         }
     }
-
-
 }

@@ -35,6 +35,7 @@
         </activity>
         <activity android:name=".SignUpPageActivity"/>
         <activity android:name=".UserProfileActivity"/>
+        <activity android:name=".SignInPageActivity"/>
         <activity android:name=".HomePageActivity"/>
     </application>
 
