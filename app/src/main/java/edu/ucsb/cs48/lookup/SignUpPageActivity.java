@@ -41,7 +41,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     ProgressBar progressBar;
     private FirebaseAuth mAuth;
     private static final int SIGN_IN_REQUEST = 0;
-    private boolean canLogIn = false;
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -173,7 +172,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
                 if (task.isSuccessful()) {
 
-                    switchToHome();
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success");
                     Toast.makeText(getApplicationContext(),"User Registered Successful", Toast.LENGTH_SHORT).show();
@@ -182,6 +180,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
 
+                    //TODO: Finish home page
+                    // startActivity(new Intent(home_page))
                 } else {
 
                     // If sign in fails, display a message to the user.
@@ -194,9 +194,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    private void switchToHome(){
-        startActivity(new Intent(this, HomePageActivity.class));
-    }
     //sign-in for Google
     //note sign out: FirebaseAuth.getInstance().signOut();
     private void signIn() {
@@ -248,6 +245,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             updateUI(null);
                         }
+
+                        // ...
                     }
                 });
     }
