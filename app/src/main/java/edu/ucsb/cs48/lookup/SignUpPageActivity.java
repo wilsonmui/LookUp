@@ -72,16 +72,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
-        //do if Google sign-in button clicked
-        /*
-        SignInButton gbutton = (SignInButton) findViewById(R.id.sign_in_button);
-        gbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-        */
     }
 
     //==============================================================================================
