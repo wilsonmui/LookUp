@@ -67,7 +67,7 @@
                 tools:layout_editor_absoluteX="150dp"
                 tools:layout_editor_absoluteY="350dp" />
             <TextView
-                android:id="@+id/textViewLogin"
+                android:id="@+id/textViewLogIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteX="150dp"

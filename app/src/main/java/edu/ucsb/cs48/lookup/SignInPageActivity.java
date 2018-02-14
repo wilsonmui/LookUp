@@ -48,6 +48,7 @@ import java.util.Arrays;
 import static android.content.ContentValues.TAG;
 
 public class SignInPageActivity extends Activity implements View.OnClickListener{
+
     //==============================================================================================
     // Declare Variables
     //==============================================================================================
@@ -76,8 +77,13 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in_page);
         mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() != null) {
+            finish();
+            startActivity(new Intent(this, HomePageActivity.class));
+        }
+
+        setContentView(R.layout.sign_in_page);
       
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
@@ -88,10 +94,6 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
         textViewSignUp.setOnClickListener(this);
       
         //Facebook stuff below
-        // Check if User is Logged In
-        if(mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(this, HomePageActivity.class));
-        }
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();

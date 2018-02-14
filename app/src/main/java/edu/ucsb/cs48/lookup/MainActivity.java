@@ -6,19 +6,31 @@ import android.os.Bundle;
 //import com.facebook.CallbackManager;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-//    CallbackManager callbackManager;
+    //==============================================================================================
+    // Declare Variables
+    //==============================================================================================
+
+    private FirebaseAuth mAuth;
 
     //==============================================================================================
     // On Create Setup
     //==============================================================================================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() != null) {
+            finish();
+            startActivity(new Intent(this, HomePageActivity.class));
+        }
+
         setContentView(R.layout.activity_main);
-//        callbackManager = CallbackManager.Factory.create();
         findViewById(R.id.get_started_button).setOnClickListener(this);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
     }
@@ -26,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //==============================================================================================
     // Action Listeners
     //==============================================================================================
+
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
