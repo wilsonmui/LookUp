@@ -171,7 +171,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                 progressBar.setVisibility(View.GONE);
 
                 if (task.isSuccessful()) {
-
+                    switchToHome();
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success");
                     Toast.makeText(getApplicationContext(),"User Registered Successful", Toast.LENGTH_SHORT).show();
@@ -192,6 +192,10 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                 }
             }
         });
+    }
+
+    private void switchToHome(){
+        startActivity(new Intent(this, HomePageActivity.class));
     }
 
     //sign-in for Google
