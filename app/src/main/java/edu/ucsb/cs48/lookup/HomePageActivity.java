@@ -38,20 +38,25 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser() == null) {
             finish();
             startActivity(new Intent(this, SignInPageActivity.class));
         }
 
+        // Layout Setup
         setContentView(R.layout.home_page);
 
         //Add ActionListeners
+        buttonSignOut= (Button) findViewById(R.id.buttonSignOut);
+
         findViewById(R.id.scan_face_button).setOnClickListener(this);
         findViewById(R.id.user_profile_button).setOnClickListener(this);
         findViewById(R.id.contacts_button).setOnClickListener(this);
         findViewById(R.id.info_button).setOnClickListener(this);
-        findViewById(R.id.buttonSignOut).setOnClickListener(this);
+        buttonSignOut.setOnClickListener(this);
     }
     //==============================================================================================
     // Action Listeners

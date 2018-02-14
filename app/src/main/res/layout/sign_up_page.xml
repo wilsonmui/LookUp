@@ -22,7 +22,7 @@
             android:paddingRight="15dp">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textViewSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sign up for LookUp"
@@ -67,13 +67,13 @@
                 tools:layout_editor_absoluteX="150dp"
                 tools:layout_editor_absoluteY="350dp" />
             <TextView
-                android:id="@+id/textViewLogIn"
+                android:id="@+id/textViewSignIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout_editor_absoluteX="150dp"
                 tools:layout_editor_absoluteY="402dp"
                 android:padding="15dp"
-                android:text="Already have an account? Login"
+                android:text="Already have an account? Sign In"
                 android:textAlignment="center"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@color/colorAccent" />

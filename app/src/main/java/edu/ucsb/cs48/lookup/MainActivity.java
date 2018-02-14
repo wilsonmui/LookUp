@@ -24,15 +24,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(this, HomePageActivity.class));
         }
 
+        // Layout Setup
         setContentView(R.layout.activity_main);
-        findViewById(R.id.get_started_button).setOnClickListener(this);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.buttonGetStarted).setOnClickListener(this);
+        findViewById(R.id.buttonSignIn).setOnClickListener(this);
     }
 
     //==============================================================================================
@@ -42,10 +45,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.get_started_button:
+            case R.id.buttonGetStarted:
                 startActivity(new Intent(this, SignUpPageActivity.class));
                 break;
-            case R.id.sign_in_button:
+            case R.id.buttonSignIn:
                 startActivity(new Intent(this, SignInPageActivity.class));
                 break;
         }
