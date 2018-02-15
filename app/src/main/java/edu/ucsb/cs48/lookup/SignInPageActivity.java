@@ -54,30 +54,29 @@ import java.util.Arrays;
 import static android.content.ContentValues.TAG;
 
 public class SignInPageActivity extends Activity implements View.OnClickListener{
+
     //==============================================================================================
     // Declare Variables
     //==============================================================================================
+    // Layout
     private EditText editTextEmail, editTextPassword;
     private Button buttonSignIn;
     private TextView textViewSignUp;
-    private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
+
+    // APIs
+    private FirebaseAuth mAuth;
     private CallbackManager callbackManager;
     GoogleSignInClient mGoogleSignInClient;
     private static final int SIGN_IN_REQUEST = 0;
 
-
-
-
     private static final String EMAIL = "email";
-    private static final String USER_POSTS = "user_posts";
     private TextView info;
-    private ProfilePictureView profilePictureView;
-    private TextView userNameView;
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -94,23 +93,27 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in_page);
+
+        // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
-      
+        if(mAuth.getCurrentUser() != null) {
+            finish();
+            startActivity(new Intent(this, HomePageActivity.class));
+        }
+
+        // Layout Setup
+        setContentView(R.layout.sign_in_page);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         buttonSignIn = (Button) findViewById(R.id.buttonSignIn);
         textViewSignUp = (TextView) findViewById(R.id.textViewSignUp);
         progressDialog = new ProgressDialog(this);
+
+        // Listeners
         buttonSignIn.setOnClickListener(this);
         textViewSignUp.setOnClickListener(this);
       
         //Facebook stuff below
-        // Check if User is Logged In
-        if(mAuth.getCurrentUser() != null) {
-            startActivity(new Intent(this, HomePageActivity.class));
-        }
-
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
@@ -118,7 +121,7 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button); //TODO: why this happen ??!!??!
         info = (TextView)findViewById(R.id.info);
-//        loginButton = (LoginButton) findViewById(R.id.fb_login_button);
+        // loginButton = (LoginButton) findViewById(R.id.fb_login_button);
         loginButton.setReadPermissions(Arrays.asList(EMAIL));
         // If you are using in a fragment, call loginButton.setFragment(this);
 

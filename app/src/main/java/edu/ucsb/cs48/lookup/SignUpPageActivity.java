@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -39,8 +41,11 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     //==============================================================================================
     EditText editTextEmail, editTextPassword;
     ProgressBar progressBar;
+    private TextView textViewSignIn;
     private FirebaseAuth mAuth;
     private static final int SIGN_IN_REQUEST = 0;
+    private Button buttonSignUp;
+    private TextView textViewSignUp;
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -51,13 +56,21 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
+ 
+
         setContentView(R.layout.sign_up_page);
 
         // Set up UI variables and Listeners
         editTextEmail = (EditText)findViewById(R.id.editTextEmail);
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        findViewById(R.id.buttonSignUp).setOnClickListener(this);
+        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
+        textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
+
+        buttonSignUp.setOnClickListener(this);
+        textViewSignIn.setOnClickListener(this);
+
 
         // Initialize the FirebaseAuth Instance
         mAuth = FirebaseAuth.getInstance();
@@ -96,8 +109,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             case R.id.buttonSignUp:
                 registerUser();
                 break;
-            case R.id.textViewLogin:
-                startActivity(new Intent(this, MainActivity.class));
+            case R.id.textViewSignIn:
+                finish();
+                startActivity(new Intent(this, SignInPageActivity.class));
                 break;
             case R.id.sign_in_button:
                 signIn();
