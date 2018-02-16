@@ -50,6 +50,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView" />
             <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="118dp"
+                android:layout_marginTop="118dp"
+                android:ems="10"
+                android:hint="Name"
+                android:inputType="text" />
+            <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

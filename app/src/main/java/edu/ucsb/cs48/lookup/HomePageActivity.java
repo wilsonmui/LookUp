@@ -69,7 +69,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 dispatchTakePictureIntent();
                 break;
             case R.id.user_profile_button:
-                startActivity(new Intent(this, UserProfileActivity.class)); //TODO implement UserProfileActivity.class
+                finish();
+                startActivity(new Intent(this, UserProfileActivity.class));
                 break;
             case R.id.contacts_button:
                 //TODO contacts button selected

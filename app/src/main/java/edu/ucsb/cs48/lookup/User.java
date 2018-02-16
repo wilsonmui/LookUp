@@ -10,29 +10,33 @@ package edu.ucsb.cs48.lookup;
 
 public class User {
 
+    private String name;
     private String email;
-    private String uid;
-    private String faceID;
+    //private String uid;
+    //private String faceID;
 
     public User() {
         // Required empty constructor for Firebase
     }
 
-    public User(String email, String uid) {
+    public User(String name, String email) {
+        this.name = name;
         this.email = email;
-        this.uid = uid;
+        //this.uid = uid;
     }
 
 
+    public String getName() { return name; }
 
     public String getEmail() {
         return email;
     }
 
-    public String getUid() {
-        return uid;
-    }
+    //public String getUid() {
+    //    return uid;
+    //}
 
+    /*
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
@@ -41,4 +45,5 @@ public class User {
         }
         return false;
     }
+    */
 }

@@ -26,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 import static android.content.ContentValues.TAG;
@@ -39,13 +41,15 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     //==============================================================================================
     // Declare Variables
     //==============================================================================================
-    EditText editTextEmail, editTextPassword;
-    ProgressBar progressBar;
+    private EditText editTextEmail, editTextPassword, editTextName;
+    private ProgressBar progressBar;
     private TextView textViewSignIn;
     private FirebaseAuth mAuth;
     private static final int SIGN_IN_REQUEST = 0;
     private Button buttonSignUp;
-    private TextView textViewSignUp;
+
+    private DatabaseReference db;
+
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -67,13 +71,13 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
+        editTextName = (EditText) findViewById(R.id.editTextName);
+
 
         buttonSignUp.setOnClickListener(this);
         textViewSignIn.setOnClickListener(this);
 
-
-        // Initialize the FirebaseAuth Instance
-        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance().getReference();
 
         //setup Google sign-in options
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -175,27 +179,35 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                 progressBar.setVisibility(View.GONE);
 
                 if (task.isSuccessful()) {
+                    editTextName = (EditText) findViewById(R.id.editTextName);
                     switchToHome();
+
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "createUserWithEmail:success");
                     Toast.makeText(getApplicationContext(),"User Registered Successful", Toast.LENGTH_SHORT).show();
 
                     // Transition to new Activity
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
-
-                    //TODO: Finish home page
-                    // startActivity(new Intent(home_page))
                 } else {
 
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
                     Toast.makeText(SignUpPageActivity.this, "Authentication failed." + task.getException(),
                             Toast.LENGTH_SHORT).show();
                     updateUI(null);
                 }
             }
         });
+    }
+
+    private void saveUserData() {
+        String name = editTextName.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
+
+        User userData = new User(name, email);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        db.child(user.getUid()).setValue(userData);
     }
 
     private void switchToHome(){
