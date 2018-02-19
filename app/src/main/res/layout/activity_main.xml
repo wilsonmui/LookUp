@@ -21,7 +21,7 @@
             android:paddingRight="15dp">
 
             <TextView
-                android:id="@+id/app_title"
+                android:id="@+id/appTitle"
                 android:layout_width="173dp"
                 android:layout_height="137dp"
                 android:fontFamily="sans-serif-condensed"
@@ -39,7 +39,7 @@
                 app:layout_constraintVertical_bias="0.358" />
 
             <Button
-                android:id="@+id/sign_in_button"
+                android:id="@+id/buttonSignIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="sign in "
@@ -48,7 +48,7 @@
                 tools:layout_editor_absoluteY="426dp" />
 
             <Button
-                android:id="@+id/get_started_button"
+                android:id="@+id/buttonGetStarted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Get Started"
