@@ -83,6 +83,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 mAuth.getInstance().signOut();
                 startActivity(new Intent(this, SignInPageActivity.class));
+                break;
         }
     }
 

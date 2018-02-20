@@ -18,7 +18,7 @@ public class User {
     private List<SocialMedia> connectedSocialMedias;
     private List<SocialMedia> visibleSocialMedias;
     private List<User> contacts;
-    
+
     public User() {
         // Required empty constructor for Firebase
     }
