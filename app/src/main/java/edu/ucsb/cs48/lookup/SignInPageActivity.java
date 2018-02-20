@@ -112,7 +112,7 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
         // Listeners
         buttonSignIn.setOnClickListener(this);
         textViewSignUp.setOnClickListener(this);
-
+      
         //Facebook stuff below
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
@@ -125,7 +125,7 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
         loginButton.setReadPermissions(Arrays.asList(EMAIL));
         // If you are using in a fragment, call loginButton.setFragment(this);
 
-
+      
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -169,7 +169,7 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
 
         findViewById(R.id.google_login).setOnClickListener(this);
     }
-
+  
     //==============================================================================================
     // Helper Functions
     //==============================================================================================
@@ -213,11 +213,11 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
                     }
                 });
     }
-
+  
     private void updateUI(FirebaseUser currentUser) {
         Profile profile = Profile.getCurrentProfile();
         if (currentUser != null) { //TODO: changed back to current user instead of profile
-            startActivity(new Intent(this, HomePageActivity.class));
+          startActivity(new Intent(this, HomePageActivity.class));
 //            profilePictureView.setProfileId(profile.getId());
 //            userNameView
 //                    .setText(String.format("%s %s",profile.getFirstName(), profile.getLastName()));
@@ -234,7 +234,7 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                       if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -250,7 +250,7 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
                     }
                 });
     }
-
+  
     //==============================================================================================
     // Action Listeners
     //==============================================================================================
