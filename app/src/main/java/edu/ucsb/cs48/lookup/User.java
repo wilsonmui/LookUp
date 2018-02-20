@@ -1,5 +1,7 @@
 package edu.ucsb.cs48.lookup;
 
+import java.util.List;
+
 /**
  * Created by Wilson on 2/7/18.
  */
@@ -12,9 +14,11 @@ public class User {
 
     private String name;
     private String email;
-    //private String uid;
-    //private String faceID;
-
+    private String uid;
+    private List<SocialMedia> connectedSocialMedias;
+    private List<SocialMedia> visibleSocialMedias;
+    private List<User> contacts;
+    
     public User() {
         // Required empty constructor for Firebase
     }
@@ -22,7 +26,7 @@ public class User {
     public User(String name, String email) {
         this.name = name;
         this.email = email;
-        //this.uid = uid;
+        this.uid = uid;
     }
 
 
@@ -32,11 +36,8 @@ public class User {
         return email;
     }
 
-    //public String getUid() {
-    //    return uid;
-    //}
+    public String getUid() { return uid; }
 
-    /*
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
@@ -45,5 +46,4 @@ public class User {
         }
         return false;
     }
-    */
 }

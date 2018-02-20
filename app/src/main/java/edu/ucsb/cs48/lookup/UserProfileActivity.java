@@ -39,7 +39,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
         FirebaseUser User = mAuth.getCurrentUser();
         textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
         textViewUserName = (TextView) findViewById(R.id.textViewUserName);
-        textViewUserName.setText(User.getDisplayName();
+        textViewUserName.setText(User.getDisplayName());
         textViewUserEmail.setText(User.getEmail());
 
         loadUserData();

@@ -129,12 +129,12 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private void updateUI(FirebaseUser currentUser) {
 
         if (currentUser != null) {
-            // TODO:If user is logged in...
-            Log.d(TAG, "There is a current user");
+            finish();
+            startActivity(new Intent(this, HomePageActivity.class));
         } else {
-            // TODO:If user is not logged in...
             Log.d(TAG, "current user is null");
         }
+
     }
 
     private void registerUser() {
@@ -179,15 +179,19 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                 progressBar.setVisibility(View.GONE);
 
                 if (task.isSuccessful()) {
-                    editTextName = (EditText) findViewById(R.id.editTextName);
-                    switchToHome();
 
-                    // Sign in success, update UI with the signed-in user's information
-                    Toast.makeText(getApplicationContext(),"User Registered Successful", Toast.LENGTH_SHORT).show();
+                    // Variable Set up
+                    String name = editTextName.getText().toString().trim();
+                    String email = editTextEmail.getText().toString().trim();
+                    FirebaseUser currUser = mAuth.getCurrentUser();
+                    String uid = currUser.getUid();
 
-                    // Transition to new Activity
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user);
+                    // Save User Data to DataBase
+                    saveUserData(uid, name, email);
+
+                    // Sign in success, update UI with the signed in User's Information
+                    updateUI(currUser);
+
                 } else {
 
                     // If sign in fails, display a message to the user.
@@ -199,23 +203,13 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    private void saveUserData() {
-        String name = editTextName.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
-
-        User userData = new User(name, email);
-
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        db.child(user.getUid()).setValue(userData);
+    private void saveUserData(String userId, String name, String email) {
+        User user = new User(name, email);
+        db.child("users").child(userId).setValue(user);
     }
 
-    private void switchToHome(){
-        startActivity(new Intent(this, HomePageActivity.class));
-    }
-
-    //sign-in for Google
-    //note sign out: FirebaseAuth.getInstance().signOut();
+    // sign-in for Google
+    // note sign out: FirebaseAuth.getInstance().signOut();
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, SIGN_IN_REQUEST);
