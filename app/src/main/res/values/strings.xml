@@ -1,11 +1,3 @@
 <resources>
     <string name="app_name">LookUp</string>
-    <!--
-    <string name="facebook_app_id">1959796554047932</string>
-    <string name="fb_login_protocol_scheme">fb1959796554047932</string>
-    <string name="sign_in_with_facebook">Sign in with Facebook</string>
-    -->
-    <string name="facebook_app_id">1959796554047932</string>
-    <string name="fb_login_protocol_scheme">fb1959796554047932</string>
-    <string name="welcome">Welcome!</string>
 </resources>
