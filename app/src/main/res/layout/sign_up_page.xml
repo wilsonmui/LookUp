@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-android:background="#5fb0c9"
+android:background="@drawable/account_login_gradient"
 android:orientation="vertical"
 android:scrollbarAlwaysDrawVerticalTrack="true">
 
@@ -16,6 +16,7 @@ android:scrollbarAlwaysDrawVerticalTrack="true">
     android:text="Account Login"
     android:textColor="#fff"
     android:textSize="26sp"
+    android:shadowColor="@color/dropShadow"
     android:textStyle="bold" />
 
 <RelativeLayout
@@ -44,7 +45,7 @@ android:scrollbarAlwaysDrawVerticalTrack="true">
                 android:id="@+id/editTextName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableTint="#FF4081"
+                android:drawableTint="#ff9b3d"
                 android:singleLine="true"
                 android:hint="Name"
                 android:inputType="textPersonName" />
@@ -58,7 +59,7 @@ android:scrollbarAlwaysDrawVerticalTrack="true">
                 android:id="@+id/editTextEmail"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableTint="#FF4081"
+                android:drawableTint="#ff9b3d"
                 android:singleLine="true"
                 android:hint="Email"
                 android:inputType="textEmailAddress" />
@@ -74,7 +75,7 @@ android:scrollbarAlwaysDrawVerticalTrack="true">
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:drawableTint="#FF4081"
+                android:drawableTint="#ff9b3d"
                 android:hint="Password"
                 android:inputType="numberPassword"
                 android:singleLine="true" />
@@ -84,14 +85,14 @@ android:scrollbarAlwaysDrawVerticalTrack="true">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="center_horizontal"
             android:paddingTop="5dp"
             android:text="Forgot Password?" />
         <TextView
             android:id="@+id/textViewSignIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="center_horizontal"
             android:paddingTop="5dp"
             android:text="Already have an account? Sign In"
             android:textSize="12sp" />
@@ -102,7 +103,8 @@ android:scrollbarAlwaysDrawVerticalTrack="true">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="#d67601"
+            android:background="#ff9b3d"
+            android:layout_gravity="center_horizontal"
             android:text="Sign Up"
             android:textAllCaps="false"
             android:textColor="#fff"
@@ -110,6 +112,7 @@ android:scrollbarAlwaysDrawVerticalTrack="true">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
+            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#ececec">
+    android:background="@drawable/account_login_gradient">
 
     <LinearLayout
         android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#ececec">
+        android:background="@drawable/account_login_gradient">
 
 
         <TextView
@@ -19,7 +19,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Sign In"
-            android:textColor="#041a29"
+            android:textColor="#fff"
+            android:textSize="26sp"
+            android:textStyle="bold"
             android:id="@+id/textView"
             android:layout_gravity="center_horizontal" />
 
@@ -29,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:hint="Enter email"
-            android:textColor="#041a29"
+            android:textColor="#fff"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -38,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:hint="Enter password"
-            android:textColor="#041a29"
+            android:textColor="#fff"
             android:inputType="textPassword" />
 
         <Button
@@ -48,7 +50,7 @@
             android:layout_margin="15dp"
             android:text="Sign In"
             android:textColor="#041a29"
-            android:background="#97c9ed" />
+            android:background="#fff" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_login"
