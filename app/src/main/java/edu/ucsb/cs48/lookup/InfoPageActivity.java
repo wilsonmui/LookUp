@@ -9,17 +9,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-/**
- * Created by deni on 2/8/18.
- */
 
-public class UserProfileActivity  extends AppCompatActivity implements View.OnClickListener{
-
-    //==============================================================================================
-    // Declare Variables
-    //==============================================================================================
-    private FirebaseAuth mAuth;
-    private TextView textViewUserEmail, textViewUserName;
+public class InfoPageActivity  extends AppCompatActivity implements View.OnClickListener{
 
     //==============================================================================================
     // On Create Setup
@@ -27,8 +18,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.user_profile_page);
+        setContentView(R.layout.info_page);
 
 //        // Check if User is Authenticated
 //        mAuth = FirebaseAuth.getInstance();
@@ -36,7 +26,6 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 //            finish();
 //            startActivity(new Intent(this, SignInPageActivity.class));
 //        }
-//        setContentView(R.layout.user_profile_page);
 //
 //        FirebaseUser User = mAuth.getCurrentUser();
 //        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
@@ -62,11 +51,11 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     //==============================================================================================
     // Helper Functions
     //==============================================================================================
-    private void loadUserData() {
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        String name = user.getDisplayName();
-    }
+//    private void loadUserData() {
+//        FirebaseUser user = mAuth.getCurrentUser();
+//
+//        String name = user.getDisplayName();
+//    }
 
 
 
