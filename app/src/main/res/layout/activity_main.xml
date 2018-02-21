@@ -22,7 +22,7 @@
 
             <TextView
                 android:id="@+id/appTitle"
-                android:layout_width="356dp"
+                android:layout_width="290dp"
                 android:layout_height="137dp"
                 android:fontFamily="sans-serif-condensed"
                 android:shadowColor="@color/dropShadow"
