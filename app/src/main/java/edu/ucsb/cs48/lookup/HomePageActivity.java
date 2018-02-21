@@ -12,6 +12,9 @@ import java.util.Date;
 import android.os.Environment;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
+import android.widget.Button;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by deni on 2/5/18.
@@ -19,22 +22,41 @@ import android.support.v4.content.FileProvider;
 
 public class HomePageActivity extends AppCompatActivity implements View.OnClickListener {
 
-//    static final int REQUEST_IMAGE_CAPTURE = 1;
+    //==============================================================================================
+    // Declare Variables
+    //==============================================================================================
     static final int REQUEST_TAKE_PHOTO = 1;
     String mCurrentPhotoPath; //pathname for photo
+    private FirebaseAuth mAuth;
+    private Button buttonSignOut;
+
 
     //==============================================================================================
     // On Create Setup
     //==============================================================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
+        // Check if User is Authenticated
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, SignInPageActivity.class));
+        }
+
+        // Layout Setup
         setContentView(R.layout.home_page);
+
         //Add ActionListeners
+        buttonSignOut= (Button) findViewById(R.id.buttonSignOut);
+
         findViewById(R.id.scan_face_button).setOnClickListener(this);
         findViewById(R.id.user_profile_button).setOnClickListener(this);
         findViewById(R.id.contacts_button).setOnClickListener(this);
         findViewById(R.id.info_button).setOnClickListener(this);
+        buttonSignOut.setOnClickListener(this);
     }
     //==============================================================================================
     // Action Listeners
@@ -47,16 +69,22 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 dispatchTakePictureIntent();
                 break;
             case R.id.user_profile_button:
-                startActivity(new Intent(this, UserProfileActivity.class)); //TODO implement UserProfileActivity.class
+                finish();
+                startActivity(new Intent(this, UserProfileActivity.class));
                 break;
             case R.id.contacts_button:
                 //TODO contacts button selected
 //                startActivity(new Intent(this, ContactsActivity.class)); //TODO implement ContactsActivity.class
                 break;
             case R.id.info_button:
-                //TODO info button selected, go to info page
+                finish();
+                startActivity(new Intent(this, InfoPageActivity.class));
                 break;
-
+            case R.id.buttonSignOut:
+                finish();
+                mAuth.getInstance().signOut();
+                startActivity(new Intent(this, SignInPageActivity.class));
+                break;
         }
     }
 
