@@ -7,8 +7,8 @@
 
     <EditText
         android:id="@+id/editText2"
-        android:layout_width="354dp"
-        android:layout_height="281dp"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:ems="10"
         android:inputType="textMultiLine"
         android:text="LookUp is an easy way to find your friends, without going through the hassle of searching them up. Goodbye QR codes and @'s, all you need is a picture of someone's face! Simply click the &quot;Scan face&quot; button, take a picture of someone's face, and let LookUp do the rest. "
