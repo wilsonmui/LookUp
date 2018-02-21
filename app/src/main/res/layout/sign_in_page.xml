@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/account_login_gradient">
 
     <LinearLayout
         android:layout_centerVertical="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/account_login_gradient">
 
 
         <TextView
@@ -17,6 +19,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Sign In"
+            android:textColor="#fff"
+            android:textSize="26sp"
+            android:textStyle="bold"
             android:id="@+id/textView"
             android:layout_gravity="center_horizontal" />
 
@@ -26,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:hint="Enter email"
+            android:textColor="#fff"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -34,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:hint="Enter password"
+            android:textColor="#fff"
             android:inputType="textPassword" />
 
         <Button
@@ -41,7 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Sign In" />
+            android:text="Sign In"
+            android:textColor="#041a29"
+            android:background="#fff" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_login"
@@ -66,6 +75,7 @@
 
         <TextView
             android:text="Not Registered? Sign Up Here"
+            android:textColor="#041a29"
             android:id="@+id/textViewSignUp"
             android:textAlignment="center"
             android:layout_margin="15dp"

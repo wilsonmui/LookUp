@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/colorPrimary">
+        android:background="@drawable/account_login_gradient">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,15 +19,18 @@
             android:orientation="vertical"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
+
             <TextView
                 android:id="@+id/appTitle"
-                android:layout_width="173dp"
+                android:layout_width="356dp"
                 android:layout_height="137dp"
                 android:fontFamily="sans-serif-condensed"
+                android:shadowColor="@color/dropShadow"
                 android:text="LookUp"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.WindowTitle"
+                android:textColor="#fff"
                 android:textSize="50sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -39,18 +42,24 @@
 
             <Button
                 android:id="@+id/buttonSignIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="sign in "
+                android:layout_width="188dp"
+                android:layout_height="63dp"
+                android:text="Sign In"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#041a29"
+                android:background="#ececec"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:layout_editor_absoluteY="426dp" />
 
             <Button
                 android:id="@+id/buttonGetStarted"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="188dp"
+                android:layout_height="63dp"
                 android:text="Get Started"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#041a29"
+                android:background="#ececec"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:layout_editor_absoluteY="363dp" />
