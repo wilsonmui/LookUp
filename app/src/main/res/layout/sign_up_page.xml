@@ -13,7 +13,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
-        android:text="Account Login"
+        android:text="@string/account_login"
         android:textColor="#fff"
         android:textSize="26sp"
         android:textStyle="bold" />
@@ -46,8 +46,8 @@
                     android:id="@+id/editTextName"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
-                    android:drawableTint="#FF4081"
-                    android:hint="Name"
+                    android:drawableTint="#f5913f"
+                    android:hint="@string/name"
                     android:inputType="textPersonName"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -60,8 +60,8 @@
                     android:id="@+id/editTextEmail"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
-                    android:drawableTint="#FF4081"
-                    android:hint="Email"
+                    android:drawableTint="#f5913f"
+                    android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -76,8 +76,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="16dp"
-                    android:drawableTint="#FF4081"
-                    android:hint="Password"
+                    android:drawableTint="#f5913f"
+                    android:hint="@string/password"
                     android:inputType="numberPassword"
                     android:singleLine="true" />
 
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:paddingTop="5dp"
-                android:text="Forgot Password?"
+                android:text="@string/forgot_password"
                 android:textSize="14sp" />
 
             <TextView
@@ -97,8 +97,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:paddingTop="5dp"
-                android:text="Already have an account? Sign In"
-                android:textSize="11sp" />
+                android:text="@string/already_account"
+                android:textSize="12sp" />
 
 
             <Button
@@ -108,7 +108,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:background="#f5913f"
-                android:text="Sign Up"
+                android:text="@string/signin"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textSize="16sp" />
