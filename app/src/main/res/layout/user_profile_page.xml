@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/users_name_text"
+        android:id="@+id/textViewUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="146dp"
@@ -144,14 +144,14 @@
             <TableRow>
 
                 <TextView
-                    android:id="@+id/email"
+                    android:id="@+id/textViewEmailLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="3dip"
                     android:text="Email" />
 
                 <TextView
-                    android:id="@+id/email1"
+                    android:id="@+id/textViewUserEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"

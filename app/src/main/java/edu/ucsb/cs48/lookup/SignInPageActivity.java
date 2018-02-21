@@ -96,11 +96,9 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
 
         // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser() != null) {
-            finish();
-            startActivity(new Intent(this, HomePageActivity.class));
-        }
-
+        FirebaseUser currUser = mAuth.getCurrentUser();
+        updateUI(currUser);
+        
         // Layout Setup
         setContentView(R.layout.sign_in_page);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
@@ -215,13 +213,16 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
     }
   
     private void updateUI(FirebaseUser currentUser) {
-        Profile profile = Profile.getCurrentProfile();
-        if (currentUser != null) { //TODO: changed back to current user instead of profile
-          startActivity(new Intent(this, HomePageActivity.class));
+
+        if (currentUser != null) {
+            finish();
+            startActivity(new Intent(this, HomePageActivity.class));
 //            profilePictureView.setProfileId(profile.getId());
 //            userNameView
 //                    .setText(String.format("%s %s",profile.getFirstName(), profile.getLastName()));
         } else {
+            finish();
+            startActivity(new Intent(this, SignUpPageActivity.class));
 //            profilePictureView.setProfileId(null);
 //            userNameView.setText(getString(R.string.welcome));
         }
