@@ -221,10 +221,7 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
 //            userNameView
 //                    .setText(String.format("%s %s",profile.getFirstName(), profile.getLastName()));
         } else {
-            finish();
-            startActivity(new Intent(this, SignUpPageActivity.class));
-//            profilePictureView.setProfileId(null);
-//            userNameView.setText(getString(R.string.welcome));
+            // ...
         }
     }
 
