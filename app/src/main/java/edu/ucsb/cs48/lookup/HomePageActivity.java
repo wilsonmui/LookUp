@@ -77,7 +77,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 //                startActivity(new Intent(this, ContactsActivity.class)); //TODO implement ContactsActivity.class
                 break;
             case R.id.info_button:
-                //TODO info button selected, go to info page
+                finish();
+                startActivity(new Intent(this, InfoPageActivity.class));
                 break;
             case R.id.buttonSignOut:
                 finish();
