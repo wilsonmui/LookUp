@@ -22,10 +22,11 @@
 
             <TextView
                 android:id="@+id/appTitle"
-                android:layout_width="357dp"
+                android:layout_width="356dp"
                 android:layout_height="137dp"
                 android:fontFamily="sans-serif-condensed"
                 android:text="LookUp"
+                android:textColor="#041a29"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.WindowTitle"
@@ -40,18 +41,20 @@
 
             <Button
                 android:id="@+id/buttonSignIn"
-                android:layout_width="177dp"
-                android:layout_height="wrap_content"
-                android:text="sign in "
+                android:layout_width="188dp"
+                android:layout_height="63dp"
+                android:text="Sign In"
+                android:textColor="#041a29"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:layout_editor_absoluteY="426dp" />
 
             <Button
                 android:id="@+id/buttonGetStarted"
-                android:layout_width="177dp"
-                android:layout_height="wrap_content"
+                android:layout_width="188dp"
+                android:layout_height="63dp"
                 android:text="Get Started"
+                android:textColor="#041a29"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:layout_editor_absoluteY="363dp" />
