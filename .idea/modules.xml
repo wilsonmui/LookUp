@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/LookUp.iml" filepath="$PROJECT_DIR$/LookUp.iml" />
+      <module fileurl="file://C:\Users\Such\AndroidStudioProjects\LookUpProject\LookUp.iml" filepath="C:\Users\Such\AndroidStudioProjects\LookUpProject\LookUp.iml" />
       <module fileurl="file://$PROJECT_DIR$/LookUpProject.iml" filepath="$PROJECT_DIR$/LookUpProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

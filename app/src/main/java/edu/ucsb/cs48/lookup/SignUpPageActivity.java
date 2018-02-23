@@ -233,7 +233,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             firebaseAuthWithGoogle(account);
-            // Signed in successfully, show authenticated UI.
+            // Signed in successfully, show authenticated UI
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -252,6 +252,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            //saveUserData(user.getUid(), "null", user.getEmail());
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
