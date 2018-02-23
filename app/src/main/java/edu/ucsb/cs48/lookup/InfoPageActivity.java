@@ -4,24 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-/**
- * Created by deni on 2/8/18.
- */
 
-public class UserProfileActivity  extends AppCompatActivity implements View.OnClickListener{
-
-    //==============================================================================================
-    // Declare Variables
-    //==============================================================================================
-    private FirebaseAuth mAuth;
-    private TextView textViewUserEmail, textViewUserName;
-    private Button buttonEditProfile;
+public class InfoPageActivity  extends AppCompatActivity implements View.OnClickListener{
 
     //==============================================================================================
     // On Create Setup
@@ -29,39 +18,14 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.info_page);
 
-        setContentView(R.layout.user_profile_page);
-
-        FirebaseUser User = mAuth.getCurrentUser();
-        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
-        textViewUserName = (TextView) findViewById(R.id.textViewUserName);
-        buttonEditProfile = (Button) findViewById(R.id.buttonEditProfile);
-        textViewUserName.setText(User.getDisplayName());
-        textViewUserEmail.setText(User.getEmail());
-
-        loadUserInformation();
-
-
-
-    }
-
-    //==============================================================================================
-    // On Start Setup
-    //==============================================================================================
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (mAuth.getCurrentUser() == null) {
-            finish();
-            startActivity(new Intent(this, SignInPageActivity.class));
-        }
 //        // Check if User is Authenticated
 //        mAuth = FirebaseAuth.getInstance();
 //        if(mAuth.getCurrentUser() == null) {
 //            finish();
 //            startActivity(new Intent(this, SignInPageActivity.class));
 //        }
-//        setContentView(R.layout.user_profile_page);
 //
 //        FirebaseUser User = mAuth.getCurrentUser();
 //        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
@@ -87,13 +51,11 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     //==============================================================================================
     // Helper Functions
     //==============================================================================================
-    private void loadUserInformation() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            textViewUserName.setText(user.getDisplayName());
-            String displayName = user.getDisplayName();
-        }
-    }
+//    private void loadUserData() {
+//        FirebaseUser user = mAuth.getCurrentUser();
+//
+//        String name = user.getDisplayName();
+//    }
 
 
 
