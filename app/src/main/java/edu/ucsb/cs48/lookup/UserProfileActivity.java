@@ -30,9 +30,11 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser User = mAuth.getCurrentUser();
+
         setContentView(R.layout.user_profile_page);
 
-        FirebaseUser User = mAuth.getCurrentUser();
         textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
         textViewUserName = (TextView) findViewById(R.id.textViewUserName);
         buttonEditProfile = (Button) findViewById(R.id.buttonEditProfile);
@@ -55,21 +57,21 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             finish();
             startActivity(new Intent(this, SignInPageActivity.class));
         }
-//        // Check if User is Authenticated
-//        mAuth = FirebaseAuth.getInstance();
-//        if(mAuth.getCurrentUser() == null) {
-//            finish();
-//            startActivity(new Intent(this, SignInPageActivity.class));
-//        }
-//        setContentView(R.layout.user_profile_page);
-//
-//        FirebaseUser User = mAuth.getCurrentUser();
-//        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
-//        textViewUserName = (TextView) findViewById(R.id.textViewUserName);
-//        textViewUserName.setText(User.getDisplayName());
-//        textViewUserEmail.setText(User.getEmail());
-//
-//        loadUserData();
+        // Check if User is Authenticated
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, SignInPageActivity.class));
+        }
+        setContentView(R.layout.user_profile_page);
+
+        FirebaseUser User = mAuth.getCurrentUser();
+        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
+        textViewUserName = (TextView) findViewById(R.id.textViewUserName);
+        textViewUserName.setText(User.getDisplayName());
+        textViewUserEmail.setText(User.getEmail());
+
+        loadUserInformation();
     }
 
     //==============================================================================================
