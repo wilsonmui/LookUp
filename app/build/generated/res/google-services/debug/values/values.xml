@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">499747879832-vaojkbm5j81thueo3m2k6miqhrn57rt6.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://lookup-43919.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">499747879832</string>
+    <string name="google_api_key" translatable="false">AIzaSyAYtfgIe5DZAvegVRIY2GBAGmf3yGnZHAE</string>
+    <string name="google_app_id" translatable="false">1:499747879832:android:55c4f9577c4d17ea</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAYtfgIe5DZAvegVRIY2GBAGmf3yGnZHAE</string>
+    <string name="google_storage_bucket" translatable="false">lookup-43919.appspot.com</string>
+    <string name="project_id" translatable="false">lookup-43919</string>
+</resources>

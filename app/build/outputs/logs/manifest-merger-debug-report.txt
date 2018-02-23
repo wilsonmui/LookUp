@@ -1,0 +1,544 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:1-55:12
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:1-55:12
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:1-55:12
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:1-55:12
+MERGED from [com.android.support:design:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/c52a94ac21e909024e21a416cbd5a4bd/AndroidManifest.xml:17:1-31:12
+MERGED from [com.facebook.android:facebook-login:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-login-4.30.0.aar/83ac431f2bfe9088e3f017d6613da116/AndroidManifest.xml:21:1-31:12
+MERGED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:21:1-36:12
+MERGED from [com.android.support:appcompat-v7:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/ecdf0ebedba8f9a1fe9220da708d5e1d/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/30948e33bc73197d248c216f8d167a58/AndroidManifest.xml:2:1-11:12
+MERGED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:17:1-32:12
+MERGED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:17:1-39:12
+MERGED from [com.google.firebase:firebase-core:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-core-11.8.0.aar/5bcf278695d21dfd621db0068bbe9c1b/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.firebase:firebase-database:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-11.8.0.aar/4909d68c4b8d3520398e0fd76025e8af/AndroidManifest.xml:2:1-8:12
+MERGED from [com.android.support:recyclerview-v7:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-26.1.0.aar/529f252cb19ea98f17f21ef3997d85ce/AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:transition:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/transition-26.1.0.aar/6bd0b374869c60294c1f7c5af9e4d5cb/AndroidManifest.xml:17:1-28:12
+MERGED from [com.facebook.android:facebook-core:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-core-4.30.0.aar/e5c3a680f98846b085977493c4cd395b/AndroidManifest.xml:21:1-45:12
+MERGED from [com.android.support:cardview-v7:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.0.2.aar/00524084cfc868db63fb0f4662e7db65/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:customtabs:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/customtabs-27.0.2.aar/35324a81df7a40ff8eaa620caf79625b/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-auth-api-phone:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-api-phone-11.8.0.aar/057254227aeaeb8eba7d9a9692b79156/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-auth-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-base-11.8.0.aar/ec6dcab33903c57e75489f818d879314/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/637be5238966c6c49eaf057367696807/AndroidManifest.xml:17:1-29:12
+MERGED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:17:1-54:12
+MERGED from [com.google.firebase:firebase-database-connection:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-connection-11.8.0.aar/3aed327d6a7aff75ee33619931fd5a0c/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:17:1-40:12
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:17:1-59:12
+MERGED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:2:1-15:12
+MERGED from [com.google.android.gms:play-services-tasks:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-11.8.0.aar/4316c1dac5e466988a2035dacccacf7d/AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-basement:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/557bba0483cb9210c48551bae3b45868/AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-v4:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-v4-27.0.2.aar/12b22df29089852d8f6e51bd41dba8d3/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-fragment-27.0.2.aar/e033e753bf7e22cac9ecc57dc6ccaddb/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.0.2.aar/94c26e67ed58885705b6c55b34aa83f0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.0.2.aar/602c28bbacb666d3af069034ed9d18df/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.0.2.aar/683d6f6180b243f15d73837a19f8fd55/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-media-compat:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.0.2.aar/945c5a8ef4d6394170b6bdb7d18c49c6/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.0.2.aar/d3f936c2310c895b7f22558be431e8fe/AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-compat-27.0.2.aar/9209432d1a58e2eccee77d1867c3de53/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.firebase:firebase-auth-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-license-11.8.0.aar/d282d5428ec9626396d5ceeb01df3fb7/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.firebase:firebase-database-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-license-11.8.0.aar/116ea190b684d9cb5a8991407656d20f/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.android.gms:play-services-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-license-11.8.0.aar/bfc84a4595bbdd2a4eca967db7e824c9/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.android.gms:play-services-basement-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-11.8.0.aar/ab32e965cf5c1683da1164d16414c35e/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.firebase:firebase-common-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-license-11.8.0.aar/663741f30116482d92be1f9aa6404fb4/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.android.gms:play-services-tasks-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-11.8.0.aar/ad846626e7a7572208752f5b59e067bc/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.android.gms:play-services-auth-api-phone-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-api-phone-license-11.8.0.aar/e0643b039e6616a066466017cc4f87be/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.android.gms:play-services-auth-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-base-license-11.8.0.aar/59c42503b34bbc4d4baca8c41c671ec4/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.firebase:firebase-analytics-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-license-11.8.0.aar/203fb8950637618aa73574ea03a0812b/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.firebase:firebase-database-connection-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-connection-license-11.8.0.aar/2d4dc8e82ed4d2f4e83e7359a14164a3/AndroidManifest.xml:2:1-6:12
+MERGED from [android.arch.lifecycle:runtime:1.0.3] /home/esuarez/.gradle/caches/transforms-1/files-1.1/runtime-1.0.3.aar/15cc32971e212590f7c84b352f1d8898/AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.firebase:firebase-analytics-impl-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-license-11.8.0.aar/96fe26f539382fdf70e358f4a45c43cf/AndroidManifest.xml:2:1-6:12
+MERGED from [com.google.firebase:firebase-iid-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-license-11.8.0.aar/aadfd65474569ac91a3a4e77e992aff8/AndroidManifest.xml:2:1-6:12
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:1-55:12
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:1-55:12
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:1-55:12
+	package
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:6:5-35
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:1-55:12
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:1-55:12
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:5:11-69
+uses-feature#android.hardware.camera
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:7:5-8:35
+	android:required
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:8:9-32
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:7:19-57
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:9:5-81
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:9:22-78
+application
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:12:5-51:19
+MERGED from [com.android.support:design:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/c52a94ac21e909024e21a416cbd5a4bd/AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:design:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/c52a94ac21e909024e21a416cbd5a4bd/AndroidManifest.xml:25:5-29:19
+MERGED from [com.facebook.android:facebook-login:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-login-4.30.0.aar/83ac431f2bfe9088e3f017d6613da116/AndroidManifest.xml:28:5-29:19
+MERGED from [com.facebook.android:facebook-login:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-login-4.30.0.aar/83ac431f2bfe9088e3f017d6613da116/AndroidManifest.xml:28:5-29:19
+MERGED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:28:5-34:19
+MERGED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:28:5-34:19
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/30948e33bc73197d248c216f8d167a58/AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/30948e33bc73197d248c216f8d167a58/AndroidManifest.xml:9:5-20
+MERGED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:22:5-30:19
+MERGED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:22:5-30:19
+MERGED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:22:5-37:19
+MERGED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:22:5-37:19
+MERGED from [com.google.firebase:firebase-core:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-core-11.8.0.aar/5bcf278695d21dfd621db0068bbe9c1b/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-core:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-core-11.8.0.aar/5bcf278695d21dfd621db0068bbe9c1b/AndroidManifest.xml:5:5-20
+MERGED from [com.android.support:recyclerview-v7:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-26.1.0.aar/529f252cb19ea98f17f21ef3997d85ce/AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:recyclerview-v7:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-26.1.0.aar/529f252cb19ea98f17f21ef3997d85ce/AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:transition:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/transition-26.1.0.aar/6bd0b374869c60294c1f7c5af9e4d5cb/AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:transition:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/transition-26.1.0.aar/6bd0b374869c60294c1f7c5af9e4d5cb/AndroidManifest.xml:22:5-26:19
+MERGED from [com.facebook.android:facebook-core:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-core-4.30.0.aar/e5c3a680f98846b085977493c4cd395b/AndroidManifest.xml:28:5-43:19
+MERGED from [com.facebook.android:facebook-core:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-core-4.30.0.aar/e5c3a680f98846b085977493c4cd395b/AndroidManifest.xml:28:5-43:19
+MERGED from [com.google.android.gms:play-services-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/637be5238966c6c49eaf057367696807/AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/637be5238966c6c49eaf057367696807/AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:27:5-52:19
+MERGED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:27:5-52:19
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:27:5-38:19
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:27:5-38:19
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:34:5-57:19
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:34:5-57:19
+MERGED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:7:5-13:19
+MERGED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:7:5-13:19
+MERGED from [com.google.android.gms:play-services-tasks:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-11.8.0.aar/4316c1dac5e466988a2035dacccacf7d/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-tasks:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-11.8.0.aar/4316c1dac5e466988a2035dacccacf7d/AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-basement:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/557bba0483cb9210c48551bae3b45868/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-basement:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/557bba0483cb9210c48551bae3b45868/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.firebase:firebase-auth-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-license-11.8.0.aar/d282d5428ec9626396d5ceeb01df3fb7/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-auth-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-license-11.8.0.aar/d282d5428ec9626396d5ceeb01df3fb7/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-database-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-license-11.8.0.aar/116ea190b684d9cb5a8991407656d20f/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-database-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-license-11.8.0.aar/116ea190b684d9cb5a8991407656d20f/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-license-11.8.0.aar/bfc84a4595bbdd2a4eca967db7e824c9/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-license-11.8.0.aar/bfc84a4595bbdd2a4eca967db7e824c9/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-basement-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-11.8.0.aar/ab32e965cf5c1683da1164d16414c35e/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-basement-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-11.8.0.aar/ab32e965cf5c1683da1164d16414c35e/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-common-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-license-11.8.0.aar/663741f30116482d92be1f9aa6404fb4/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-common-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-license-11.8.0.aar/663741f30116482d92be1f9aa6404fb4/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-tasks-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-11.8.0.aar/ad846626e7a7572208752f5b59e067bc/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-tasks-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-11.8.0.aar/ad846626e7a7572208752f5b59e067bc/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-auth-api-phone-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-api-phone-license-11.8.0.aar/e0643b039e6616a066466017cc4f87be/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-auth-api-phone-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-api-phone-license-11.8.0.aar/e0643b039e6616a066466017cc4f87be/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-auth-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-base-license-11.8.0.aar/59c42503b34bbc4d4baca8c41c671ec4/AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-auth-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-base-license-11.8.0.aar/59c42503b34bbc4d4baca8c41c671ec4/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-analytics-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-license-11.8.0.aar/203fb8950637618aa73574ea03a0812b/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-analytics-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-license-11.8.0.aar/203fb8950637618aa73574ea03a0812b/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-database-connection-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-connection-license-11.8.0.aar/2d4dc8e82ed4d2f4e83e7359a14164a3/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-database-connection-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-connection-license-11.8.0.aar/2d4dc8e82ed4d2f4e83e7359a14164a3/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-analytics-impl-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-license-11.8.0.aar/96fe26f539382fdf70e358f4a45c43cf/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-analytics-impl-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-license-11.8.0.aar/96fe26f539382fdf70e358f4a45c43cf/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-iid-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-license-11.8.0.aar/aadfd65474569ac91a3a4e77e992aff8/AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-iid-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-license-11.8.0.aar/aadfd65474569ac91a3a4e77e992aff8/AndroidManifest.xml:5:5-20
+	android:supportsRtl
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:17:9-35
+	android:label
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:15:9-41
+	android:roundIcon
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:16:9-54
+	android:icon
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:14:9-43
+	android:allowBackup
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:13:9-35
+	android:theme
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:18:9-40
+activity#edu.ucsb.cs48.lookup.MainActivity
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:19:9-25:20
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:19:19-47
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:20:13-24:29
+action#android.intent.action.MAIN
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:21:17-69
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:21:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:23:17-77
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:23:27-74
+meta-data#com.facebook.sdk.ApplicationId
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:28:9-29:54
+	android:value
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:29:13-52
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:28:20-65
+activity#com.facebook.FacebookActivity
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:31:9-34:48
+MERGED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:29:9-32:66
+MERGED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:29:9-32:66
+	android:label
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:34:13-45
+	android:configChanges
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:32:13-113
+	android:theme
+		ADDED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:32:13-63
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:31:19-63
+activity#com.facebook.CustomTabActivity
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:35:9-44:20
+	android:exported
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:37:13-36
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:36:13-58
+intent-filter#android.intent.action.VIEW+android.intent.category.BROWSABLE+android.intent.category.DEFAULT
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:38:13-43:29
+action#android.intent.action.VIEW
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:39:17-69
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:39:25-66
+category#android.intent.category.DEFAULT
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:40:17-76
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:40:27-73
+category#android.intent.category.BROWSABLE
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:41:17-78
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:41:27-75
+data
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:42:17-75
+	android:scheme
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:42:23-72
+activity#edu.ucsb.cs48.lookup.SignUpPageActivity
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:46:9-55
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:46:19-53
+activity#edu.ucsb.cs48.lookup.SignInPageActivity
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:47:9-55
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:47:19-53
+activity#edu.ucsb.cs48.lookup.HomePageActivity
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:48:9-53
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:48:19-51
+activity#edu.ucsb.cs48.lookup.InfoPageActivity
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:49:9-53
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:49:19-51
+activity#edu.ucsb.cs48.lookup.UserProfileActivity
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:50:9-56
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:50:19-54
+uses-permission#android.permission.INTERNET
+ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:53:5-66
+MERGED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:23:5-67
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:23:5-67
+	android:name
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml:53:22-64
+uses-sdk
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+MERGED from [com.android.support:design:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/c52a94ac21e909024e21a416cbd5a4bd/AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:design:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/c52a94ac21e909024e21a416cbd5a4bd/AndroidManifest.xml:21:5-23:62
+MERGED from [com.facebook.android:facebook-login:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-login-4.30.0.aar/83ac431f2bfe9088e3f017d6613da116/AndroidManifest.xml:24:5-26:41
+MERGED from [com.facebook.android:facebook-login:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-login-4.30.0.aar/83ac431f2bfe9088e3f017d6613da116/AndroidManifest.xml:24:5-26:41
+MERGED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:24:5-26:41
+MERGED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:24:5-26:41
+MERGED from [com.android.support:appcompat-v7:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/ecdf0ebedba8f9a1fe9220da708d5e1d/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.0.2.aar/ecdf0ebedba8f9a1fe9220da708d5e1d/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/30948e33bc73197d248c216f8d167a58/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.0.2.aar/30948e33bc73197d248c216f8d167a58/AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-core:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-core-11.8.0.aar/5bcf278695d21dfd621db0068bbe9c1b/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-core:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-core-11.8.0.aar/5bcf278695d21dfd621db0068bbe9c1b/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-database:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-11.8.0.aar/4909d68c4b8d3520398e0fd76025e8af/AndroidManifest.xml:6:5-44
+MERGED from [com.google.firebase:firebase-database:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-11.8.0.aar/4909d68c4b8d3520398e0fd76025e8af/AndroidManifest.xml:6:5-44
+MERGED from [com.android.support:recyclerview-v7:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-26.1.0.aar/529f252cb19ea98f17f21ef3997d85ce/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-26.1.0.aar/529f252cb19ea98f17f21ef3997d85ce/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/transition-26.1.0.aar/6bd0b374869c60294c1f7c5af9e4d5cb/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/transition-26.1.0.aar/6bd0b374869c60294c1f7c5af9e4d5cb/AndroidManifest.xml:20:5-44
+MERGED from [com.facebook.android:facebook-core:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-core-4.30.0.aar/e5c3a680f98846b085977493c4cd395b/AndroidManifest.xml:24:5-26:41
+MERGED from [com.facebook.android:facebook-core:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-core-4.30.0.aar/e5c3a680f98846b085977493c4cd395b/AndroidManifest.xml:24:5-26:41
+MERGED from [com.android.support:cardview-v7:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.0.2.aar/00524084cfc868db63fb0f4662e7db65/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/cardview-v7-27.0.2.aar/00524084cfc868db63fb0f4662e7db65/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customtabs:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/customtabs-27.0.2.aar/35324a81df7a40ff8eaa620caf79625b/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:customtabs:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/customtabs-27.0.2.aar/35324a81df7a40ff8eaa620caf79625b/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-auth-api-phone:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-api-phone-11.8.0.aar/057254227aeaeb8eba7d9a9692b79156/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-auth-api-phone:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-api-phone-11.8.0.aar/057254227aeaeb8eba7d9a9692b79156/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-auth-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-base-11.8.0.aar/ec6dcab33903c57e75489f818d879314/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-auth-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-base-11.8.0.aar/ec6dcab33903c57e75489f818d879314/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/637be5238966c6c49eaf057367696807/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/637be5238966c6c49eaf057367696807/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-database-connection:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-connection-11.8.0.aar/3aed327d6a7aff75ee33619931fd5a0c/AndroidManifest.xml:6:5-44
+MERGED from [com.google.firebase:firebase-database-connection:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-connection-11.8.0.aar/3aed327d6a7aff75ee33619931fd5a0c/AndroidManifest.xml:6:5-44
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-tasks:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-11.8.0.aar/4316c1dac5e466988a2035dacccacf7d/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-tasks:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-11.8.0.aar/4316c1dac5e466988a2035dacccacf7d/AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-basement:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/557bba0483cb9210c48551bae3b45868/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/557bba0483cb9210c48551bae3b45868/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-v4-27.0.2.aar/12b22df29089852d8f6e51bd41dba8d3/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-v4-27.0.2.aar/12b22df29089852d8f6e51bd41dba8d3/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-fragment-27.0.2.aar/e033e753bf7e22cac9ecc57dc6ccaddb/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-fragment-27.0.2.aar/e033e753bf7e22cac9ecc57dc6ccaddb/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.0.2.aar/94c26e67ed58885705b6c55b34aa83f0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-core-utils-27.0.2.aar/94c26e67ed58885705b6c55b34aa83f0/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.0.2.aar/602c28bbacb666d3af069034ed9d18df/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/animated-vector-drawable-27.0.2.aar/602c28bbacb666d3af069034ed9d18df/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.0.2.aar/683d6f6180b243f15d73837a19f8fd55/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-vector-drawable-27.0.2.aar/683d6f6180b243f15d73837a19f8fd55/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.0.2.aar/945c5a8ef4d6394170b6bdb7d18c49c6/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-media-compat-27.0.2.aar/945c5a8ef4d6394170b6bdb7d18c49c6/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.0.2.aar/d3f936c2310c895b7f22558be431e8fe/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.0.2.aar/d3f936c2310c895b7f22558be431e8fe/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-compat-27.0.2.aar/9209432d1a58e2eccee77d1867c3de53/AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.0.2] /home/esuarez/.gradle/caches/transforms-1/files-1.1/support-compat-27.0.2.aar/9209432d1a58e2eccee77d1867c3de53/AndroidManifest.xml:20:5-44
+MERGED from [com.google.firebase:firebase-auth-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-license-11.8.0.aar/d282d5428ec9626396d5ceeb01df3fb7/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-auth-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-license-11.8.0.aar/d282d5428ec9626396d5ceeb01df3fb7/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-database-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-license-11.8.0.aar/116ea190b684d9cb5a8991407656d20f/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-database-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-license-11.8.0.aar/116ea190b684d9cb5a8991407656d20f/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-license-11.8.0.aar/bfc84a4595bbdd2a4eca967db7e824c9/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-license-11.8.0.aar/bfc84a4595bbdd2a4eca967db7e824c9/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-basement-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-11.8.0.aar/ab32e965cf5c1683da1164d16414c35e/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-basement-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-license-11.8.0.aar/ab32e965cf5c1683da1164d16414c35e/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-common-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-license-11.8.0.aar/663741f30116482d92be1f9aa6404fb4/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-common-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-license-11.8.0.aar/663741f30116482d92be1f9aa6404fb4/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-tasks-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-11.8.0.aar/ad846626e7a7572208752f5b59e067bc/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-tasks-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-tasks-license-11.8.0.aar/ad846626e7a7572208752f5b59e067bc/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-auth-api-phone-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-api-phone-license-11.8.0.aar/e0643b039e6616a066466017cc4f87be/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-auth-api-phone-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-api-phone-license-11.8.0.aar/e0643b039e6616a066466017cc4f87be/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-auth-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-base-license-11.8.0.aar/59c42503b34bbc4d4baca8c41c671ec4/AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-auth-base-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-base-license-11.8.0.aar/59c42503b34bbc4d4baca8c41c671ec4/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-analytics-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-license-11.8.0.aar/203fb8950637618aa73574ea03a0812b/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-analytics-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-license-11.8.0.aar/203fb8950637618aa73574ea03a0812b/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-database-connection-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-connection-license-11.8.0.aar/2d4dc8e82ed4d2f4e83e7359a14164a3/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-database-connection-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-database-connection-license-11.8.0.aar/2d4dc8e82ed4d2f4e83e7359a14164a3/AndroidManifest.xml:4:5-43
+MERGED from [android.arch.lifecycle:runtime:1.0.3] /home/esuarez/.gradle/caches/transforms-1/files-1.1/runtime-1.0.3.aar/15cc32971e212590f7c84b352f1d8898/AndroidManifest.xml:20:5-22:41
+MERGED from [android.arch.lifecycle:runtime:1.0.3] /home/esuarez/.gradle/caches/transforms-1/files-1.1/runtime-1.0.3.aar/15cc32971e212590f7c84b352f1d8898/AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.firebase:firebase-analytics-impl-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-license-11.8.0.aar/96fe26f539382fdf70e358f4a45c43cf/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-analytics-impl-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-license-11.8.0.aar/96fe26f539382fdf70e358f4a45c43cf/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-iid-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-license-11.8.0.aar/aadfd65474569ac91a3a4e77e992aff8/AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-iid-license:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-license-11.8.0.aar/aadfd65474569ac91a3a4e77e992aff8/AndroidManifest.xml:4:5-43
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+	tools:overrideLibrary
+		ADDED from [com.android.support:design:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/c52a94ac21e909024e21a416cbd5a4bd/AndroidManifest.xml:23:9-59
+	android:targetSdkVersion
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+		ADDED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+		INJECTED from /home/esuarez/Projects/Class/CS48/LookUp/app/src/main/AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:design:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/c52a94ac21e909024e21a416cbd5a4bd/AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:recyclerview-v7:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-26.1.0.aar/529f252cb19ea98f17f21ef3997d85ce/AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:recyclerview-v7:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/recyclerview-v7-26.1.0.aar/529f252cb19ea98f17f21ef3997d85ce/AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:transition:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/transition-26.1.0.aar/6bd0b374869c60294c1f7c5af9e4d5cb/AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:transition:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/transition-26.1.0.aar/6bd0b374869c60294c1f7c5af9e4d5cb/AndroidManifest.xml:23:9-25:38
+	android:value
+		ADDED from [com.android.support:design:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/c52a94ac21e909024e21a416cbd5a4bd/AndroidManifest.xml:28:13-35
+	android:name
+		ADDED from [com.android.support:design:26.1.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/c52a94ac21e909024e21a416cbd5a4bd/AndroidManifest.xml:27:13-51
+activity#com.facebook.CustomTabMainActivity
+ADDED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:33:9-71
+	android:name
+		ADDED from [com.facebook.android:facebook-common:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-common-4.30.0.aar/84df694a53b64191087239ccf22ef2d6/AndroidManifest.xml:33:19-68
+activity#com.google.firebase.auth.internal.FederatedSignInActivity
+ADDED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:23:9-29:75
+	android:excludeFromRecents
+		ADDED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:25:13-46
+	android:launchMode
+		ADDED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:27:13-48
+	android:exported
+		ADDED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:26:13-36
+	android:permission
+		ADDED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:28:13-102
+	android:theme
+		ADDED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:29:13-72
+	android:name
+		ADDED from [com.google.firebase:firebase-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-auth-11.8.0.aar/be721b3c939d7c10ef7a18e85deb6ed6/AndroidManifest.xml:24:13-85
+activity#com.google.android.gms.auth.api.signin.internal.SignInHubActivity
+ADDED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:23:9-27:75
+	android:excludeFromRecents
+		ADDED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:25:13-46
+	android:exported
+		ADDED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:26:13-37
+	android:theme
+		ADDED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:27:13-72
+	android:name
+		ADDED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:24:13-93
+service#com.google.android.gms.auth.api.signin.RevocationBoundService
+ADDED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:33:9-36:110
+	android:exported
+		ADDED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:35:13-36
+	android:permission
+		ADDED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:36:13-107
+	android:name
+		ADDED from [com.google.android.gms:play-services-auth:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-auth-11.8.0.aar/7e0ff604dfb03a32a90df2e804b1f199/AndroidManifest.xml:34:13-89
+provider#com.facebook.internal.FacebookInitProvider
+ADDED from [com.facebook.android:facebook-core:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-core-4.30.0.aar/e5c3a680f98846b085977493c4cd395b/AndroidManifest.xml:39:9-42:40
+	android:authorities
+		ADDED from [com.facebook.android:facebook-core:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-core-4.30.0.aar/e5c3a680f98846b085977493c4cd395b/AndroidManifest.xml:41:13-72
+	android:exported
+		ADDED from [com.facebook.android:facebook-core:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-core-4.30.0.aar/e5c3a680f98846b085977493c4cd395b/AndroidManifest.xml:42:13-37
+	android:name
+		ADDED from [com.facebook.android:facebook-core:4.30.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/facebook-core-4.30.0.aar/e5c3a680f98846b085977493c4cd395b/AndroidManifest.xml:40:13-70
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/637be5238966c6c49eaf057367696807/AndroidManifest.xml:23:9-26:75
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/637be5238966c6c49eaf057367696807/AndroidManifest.xml:25:13-37
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/637be5238966c6c49eaf057367696807/AndroidManifest.xml:26:13-72
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-base-11.8.0.aar/637be5238966c6c49eaf057367696807/AndroidManifest.xml:24:13-79
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:24:5-79
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:22:5-79
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:22:5-79
+	android:name
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:24:22-76
+uses-permission#android.permission.WAKE_LOCK
+ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:25:5-68
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:25:5-68
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:25:5-68
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:24:5-68
+MERGED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:24:5-68
+	android:name
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:25:22-65
+receiver#com.google.android.gms.measurement.AppMeasurementReceiver
+ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:28:9-32:20
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:28:9-32:20
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:28:9-32:20
+	android:enabled
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:30:13-35
+	android:exported
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:31:13-37
+	android:name
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:29:13-85
+receiver#com.google.android.gms.measurement.AppMeasurementInstallReferrerReceiver
+ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:33:9-41:20
+	android:enabled
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:35:13-35
+	android:exported
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:36:13-36
+	android:permission
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:37:13-69
+	android:name
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:34:13-100
+intent-filter#com.android.vending.INSTALL_REFERRER
+ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:38:13-40:29
+action#com.android.vending.INSTALL_REFERRER
+ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:39:17-79
+	android:name
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:39:25-76
+service#com.google.android.gms.measurement.AppMeasurementService
+ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:43:9-46:40
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:34:9-37:40
+MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-impl-11.8.0.aar/680f86ce8efe14e9a3b8213ad0d211ad/AndroidManifest.xml:34:9-37:40
+	android:enabled
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:45:13-35
+	android:exported
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:46:13-37
+	android:name
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:44:13-84
+service#com.google.android.gms.measurement.AppMeasurementJobService
+ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:47:9-51:72
+	android:enabled
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:49:13-35
+	android:exported
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:50:13-37
+	android:permission
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:51:13-69
+	android:name
+		ADDED from [com.google.firebase:firebase-analytics:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-analytics-11.8.0.aar/19f5e9aa6e33e2dabc2f68417233a26c/AndroidManifest.xml:48:13-87
+uses-permission#com.google.android.c2dm.permission.RECEIVE
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:26:5-82
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:26:22-79
+permission#${applicationId}.permission.C2D_MESSAGE
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:28:5-30:47
+	android:protectionLevel
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:30:9-44
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:29:9-63
+permission#edu.ucsb.cs48.lookup.permission.C2D_MESSAGE
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:28:5-30:47
+	android:protectionLevel
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:30:9-44
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:29:9-63
+uses-permission#${applicationId}.permission.C2D_MESSAGE
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:32:5-79
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:32:22-76
+uses-permission#edu.ucsb.cs48.lookup.permission.C2D_MESSAGE
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:32:5-79
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:32:22-76
+receiver#com.google.firebase.iid.FirebaseInstanceIdReceiver
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:35:9-44:20
+	android:exported
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:37:13-36
+	android:permission
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:38:13-73
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:36:13-78
+intent-filter#${applicationId}+com.google.android.c2dm.intent.RECEIVE
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:39:13-43:29
+intent-filter#com.google.android.c2dm.intent.RECEIVE+edu.ucsb.cs48.lookup
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:39:13-43:29
+action#com.google.android.c2dm.intent.RECEIVE
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:40:17-81
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:40:25-78
+category#${applicationId}
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:42:17-61
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:42:27-58
+category#edu.ucsb.cs48.lookup
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:42:17-61
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:42:27-58
+service#com.google.firebase.iid.FirebaseInstanceIdService
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:50:9-56:19
+	android:exported
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:52:13-36
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:51:13-77
+intent-filter#com.google.firebase.INSTANCE_ID_EVENT
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:53:13-55:29
+	android:priority
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:53:28-51
+action#com.google.firebase.INSTANCE_ID_EVENT
+ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:54:17-80
+	android:name
+		ADDED from [com.google.firebase:firebase-iid:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-iid-11.8.0.aar/6bdb89646fc8df85bc48d8a979202cd5/AndroidManifest.xml:54:25-77
+provider#com.google.firebase.provider.FirebaseInitProvider
+ADDED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:8:9-12:39
+	android:authorities
+		ADDED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:10:13-72
+	android:exported
+		ADDED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:11:13-37
+	android:initOrder
+		ADDED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:12:13-36
+	android:name
+		ADDED from [com.google.firebase:firebase-common:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/firebase-common-11.8.0.aar/9c325ecbd27e150840f616bd3a313033/AndroidManifest.xml:9:13-77
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/557bba0483cb9210c48551bae3b45868/AndroidManifest.xml:23:9-25:69
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/557bba0483cb9210c48551bae3b45868/AndroidManifest.xml:25:13-66
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:11.8.0] /home/esuarez/.gradle/caches/transforms-1/files-1.1/play-services-basement-11.8.0.aar/557bba0483cb9210c48551bae3b45868/AndroidManifest.xml:24:13-58
