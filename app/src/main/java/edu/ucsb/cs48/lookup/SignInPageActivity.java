@@ -117,7 +117,7 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
 
 
 
-        LoginButton loginButton = (LoginButton) findViewById(R.id.fb_sign_in_button); //TODO: why this happen ??!!??!
+        LoginButton loginButton = (LoginButton) findViewById(R.id.fb_login_button); //TODO: why this happen ??!!??!
         info = (TextView)findViewById(R.id.info);
         // loginButton = (LoginButton) findViewById(R.id.fb_login_button);
         loginButton.setReadPermissions(Arrays.asList(EMAIL));
