@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectModuleManager">
@@ -9,3 +11,4 @@
     </modules>
   </component>
 </project>
+>>>>>>> parent of 0ef96ea... Revert "completed fb sign up"

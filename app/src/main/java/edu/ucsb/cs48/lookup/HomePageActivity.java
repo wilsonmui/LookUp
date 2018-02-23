@@ -30,7 +30,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth mAuth;
     private Button buttonSignOut;
 
-
     //==============================================================================================
     // On Create Setup
     //==============================================================================================
@@ -58,6 +57,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.info_button).setOnClickListener(this);
         buttonSignOut.setOnClickListener(this);
     }
+
     //==============================================================================================
     // Action Listeners
     //==============================================================================================
