@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +21,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     //==============================================================================================
     private FirebaseAuth mAuth;
     private TextView textViewUserEmail, textViewUserName;
+    private Button buttonEditProfile;
 
     //==============================================================================================
     // On Create Setup
@@ -39,10 +41,26 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
         FirebaseUser User = mAuth.getCurrentUser();
         textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
         textViewUserName = (TextView) findViewById(R.id.textViewUserName);
+        buttonEditProfile = (Button) findViewById(R.id.buttonEditProfile);
         textViewUserName.setText(User.getDisplayName());
         textViewUserEmail.setText(User.getEmail());
 
-        loadUserData();
+        loadUserInformation();
+
+
+
+    }
+
+    //==============================================================================================
+    // On Start Setup
+    //==============================================================================================
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, SignInPageActivity.class));
+        }
     }
 
     //==============================================================================================
@@ -60,10 +78,12 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     //==============================================================================================
     // Helper Functions
     //==============================================================================================
-    private void loadUserData() {
+    private void loadUserInformation() {
         FirebaseUser user = mAuth.getCurrentUser();
-
-        String name = user.getDisplayName();
+        if (user != null) {
+            textViewUserName.setText(user.getDisplayName());
+            String displayName = user.getDisplayName();
+        }
     }
 
 

@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="79dp"
         app:layout_constraintBottom_toTopOf="@+id/social_media_scroll"
-        app:layout_constraintStart_toStartOf="@+id/users_name_text"
+        app:layout_constraintStart_toStartOf="@+id/textViewUserName"
         app:layout_constraintTop_toBottomOf="@+id/username_text"
         app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
@@ -160,5 +160,12 @@
         </TableLayout>
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/buttonEditProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Edit Profile" />
 
 </android.support.constraint.ConstraintLayout>
