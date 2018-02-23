@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="146dp"
         android:layout_marginTop="33dp"
-        android:text="John Smith"
+        android:text="@string/name"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/social_media_scroll"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,21 +22,11 @@
         android:id="@+id/username_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:text="johnsmith69"
-        app:layout_constraintBottom_toTopOf="@+id/user_avatar_image"
+        android:layout_marginStart="32dp"
+        android:text="@string/username"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="@+id/users_name_text"
         app:layout_constraintTop_toBottomOf="@+id/users_name_text" />
-
-    <ImageView
-        android:id="@+id/user_avatar_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="79dp"
-        app:layout_constraintBottom_toTopOf="@+id/social_media_scroll"
-        app:layout_constraintStart_toStartOf="@+id/users_name_text"
-        app:layout_constraintTop_toBottomOf="@+id/username_text"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
     <ScrollView
         android:id="@+id/social_media_scroll"

@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Sign In"
+            android:text="@string/signin"
             android:textColor="#fff"
             android:textSize="26sp"
             android:textStyle="bold"
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:hint="Enter email"
+            android:hint="@string/enter_email"
             android:textColor="#fff"
             android:inputType="textEmailAddress" />
 
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:hint="Enter password"
+            android:hint="@string/enter_password"
             android:textColor="#fff"
             android:inputType="textPassword" />
 
@@ -48,21 +48,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Sign In"
+            android:text="@string/signin"
             android:textColor="#041a29"
-            android:background="#fff" />
+            android:background="@drawable/round_button" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/google_login"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="36dp"
+            android:layout_gravity="center_horizontal"
+
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/fb_login"
             app:layout_constraintStart_toStartOf="@+id/fb_login" />
 
         <com.facebook.login.widget.LoginButton
-            android:id="@+id/fb_login_button"
+            android:id="@+id/fb_sign_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -74,8 +75,8 @@
             app:layout_constraintVertical_bias="0.75" />
 
         <TextView
-            android:text="Not Registered? Sign Up Here"
-            android:textColor="#041a29"
+            android:text="@string/not_registered"
+            android:textColor="#fff"
             android:id="@+id/textViewSignUp"
             android:textAlignment="center"
             android:layout_margin="15dp"
