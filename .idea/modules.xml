@@ -1,14 +1,8 @@
-<<<<<<< HEAD
-=======
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/LookUp.iml" filepath="$PROJECT_DIR$/LookUp.iml" />
-      <module fileurl="file://C:\Users\Such\AndroidStudioProjects\LookUpProject\LookUp.iml" filepath="C:\Users\Such\AndroidStudioProjects\LookUpProject\LookUp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/LookUpProject.iml" filepath="$PROJECT_DIR$/LookUpProject.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/LookUp.iml" filepath="$PROJECT_DIR$/.idea/modules/LookUp.iml" />
     </modules>
   </component>
 </project>
->>>>>>> parent of 0ef96ea... Revert "completed fb sign up"
