@@ -22,6 +22,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     private FirebaseAuth mAuth;
     private TextView textViewUserEmail, textViewUserName;
     private Button buttonEditProfile;
+    private User user;
 
     //==============================================================================================
     // On Create Setup
@@ -35,11 +36,14 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
         setContentView(R.layout.user_profile_page);
 
+//        buttonEditProfile = (Button) findViewById(R.id.buttonEditProfile);
+//        buttonEditProfile.setOnClickListener(this);
+        findViewById(R.id.buttonEditProfile).setOnClickListener(this);
+
         textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
-        textViewUserName = (TextView) findViewById(R.id.textViewUserName);
-        buttonEditProfile = (Button) findViewById(R.id.buttonEditProfile);
-        textViewUserName.setText(User.getDisplayName());
         textViewUserEmail.setText(User.getEmail());
+        textViewUserName = (TextView) findViewById(R.id.textViewUserName);
+        textViewUserName.setText(User.getDisplayName());
 
         loadUserInformation();
 
@@ -79,11 +83,12 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     //==============================================================================================
     @Override
     public void onClick(View view) {
-//        switch(view.getId()){
-//            case R.id.get_started_button:
-//                startActivity(new Intent(this, SignUpPageActivity.class));
-//                break;
-//        }
+        switch(view.getId()){
+            case R.id.buttonEditProfile:
+                finish();
+                startActivity(new Intent(this, EditUserProfileActivity.class));
+                break;
+        }
     }
 
     //==============================================================================================
