@@ -252,7 +252,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void saveUserData(String userId, String name, String email) {
-        User user = new User(name, email);
+        User user = new User(name, email, "000-000-000", userId);
         db.child("users").child(userId).setValue(user);
     }
 
