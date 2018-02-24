@@ -47,6 +47,7 @@
         <activity android:name=".SignInPageActivity"/>
         <activity android:name=".HomePageActivity"/>
         <activity android:name=".InfoPageActivity"/>
+        <activity android:name=".CameraActivity"/>
         <activity android:name=".UserProfileActivity"/>
     </application>
 
