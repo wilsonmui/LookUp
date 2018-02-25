@@ -23,6 +23,7 @@
 
     <string name="enter_email">Enter email</string>
     <string name="email">Email</string>
+    <string name="phone">Phone</string>
 
     <string name="name">Name</string>
     <string name="username">username123</string>
@@ -32,4 +33,7 @@
     <string name="your_profile">Your Profile</string>
     <string name="your_contacts">Your Contacts</string>
     <string name="zero">0</string>
+
+    <string name="analyze_photo">Analyze Photo</string>
+    <string name="take_photo">Take Photo</string>
 </resources>

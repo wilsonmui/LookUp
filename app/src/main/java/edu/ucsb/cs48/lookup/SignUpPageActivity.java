@@ -51,7 +51,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     //==============================================================================================
     // Declare Variables
     //==============================================================================================
-    private EditText editTextEmail, editTextPassword, editTextName;
+    private EditText editTextEmail, editTextPassword, editTextName, editTextPhone;
     private ProgressBar progressBar;
     private TextView textViewSignIn;
     private FirebaseAuth mAuth;
@@ -84,6 +84,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         // Set up UI variables and Listeners
         editTextEmail = (EditText)findViewById(R.id.editTextEmail);
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
+        editTextPhone = (EditText)findViewById(R.id.editTextPhone);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
@@ -190,6 +191,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         // Sanitize Inputs
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        String phone = editTextPhone.getText().toString().trim();
 
         if(email.isEmpty()) {
             editTextEmail.setError("Email is required");
@@ -215,6 +217,18 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             return;
         }
 
+        if (phone.isEmpty()) {
+            editTextPhone.setError("Phone Number is required");
+            editTextPhone.requestFocus();
+            return;
+        }
+
+        if (phone.length() < 10) {
+            editTextPhone.setError("A valid phone number is required");
+            editTextPhone.requestFocus();
+            return;
+        }
+
         // Show Progress bar
         progressBar.setVisibility(View.VISIBLE);
 
@@ -231,6 +245,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                     // Variable Set up
                     String name = editTextName.getText().toString().trim();
                     String email = editTextEmail.getText().toString().trim();
+                    String phone = editTextPhone.getText().toString().trim();
                     FirebaseUser currUser = mAuth.getCurrentUser();
                     String uid = currUser.getUid();
 
