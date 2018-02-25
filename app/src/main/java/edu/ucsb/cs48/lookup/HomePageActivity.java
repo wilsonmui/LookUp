@@ -25,8 +25,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     //==============================================================================================
     // Declare Variables
     //==============================================================================================
-    static final int REQUEST_TAKE_PHOTO = 1;
-    String mCurrentPhotoPath; //pathname for photo
     private FirebaseAuth mAuth;
     private Button buttonSignOut;
 
@@ -65,16 +63,14 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.scan_face_button:
-                //TODO open camera and do the thang
-                dispatchTakePictureIntent();
+                scanPerson();
                 break;
             case R.id.user_profile_button:
                 finish();
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
             case R.id.contacts_button:
-                //TODO contacts button selected
-//                startActivity(new Intent(this, ContactsActivity.class)); //TODO implement ContactsActivity.class
+                startActivity(new Intent(this, ContactsPageActivity.class));
                 break;
             case R.id.info_button:
                 finish();
@@ -88,43 +84,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                //TODO error message?
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-    }
-
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+    private void scanPerson(){
+        startActivity(new Intent(this, CameraActivity.class));
     }
 }

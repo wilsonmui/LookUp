@@ -1,5 +1,5 @@
 package edu.ucsb.cs48.lookup;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,31 +12,98 @@ import java.util.List;
 
 public class User {
 
+    //==============================================================================================
+    // Fields
+    //==============================================================================================
     private String name;
     private String email;
+    private String phone;
     private String uid;
-    private List<SocialMedia> connectedSocialMedias;
-    private List<SocialMedia> visibleSocialMedias;
-    private List<User> contacts;
 
+    private List<ContactInfo> visibleContactInfo;
+
+    //==============================================================================================
+    // Constructors
+    //==============================================================================================
     public User() {
         // Required empty constructor for Firebase
     }
 
-    public User(String name, String email) {
+    public User(String name, String email, String phone, String uid) {
         this.name = name;
         this.email = email;
+        this.phone = phone;
         this.uid = uid;
+        this.visibleContactInfo = new ArrayList<ContactInfo>();
     }
 
 
-    public String getName() { return name; }
+    //==============================================================================================
+    // Accessor Methods
+    //==============================================================================================
+    public String getName() { return this.name; }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
-    public String getUid() { return uid; }
+    public String getPhone() { return this.phone; }
+
+    public String getUid() { return this.uid; }
+
+    public List<ContactInfo> getVisibleContactInfo() { return visibleContactInfo; }
+
+    //==============================================================================================
+    // Setter Methods
+    //==============================================================================================
+    public void setName(String name) { this.name = name; }
+
+    public void setEmail(String email) { this.email = email; }
+
+    public void setPhone(String phone) { this.phone = phone; }
+
+
+    //==============================================================================================
+    // Helper Functions
+    //==============================================================================================
+    private int contactInfoExists(List<ContactInfo> contactInfos, ContactInfo contactInfo) {
+
+        int size = contactInfos.size();
+
+        for(int i = 0; i < size; i++) {
+            if (contactInfos.get(i).equals(contactInfo)) {
+                return i; // True
+            }
+        }
+
+        return -1; // False
+    }
+
+    //==============================================================================================
+    // Methods
+    //==============================================================================================
+
+    public String addVisibleContactiInfo(ContactInfo contactInfo) {
+
+        if(contactInfoExists(this.visibleContactInfo, contactInfo) > -1) {
+                return contactInfo.getName() + " already visible.";
+        } else {
+            this.visibleContactInfo.add(contactInfo);
+            return contactInfo.getName() + "is now visible";
+        }
+    }
+
+    public String rmVisibleContactInfo(ContactInfo contactInfo) {
+
+        int contactInfoIndex = contactInfoExists(this.visibleContactInfo, contactInfo);
+
+        if(contactInfoIndex > -1) {
+            visibleContactInfo.remove(contactInfoIndex);
+            return "Successfully made " + contactInfo.getName() + " invisible.";
+        } else {
+            return contactInfo.getName() + " either does not exist or is already invisible";
+        }
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -47,3 +114,4 @@ public class User {
         return false;
     }
 }
+
