@@ -83,7 +83,7 @@ public class User {
     // Methods
     //==============================================================================================
 
-    public String addVisibleContactiInfo(ContactInfo contactInfo) {
+    public String addVisibleContactInfo(ContactInfo contactInfo) {
 
         if(contactInfoExists(this.visibleContactInfo, contactInfo) > -1) {
                 return contactInfo.getName() + " already visible.";
