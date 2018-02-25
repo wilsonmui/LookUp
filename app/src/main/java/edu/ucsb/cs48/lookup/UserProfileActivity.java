@@ -68,6 +68,9 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
         String name = user.getDisplayName();
     }
 
+    private void loadContactInfoObjects() {
+
+    }
 
 
 }

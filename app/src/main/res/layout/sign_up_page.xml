@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/account_login_gradient"
     android:orientation="vertical"
     android:scrollbarAlwaysDrawVerticalTrack="true">
@@ -13,7 +14,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
-        android:text="@string/account_login"
+        android:text="@string/sign_up"
         android:textColor="#fff"
         android:textSize="26sp"
         android:textStyle="bold" />
@@ -108,16 +109,23 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:background="#f5913f"
-                android:text="@string/signin"
+                android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textSize="16sp" />
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_gravity="center_horizontal" />
+              <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"/>
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/fb_sign_up_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"/>
+
         </LinearLayout>
 
         <ProgressBar
