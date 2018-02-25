@@ -142,8 +142,8 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
-                android:background="#f5913f"
-                android:text="Set Photo"
+                android:background="#5fb0c9"
+                android:text="@string/set_profile_photo"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textSize="16sp" />
@@ -152,12 +152,14 @@
                 android:id="@+id/sign_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_gravity="center_horizontal"/>
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/fb_sign_up_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
