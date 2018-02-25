@@ -5,5 +5,12 @@ package edu.ucsb.cs48.lookup;
  */
 
 public class Email extends ContactInfo {
+
+    //==============================================================================================
+    // Constructor
+    //==============================================================================================
+
+    Email() {
+        super("Email");
+    }
 }
-//connect couuld just be changing the text
