@@ -14,7 +14,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
-        android:text="@string/account_login"
+        android:text="@string/sign_up"
         android:textColor="#fff"
         android:textSize="26sp"
         android:textStyle="bold" />
@@ -122,7 +122,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:background="#f5913f"
-                android:text="@string/signin"
+                android:text="@string/sign_up"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textSize="16sp" />
