@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/account_login_gradient"
     android:orientation="vertical"
     android:scrollbarAlwaysDrawVerticalTrack="true">
@@ -20,25 +20,22 @@
         android:textStyle="bold" />
 
     <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_height="350dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/login_title"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="65dp"
         android:background="#fff"
         android:elevation="4dp"
         android:orientation="vertical"
-        android:padding="15dp"
-        android:id="@+id/relativeLayout">
+        android:padding="15dp">
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/ScrollView01"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:orientation="vertical"
             android:paddingTop="30dp">
 
@@ -54,17 +51,6 @@
                     android:hint="@string/name"
                     android:inputType="textPersonName"
                     android:singleLine="true" />
-
-                <EditText
-                    android:id="@+id/editTextPhone"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="16dp"
-                    android:drawableTint="#f5913f"
-                    android:hint="@string/phone"
-                    android:inputType="phone"
-                    android:singleLine="true" />
-
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -81,6 +67,19 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editTextPhone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:drawableTint="#f5913f"
+                    android:hint="@string/phone"
+                    android:inputType="phone"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -119,7 +118,7 @@
             <Button
                 android:id="@+id/buttonSignUp"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="5dp"
                 android:background="#f5913f"
@@ -128,20 +127,19 @@
                 android:textColor="#fff"
                 android:textSize="16sp" />
 
-              <com.google.android.gms.common.SignInButton
-                    android:id="@+id/sign_in_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"/>
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
 
-                <com.facebook.login.widget.LoginButton
-                    android:id="@+id/fb_sign_up_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"/>
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/fb_sign_up_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
-        </ScrollView>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -155,14 +153,13 @@
 
 
     <ImageButton
+        android:id="@+id/user_profile_photo"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/user_profile_image_background"
         android:layout_below="@+id/login_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/user_profile_image_background"
         android:elevation="5dp" />
     <!--android:src="@drawable/profile_icon"-->
-
 </RelativeLayout>

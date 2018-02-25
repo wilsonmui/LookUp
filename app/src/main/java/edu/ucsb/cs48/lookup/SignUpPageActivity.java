@@ -82,13 +82,14 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.sign_up_page);
 
         // Set up UI variables and Listeners
+        editTextName = (EditText) findViewById(R.id.editTextName);
         editTextEmail = (EditText)findViewById(R.id.editTextEmail);
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
         editTextPhone = (EditText)findViewById(R.id.editTextPhone);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
-        editTextName = (EditText) findViewById(R.id.editTextName);
+
 
         buttonSignUp.setOnClickListener(this);
         textViewSignIn.setOnClickListener(this);
@@ -188,9 +189,17 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private void registerUser() {
 
         // Sanitize Inputs
+        String name = editTextName.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         final String phone = editTextPhone.getText().toString().trim();
+
+
+        if(name.isEmpty()) {
+            editTextEmail.setError("Name is required");
+            editTextEmail.requestFocus();
+            return;
+        }
 
         if(email.isEmpty()) {
             editTextEmail.setError("Email is required");
@@ -201,6 +210,18 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Please enter a valid email");
             editTextEmail.requestFocus();
+            return;
+        }
+
+        if (phone.isEmpty()) {
+            editTextPhone.setError("Phone Number is required");
+            editTextPhone.requestFocus();
+            return;
+        }
+
+        if (phone.length() < 10) {
+            editTextPhone.setError("A valid phone number is required");
+            editTextPhone.requestFocus();
             return;
         }
 
@@ -216,17 +237,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             return;
         }
 
-        if (phone.isEmpty()) {
-            editTextPhone.setError("Phone Number is required");
-            editTextPhone.requestFocus();
-            return;
-        }
-
-        if (phone.length() < 10) {
-            editTextPhone.setError("A valid phone number is required");
-            editTextPhone.requestFocus();
-            return;
-        }
 
         // Show Progress bar
         progressBar.setVisibility(View.VISIBLE);
