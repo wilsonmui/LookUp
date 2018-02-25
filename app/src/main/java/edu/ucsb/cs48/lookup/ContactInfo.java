@@ -11,7 +11,7 @@ public abstract class ContactInfo {
     //==============================================================================================
 
     private String name;
-
+    private boolean connected;
     //==============================================================================================
     // Accessor Methods
     //==============================================================================================
@@ -34,6 +34,10 @@ public abstract class ContactInfo {
 
     public boolean disconnect() {
         // Must be Overriden by children
+        return false;
+    }
+
+    public boolean isConnected() {
         return false;
     }
 

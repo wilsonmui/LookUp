@@ -235,7 +235,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                     String uid = currUser.getUid();
 
                     // Save User Data to DataBase
-                    saveUserData(uid, name, email);
+                    saveUserData(name, email, "000-000-0000", uid);
 
                     // Sign in success, update UI with the signed in User's Information
                     updateUI(currUser);
@@ -251,8 +251,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    private void saveUserData(String userId, String name, String email) {
-        User user = new User(name, email, "000-000-000", userId);
+    private void saveUserData(String name, String email, String phone, String userId) {
+        User user = new User(name, email, phone, userId);
         db.child("users").child(userId).setValue(user);
     }
 

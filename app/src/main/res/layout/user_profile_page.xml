@@ -54,6 +54,13 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:text="Wiliam@gmail.com"/>
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"
@@ -74,24 +81,24 @@
                 android:paddingLeft="20dp"
                 android:text="+266 225 225"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="25dp"
-            android:orientation="horizontal"
-            android:paddingLeft="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_contacts_black_24dp"/>
-            <TextView
-                android:textStyle="bold"
+        <!--<LinearLayout-->
+            <!--android:layout_marginTop="25dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="25dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<ImageView-->
+                <!--android:layout_width="36dp"-->
+                <!--android:layout_height="36dp"-->
+                <!--android:src="@drawable/ic_contacts_black_24dp"/>-->
+            <!--<TextView-->
+                <!--android:textStyle="bold"-->
 
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="Add Contact"/>
-        </LinearLayout>
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="20dp"-->
+                <!--android:text="Add Contact"/>-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 </LinearLayout>
