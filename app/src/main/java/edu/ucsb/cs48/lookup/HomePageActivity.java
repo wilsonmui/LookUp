@@ -85,7 +85,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void scanPerson(){
-        //TODO stub
         startActivity(new Intent(this, CameraActivity.class));
     }
 }
