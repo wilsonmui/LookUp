@@ -1,6 +1,8 @@
 package edu.ucsb.cs48.lookup;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,9 +70,12 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
     GoogleSignInClient mGoogleSignInClient;
 
+    private static final int CAMERA_REQUEST = 1888;
+    ImageButton imageButton;
     //==============================================================================================
     // On Create Setup
     //==============================================================================================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -80,6 +87,18 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         updateUI(currUser);
 
         setContentView(R.layout.sign_up_page);
+
+        imageButton = (ImageButton) this.findViewById(R.id.user_profile_photo);
+        Button photoButton = (Button) this.findViewById(R.id.set_photo_button);
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
 
         // Set up UI variables and Listeners
         editTextName = (EditText) findViewById(R.id.editTextName);
@@ -196,8 +215,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
 
         if(name.isEmpty()) {
-            editTextEmail.setError("Name is required");
-            editTextEmail.requestFocus();
+            editTextName.setError("Name is required");
+            editTextName.requestFocus();
             return;
         }
 
@@ -220,7 +239,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         }
 
         if (phone.length() < 10) {
-            editTextPhone.setError("A valid phone number is required");
+            editTextPhone.setError("Please enter a valid phone number");
             editTextPhone.requestFocus();
             return;
         }
@@ -298,6 +317,11 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+        }
+
+        if (requestCode == CAMERA_REQUEST) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageButton.setImageBitmap(photo);
         }
     }
 

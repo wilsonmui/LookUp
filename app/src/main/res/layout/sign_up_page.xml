@@ -136,6 +136,18 @@
                 android:textColor="#fff"
                 android:textSize="16sp" />
 
+            <Button
+                android:id="@+id/set_photo_button"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:background="#f5913f"
+                android:text="Set Photo"
+                android:textAllCaps="false"
+                android:textColor="#fff"
+                android:textSize="16sp" />
+
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_button"
                 android:layout_width="wrap_content"
