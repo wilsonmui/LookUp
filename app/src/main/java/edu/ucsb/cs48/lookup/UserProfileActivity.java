@@ -21,7 +21,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     //==============================================================================================
     private FirebaseAuth mAuth;
     private TextView textViewUserEmail, textViewUserName;
-    private Button buttonEditProfile;
+//    private Button buttonEditProfile;
     private User user;
 
     //==============================================================================================
