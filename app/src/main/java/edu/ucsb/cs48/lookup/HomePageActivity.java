@@ -70,8 +70,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
             case R.id.contacts_button:
-                //TODO contacts button selected
-//                startActivity(new Intent(this, ContactsActivity.class)); //TODO implement ContactsActivity.class
+                startActivity(new Intent(this, ContactsPageActivity.class));
                 break;
             case R.id.info_button:
                 finish();
@@ -86,7 +85,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void scanPerson(){
-        //TODO stub
         startActivity(new Intent(this, CameraActivity.class));
     }
 }

@@ -1,5 +1,6 @@
 package edu.ucsb.cs48.lookup;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Wilson on 2/7/18.
@@ -19,8 +20,7 @@ public class User {
     private String phone;
     private String uid;
 
-    private ArrayList<ContactInfo> connectedContactInfo;
-    private ArrayList<ContactInfo> visibleContactInfo;
+    private List<ContactInfo> visibleContactInfo;
 
     //==============================================================================================
     // Constructors
@@ -34,7 +34,6 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.uid = uid;
-        this.connectedContactInfo = new ArrayList<ContactInfo>();
         this.visibleContactInfo = new ArrayList<ContactInfo>();
     }
 
@@ -52,9 +51,7 @@ public class User {
 
     public String getUid() { return this.uid; }
 
-    public ArrayList<ContactInfo> getConnectedContactInfo() { return connectedContactInfo; }
-
-    public ArrayList<ContactInfo> getVisibleContactInfo() { return visibleContactInfo; }
+    public List<ContactInfo> getVisibleContactInfo() { return visibleContactInfo; }
 
     //==============================================================================================
     // Setter Methods
@@ -69,7 +66,7 @@ public class User {
     //==============================================================================================
     // Helper Functions
     //==============================================================================================
-    private int contactInfoExists(ArrayList<ContactInfo> contactInfos, ContactInfo contactInfo) {
+    private int contactInfoExists(List<ContactInfo> contactInfos, ContactInfo contactInfo) {
 
         int size = contactInfos.size();
 
@@ -86,39 +83,6 @@ public class User {
     // Methods
     //==============================================================================================
 
-    public String addConnectedContactInfo(ContactInfo contactInfo) {
-
-        if(contactInfoExists(this.connectedContactInfo, contactInfo) > -1) {
-            return "Already connected through " + contactInfo.getName();
-        } else {
-            if (contactInfo.connect()) {
-                this.connectedContactInfo.add(contactInfo);
-                return "Successfully connected" + contactInfo.getName();
-            } else {
-                return "Disonnected " + contactInfo.getName() + " was unsuccessful.";
-            }
-        }
-    }
-
-    public String rmConnectedContactInfo(ContactInfo contactInfo) {
-
-        int contactInfoIndex = contactInfoExists(this.connectedContactInfo, contactInfo);
-
-        if(contactInfoIndex > -1) {
-
-                // Attempt to disconnect the Contact Info
-                if (contactInfo.disconnect()) {
-                    connectedContactInfo.remove(contactInfoIndex);
-                    return "Successfully disconnected" + contactInfo.getName();
-                } else {
-                    return "Disconnecting " + contactInfo.getName() + " was unsuccessful.";
-                }
-        } else {
-            return contactInfo.getName() + " does not exist";
-        }
-    }
-
-
     public String addVisibleContactiInfo(ContactInfo contactInfo) {
 
         if(contactInfoExists(this.visibleContactInfo, contactInfo) > -1) {
@@ -131,7 +95,7 @@ public class User {
 
     public String rmVisibleContactInfo(ContactInfo contactInfo) {
 
-        int contactInfoIndex = contactInfoExists(this.connectedContactInfo, contactInfo);
+        int contactInfoIndex = contactInfoExists(this.visibleContactInfo, contactInfo);
 
         if(contactInfoIndex > -1) {
             visibleContactInfo.remove(contactInfoIndex);
