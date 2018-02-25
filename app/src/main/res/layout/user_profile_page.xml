@@ -54,13 +54,6 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:text="Wiliam@gmail.com"/>
-
-            <Switch
-                android:id="@+id/switchEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"
@@ -80,11 +73,6 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:text="+266 225 225"/>
-            <Switch
-                android:id="@+id/switchPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"
