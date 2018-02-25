@@ -13,6 +13,14 @@ public abstract class ContactInfo {
     private String name;
 
     //==============================================================================================
+    // Constructor
+    //==============================================================================================
+
+    ContactInfo(String name) {
+        this.name = name;
+    }
+
+    //==============================================================================================
     // Accessor Methods
     //==============================================================================================
 
@@ -34,6 +42,10 @@ public abstract class ContactInfo {
 
     public boolean disconnect() {
         // Must be Overriden by children
+        return false;
+    }
+
+    public boolean isConnected() {
         return false;
     }
 
