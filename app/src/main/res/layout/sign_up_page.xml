@@ -54,6 +54,17 @@
                     android:hint="@string/name"
                     android:inputType="textPersonName"
                     android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/editTextPhone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:drawableTint="#f5913f"
+                    android:hint="@string/phone"
+                    android:inputType="phone"
+                    android:singleLine="true" />
+
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -83,16 +94,6 @@
                     android:drawableTint="#f5913f"
                     android:hint="@string/password"
                     android:inputType="numberPassword"
-                    android:singleLine="true" />
-
-                <EditText
-                    android:id="@+id/editTextPhone"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="16dp"
-                    android:drawableTint="#f5913f"
-                    android:hint="@string/phone"
-                    android:inputType="numberPhone"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -153,31 +154,15 @@
     </RelativeLayout>
 
 
-    <ImageView
+    <ImageButton
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/user_profile_image_background"
         android:layout_below="@+id/login_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/user_profile_image_background"
-        android:elevation="5dp"
-        android:id="@+id/face_imageview" />
-
-    <Button
-        android:id="@+id/scan_now"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-
-        android:layout_alignParentRight="@+id/face_imageview"
-        android:layout_marginTop="55dp"
-        android:layout_toEndOf="@+id/face_imageview"
-        android:background="#f5913f"
-        android:elevation="5dp"
-        android:text="@string/take_photo"
-        android:textAllCaps="false"
-        android:textColor="#fff"
-        android:textSize="16sp" />
+        android:elevation="5dp" />
     <!--android:src="@drawable/profile_icon"-->
 
 </RelativeLayout>

@@ -90,7 +90,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
         editTextName = (EditText) findViewById(R.id.editTextName);
 
-
         buttonSignUp.setOnClickListener(this);
         textViewSignIn.setOnClickListener(this);
 
@@ -191,7 +190,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         // Sanitize Inputs
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
-        String phone = editTextPhone.getText().toString().trim();
+        final String phone = editTextPhone.getText().toString().trim();
 
         if(email.isEmpty()) {
             editTextEmail.setError("Email is required");
@@ -250,7 +249,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                     String uid = currUser.getUid();
 
                     // Save User Data to DataBase
-                    saveUserData(name, email, "000-000-0000", uid);
+                    saveUserData(name, email, phone, uid);
 
                     // Sign in success, update UI with the signed in User's Information
                     updateUI(currUser);
