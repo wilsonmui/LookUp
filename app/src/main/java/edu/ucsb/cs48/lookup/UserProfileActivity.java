@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.facebook.internal.LockOnGetVariable;
 import com.google.android.gms.common.data.DataBuffer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by deni on 2/8/18.
@@ -30,17 +35,14 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     // Declare Variables
     //==============================================================================================
     private FirebaseAuth mAuth;
-//    private FirebaseDatabase database;
-    private TextView textViewUserEmail, textViewUserName;
     private TextView displayName, emailAddress, phoneNumber, facebookLink;
 //    private User currentUser;
+    private Button buttonEditProfile;
     private Switch facebookSwitch;
     private Facebook facebook;
     private String userID;
     private DatabaseReference mDatabase;
-    private DatabaseReference databaseRef;
 
-    private FirebaseDatabase database;
     private DatabaseReference userRef, emailRef, phoneRef, facebookRef;
 
 
@@ -53,6 +55,9 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
         setContentView(R.layout.user_profile_page);
 
+        buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
+        buttonEditProfile.setOnClickListener(this);
+
         // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -61,7 +66,6 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             startActivity(new Intent(this, SignInPageActivity.class));
         }
 
-        setContentView(R.layout.user_profile_page);
 
         userID = currentUser.getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -122,17 +126,6 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-//
-//        database = FirebaseDatabase.getInstance();
-//        userRef = database.getReference("name");
-//        userID = currentUser.getUid();
-
-//        displayName = (TextView) findViewById(R.id.displayName);
-//        displayName.setText(databaseRef.child("name").);
-//        displayName.setText(currentUser.getDisplayName());
-//        emailAddress = (TextView) findViewById(R.id.emailAddress);
-//        emailAddress.setText(currentUser.getEmail());
-
 //        loadUserData();
 
         facebook = new Facebook();
@@ -159,14 +152,11 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-//            case R.id.switchFacebook:
-//                if ()
-//                Facebook facebook = new Facebook();
-//                facebook.connect();
-//                currentUser.addVisibleContactiInfo(facebook);
-//                break;
-//            case R.id.switchTwitter:
-//                break;
+            case R.id.buttonEditProfile:
+                Log.d(TAG, "Edit profile button clicked!");
+                finish();
+                startActivity(new Intent(this, EditUserProfileActivity.class));
+                break;
         }
     }
 
