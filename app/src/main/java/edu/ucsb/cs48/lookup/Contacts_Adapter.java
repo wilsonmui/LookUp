@@ -42,6 +42,14 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
         String UserUuid = contactList.get(position);
         holder.username.setText(findUsername(UserUuid));
         //holder.userImg.
+
+        //when contact is clicked, show their info and option to remove them
+        holder.username.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //create a dialogFragment (?)
+            }
+        });
     }
 
 
