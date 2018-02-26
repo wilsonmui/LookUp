@@ -2,6 +2,8 @@ package edu.ucsb.cs48.lookup;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsb.cs48.lookup.ContactInfo.ContactInfo;
+
 /**
  * Created by Wilson on 2/7/18.
  */
