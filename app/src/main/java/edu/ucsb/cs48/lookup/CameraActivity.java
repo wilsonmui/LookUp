@@ -9,19 +9,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+//TODO uncomment this
 //import com.microsoft.projectoxford.face.*;
 //import com.microsoft.projectoxford.face.contract.*;
 
 public class CameraActivity extends Activity {
     private static final int CAMERA_REQUEST = 1888;
     ImageView imageView;
+    //TODO uncomment this
 //    private FaceServiceClient faceServiceClient =
 //            new FaceServiceRestClient("https://westcentralus.api.cognitive.microsoft.com/face/v1.0", "215542e1a26e4fb499ae0404aa68ed38");
 
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera_activity_page); //TODO
+        setContentView(R.layout.camera_activity_page);
 
         imageView = (ImageView) this.findViewById(R.id.face_imageview);
         Button photoButton = (Button) this.findViewById(R.id.scan_now);
