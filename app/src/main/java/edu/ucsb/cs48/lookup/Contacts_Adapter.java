@@ -13,13 +13,17 @@ import java.util.ArrayList;
 /**
  * Created by Wilson on 2/25/18.
  *
- * Combines the RecyclerView with contact_layout
+ * Combines the RecyclerView in ContactsPageActivity with contact_layout
  */
 
 public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.ContactViewHolder> {
 
     //uuid of people in contactList
     private ArrayList<String> contactList;
+
+    public Contacts_Adapter(ArrayList<String> contactList){
+        this.contactList = contactList;
+    }
 
 
     @Override
@@ -44,7 +48,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
 
     @Override
     public int getItemCount() {
-        return 0;
+        return contactList.size();
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder{
