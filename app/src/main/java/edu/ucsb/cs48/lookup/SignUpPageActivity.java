@@ -1,6 +1,8 @@
 package edu.ucsb.cs48.lookup;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +55,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     //==============================================================================================
     // Declare Variables
     //==============================================================================================
-    private EditText editTextEmail, editTextPassword, editTextName;
+    private EditText editTextEmail, editTextPassword, editTextName, editTextPhone;
     private ProgressBar progressBar;
     private TextView textViewSignIn;
     private FirebaseAuth mAuth;
@@ -66,9 +70,12 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
     GoogleSignInClient mGoogleSignInClient;
 
+    private static final int CAMERA_REQUEST = 1888;
+    ImageButton imageButton;
     //==============================================================================================
     // On Create Setup
     //==============================================================================================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -81,13 +88,26 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
         setContentView(R.layout.sign_up_page);
 
+        imageButton = (ImageButton) this.findViewById(R.id.user_profile_photo);
+        Button photoButton = (Button) this.findViewById(R.id.set_photo_button);
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
+
         // Set up UI variables and Listeners
+        editTextName = (EditText) findViewById(R.id.editTextName);
         editTextEmail = (EditText)findViewById(R.id.editTextEmail);
         editTextPassword = (EditText)findViewById(R.id.editTextPassword);
+        editTextPhone = (EditText)findViewById(R.id.editTextPhone);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
-        editTextName = (EditText) findViewById(R.id.editTextName);
 
 
         buttonSignUp.setOnClickListener(this);
@@ -188,8 +208,17 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private void registerUser() {
 
         // Sanitize Inputs
+        String name = editTextName.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        final String phone = editTextPhone.getText().toString().trim();
+
+
+        if(name.isEmpty()) {
+            editTextName.setError("Name is required");
+            editTextName.requestFocus();
+            return;
+        }
 
         if(email.isEmpty()) {
             editTextEmail.setError("Email is required");
@@ -200,6 +229,18 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Please enter a valid email");
             editTextEmail.requestFocus();
+            return;
+        }
+
+        if (phone.isEmpty()) {
+            editTextPhone.setError("Phone Number is required");
+            editTextPhone.requestFocus();
+            return;
+        }
+
+        if (phone.length() < 10) {
+            editTextPhone.setError("Please enter a valid phone number");
+            editTextPhone.requestFocus();
             return;
         }
 
@@ -214,6 +255,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             editTextPassword.requestFocus();
             return;
         }
+
 
         // Show Progress bar
         progressBar.setVisibility(View.VISIBLE);
@@ -231,11 +273,12 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                     // Variable Set up
                     String name = editTextName.getText().toString().trim();
                     String email = editTextEmail.getText().toString().trim();
+                    String phone = editTextPhone.getText().toString().trim();
                     FirebaseUser currUser = mAuth.getCurrentUser();
                     String uid = currUser.getUid();
 
                     // Save User Data to DataBase
-                    saveUserData(name, email, "000-000-0000", uid);
+                    saveUserData(name, email, phone, uid);
 
                     // Sign in success, update UI with the signed in User's Information
                     updateUI(currUser);
@@ -274,6 +317,11 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+        }
+
+        if (requestCode == CAMERA_REQUEST) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            imageButton.setImageBitmap(photo);
         }
     }
 
