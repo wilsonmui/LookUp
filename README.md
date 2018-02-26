@@ -28,7 +28,10 @@ LookUp is a social mobile application that centralizes user social medias, and m
     - I can permanently delete my profile to prevent others from finding me.
     
 ### Build Instructions
-    - This project can only be built and run on Android Studio at the moment. Requires either an Android Device or an emulator.
+    - Requirements: Android Studio 3.0.1., Android device API level <=25 (or emulator) 
+    - This project can only be built and run on Android Studio at the moment. 
     - First: on Android Studio, clone the repository.
     - Build the project on Android Studio.
     - Run the project on an emulator or Android Device API level at least 25.
+    - To begin using the application, click 'Get Started' to sign up. 
+    - After signing up, a user can edit their profile information and then add new contacts.

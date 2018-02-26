@@ -1,60 +1,11 @@
 package edu.ucsb.cs48.lookup;
-
-/**
- * Created by esuarez on 2/23/18.
+/*
+    This will serve as a parent class to various types of ContactInfo.
+    FacebookInfo, TwitterInfo, etc will extend from ContactInfo.
  */
 
-public abstract class ContactInfo {
+public class ContactInfo(){
 
-    //==============================================================================================
-    // Fields
-    //==============================================================================================
 
-    private String name;
 
-    //==============================================================================================
-    // Constructor
-    //==============================================================================================
-
-    ContactInfo(String name) {
-        this.name = name;
-    }
-
-    //==============================================================================================
-    // Accessor Methods
-    //==============================================================================================
-
-    public String getName() { return this.name; }
-
-    //==============================================================================================
-    // Setter Methods
-    //==============================================================================================
-
-    public void setName(String name) { this.name = name; }
-
-    //==============================================================================================
-    // Methods
-    //==============================================================================================
-    public boolean connect() {
-        // Must be Overriden by children
-        return false;
-    }
-
-    public boolean disconnect() {
-        // Must be Overriden by children
-        return false;
-    }
-
-    public boolean isConnected() {
-        return false;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof User) {
-            User o = (User) obj;
-            return this.getName().equals(o.getName());
-        }
-        return false;
-    }
 }
