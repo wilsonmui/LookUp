@@ -18,6 +18,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -38,7 +40,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import org.json.JSONObject;
+
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -61,7 +67,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
     private DatabaseReference db;
 
-    private static final String EMAIL = "email";
+    FirebaseUser user;
+    private String fbLink;
+    private static final String NAME = "public_profile", EMAIL = "email";
     private TextView info;
 
     GoogleSignInClient mGoogleSignInClient;
@@ -111,12 +119,37 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         callbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.fb_sign_up_button); //TODO: why this happen ??!!??!
         info = (TextView)findViewById(R.id.info);
-        loginButton.setReadPermissions(Arrays.asList(EMAIL));
+        loginButton.setReadPermissions(Arrays.asList(NAME, EMAIL));
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                try {
+                    GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    try {
+                                        String id = object.getString("id");
+                                        Log.d(TAG, "FB id: " + id);
+                                        setFBLink(id);
+                                        Log.d(TAG, "FB link successful");
+                                    }
+                                    catch (Exception e) {
+                                        e.printStackTrace();
+                                        Log.d(TAG, "FB link unsuccessful");
+                                    }
+                                }
+                            });
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields","link");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+                }
+                catch (Exception e) {
+                    Log.d("FACEBOOK ERROR", "cancelled");
+                }
                 setResult(RESULT_OK);
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
@@ -256,6 +289,20 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         db.child("users").child(userId).setValue(user);
     }
 
+    private void setFBLink(String fbID) {
+        fbLink = "https://facebook.com/" + fbID;
+    }
+
+    private String getFBLink() {
+        return fbLink;
+    }
+
+    private void saveFBUserLink(String link, String userId) {
+        Map<String,String> userFBData = new HashMap<String,String>();
+        userFBData.put("facebook", link);
+        db.child("users").child(userId).child("facebook").setValue(link);
+    }
+
     // sign-in for Google
     // note sign out: FirebaseAuth.getInstance().signOut();
     private void signIn() {
@@ -300,7 +347,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            user = mAuth.getCurrentUser();
                             //saveUserData(user.getUid(), "null", user.getEmail());
                             updateUI(user);
                         } else {
@@ -325,7 +372,14 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            user = mAuth.getCurrentUser();
+                            String name = user.getDisplayName();
+                            String email = user.getEmail();
+                            String phone = user.getPhoneNumber();
+                            String uid = user.getUid();
+                            String link = getFBLink();
+                            saveUserData(name, email, phone, uid);
+                            saveFBUserLink(link, uid);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

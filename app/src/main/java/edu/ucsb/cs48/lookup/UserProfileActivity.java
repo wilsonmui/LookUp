@@ -2,6 +2,7 @@ package edu.ucsb.cs48.lookup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -9,8 +10,15 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.common.data.DataBuffer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by deni on 2/8/18.
@@ -22,10 +30,19 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     // Declare Variables
     //==============================================================================================
     private FirebaseAuth mAuth;
+//    private FirebaseDatabase database;
     private TextView textViewUserEmail, textViewUserName;
-    private User currentUser;
+    private TextView displayName, emailAddress, phoneNumber, facebookLink;
+//    private User currentUser;
     private Switch facebookSwitch;
     private Facebook facebook;
+    private String userID;
+    private DatabaseReference mDatabase;
+    private DatabaseReference databaseRef;
+
+    private FirebaseDatabase database;
+    private DatabaseReference userRef, emailRef, phoneRef, facebookRef;
+
 
     //==============================================================================================
     // On Create Setup
@@ -38,16 +55,84 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
         // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser() == null) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null) {
             finish();
             startActivity(new Intent(this, SignInPageActivity.class));
         }
+
         setContentView(R.layout.user_profile_page);
-//        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
-//        textViewUserName = (TextView) findViewById(R.id.textViewUserName);
-//        textViewUserName.setText(User.getDisplayName());
-//        textViewUserEmail.setText(User.getEmail());
+
+        userID = currentUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        userRef = mDatabase.child("users").child(userID).child("name");
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                displayName = (TextView) findViewById(R.id.displayName);
+                displayName.setText(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        emailRef = mDatabase.child("users").child(userID).child("email");
+        emailRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                emailAddress = (TextView) findViewById(R.id.emailAddress);
+                emailAddress.setText(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        phoneRef = mDatabase.child("users").child(userID).child("phone");
+        phoneRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                phoneNumber = (TextView) findViewById(R.id.phoneNumber);
+                phoneNumber.setText(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        facebookRef = mDatabase.child("users").child(userID).child("facebook");
+        facebookRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                facebookLink = (TextView) findViewById(R.id.facebookLink);
+                facebookLink.setText(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 //
+//        database = FirebaseDatabase.getInstance();
+//        userRef = database.getReference("name");
+//        userID = currentUser.getUid();
+
+//        displayName = (TextView) findViewById(R.id.displayName);
+//        displayName.setText(databaseRef.child("name").);
+//        displayName.setText(currentUser.getDisplayName());
+//        emailAddress = (TextView) findViewById(R.id.emailAddress);
+//        emailAddress.setText(currentUser.getEmail());
+
 //        loadUserData();
 
         facebook = new Facebook();
