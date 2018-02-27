@@ -69,7 +69,7 @@ public class User {
     public void setFacebook(String phone) { this.facebook = phone; }
 
     public void setTwitter(String phone) { this.twitter = phone; }
-    
+
 
     //==============================================================================================
     // Methods

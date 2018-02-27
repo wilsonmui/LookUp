@@ -12,6 +12,8 @@ import android.webkit.WebViewClient;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
@@ -34,10 +36,8 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     private FirebaseAuth mAuth;
 
     final String URL_TWITTER_SIGN_IN = "http://androidsmile.com/lab/twitter/sign_in.php";
-    final String URL_TWITTER_GET_USER_TIMELINE = "http://androidsmile.com/lab/twitter/get_user_timeline.php";
 
     //    private FirebaseDatabase database;
-    private TextView textViewUserEmail, textViewUserName;
     private TextView displayName, emailAddress, phoneNumber, facebookLink, textViewTwitter;
 
     //    private User currentUser;
@@ -48,7 +48,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     private DatabaseReference databaseRef;
 
     private FirebaseDatabase database;
-    private DatabaseReference userRef, emailRef, phoneRef, facebookRef;
+    private DatabaseReference userRef, emailRef, phoneRef, facebookRef, twitterRef;
 
     //==============================================================================================
     // On Create Setup
@@ -56,8 +56,6 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.user_profile_page);
 
         // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
@@ -128,10 +126,18 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-        // Twitter sign in
-        textViewTwitter = (TextView) findViewById(R.id.textViewTwitter);
-        signIn();
+        twitterRef = mDatabase.child("users").child(userID).child("twitter");
+        twitterRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                textViewTwitter.setText(dataSnapshot.getValue(String.class));
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         facebook = new Facebook();
         facebookSwitch = (Switch)findViewById(R.id.switchFacebook);
@@ -163,27 +169,18 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 //                facebook.connect();
 //                currentUser.addVisibleContactiInfo(facebook);
 //                break;
-//            case R.id.switchTwitter:
-//                break;
+            case R.id.switchTwitter:
+                Toast.makeText(this, "Hey", Toast.LENGTH_SHORT).show();
+                signIn();
+                break;
         }
     }
 
     //==============================================================================================
     // Helper Functions
     //==============================================================================================
-    private void loadUserData() {
-        FirebaseUser user = mAuth.getCurrentUser();
 
-        String name = user.getDisplayName();
-    }
 
-    private void loadContactInfoObjects() {
-
-    }
-
-    /*
-       show dialog with webview to sign in
-    */
     private void signIn() {
 
         final Dialog authDialog = new Dialog(this);
@@ -211,9 +208,6 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     }
 
 
-    /*
-        this interface is used to get json from webview
-    */
     class MyJavaScriptInterface {
 
         private Context ctx;
@@ -227,7 +221,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             Gson gson = new GsonBuilder().create();
             final TwitterOauthResult oauthResult = gson.fromJson(json, TwitterOauthResult.class);
             if (oauthResult != null && oauthResult.getOauthToken() != null && oauthResult.getOauthTokenSecret() != null) {
-                textViewTwitter.setText(oauthResult.getScreenName());;
+                textViewTwitter.setText(oauthResult.getScreenName());
             }
         }
     }
