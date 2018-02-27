@@ -167,7 +167,18 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
 
         findViewById(R.id.google_login).setOnClickListener(this);
     }
-  
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        if (mAuth.getCurrentUser() != null) {
+            finish();
+            startActivity(new Intent(this, UserProfileActivity.class));
+        }
+
+    }
+
     //==============================================================================================
     // Helper Functions
     //==============================================================================================
@@ -237,6 +248,8 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            finish();
+                            startActivity(new Intent(SignInPageActivity.this, HomePageActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
