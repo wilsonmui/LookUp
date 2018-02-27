@@ -40,15 +40,15 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
         setContentView(R.layout.user_profile_page);
 
-//        // Check if User is Authenticated
-//        mAuth = FirebaseAuth.getInstance();
-//        if(mAuth.getCurrentUser() == null) {
-//            finish();
-//            startActivity(new Intent(this, SignInPageActivity.class));
-//        }
-//        setContentView(R.layout.user_profile_page);
-//
-//        FirebaseUser User = mAuth.getCurrentUser();
+        // Check if User is Authenticated
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, SignInPageActivity.class));
+        }
+        setContentView(R.layout.user_profile_page);
+
+        FirebaseUser User = mAuth.getCurrentUser();
 //        textViewUserEmail = (TextView) findViewById(R.id.textViewUserEmail);
 //        textViewUserName = (TextView) findViewById(R.id.textViewUserName);
 //        textViewUserName.setText(User.getDisplayName());

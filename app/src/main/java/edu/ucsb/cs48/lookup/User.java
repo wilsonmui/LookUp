@@ -2,6 +2,8 @@ package edu.ucsb.cs48.lookup;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsb.cs48.lookup.ContactInfo.ContactInfo;
+
 /**
  * Created by Wilson on 2/7/18.
  */
@@ -19,6 +21,8 @@ public class User {
     private String email;
     private String phone;
     private String uid;
+    private String facebookURL;
+    private String twitterURl;
 
     private List<ContactInfo> visibleContactInfo;
 
@@ -35,6 +39,8 @@ public class User {
         this.phone = phone;
         this.uid = uid;
         this.visibleContactInfo = new ArrayList<ContactInfo>();
+        this.facebookURL = "";
+        this.twitterURl = "";
     }
 
 
@@ -43,13 +49,15 @@ public class User {
     //==============================================================================================
     public String getName() { return this.name; }
 
-    public String getEmail() {
-        return this.email;
-    }
+    public String getEmail() {return this.email; }
 
     public String getPhone() { return this.phone; }
 
     public String getUid() { return this.uid; }
+
+    public String getFacebookURL() { return this.uid; }
+
+    public String getTwitterURl() { return this.uid; }
 
     public List<ContactInfo> getVisibleContactInfo() { return visibleContactInfo; }
 
@@ -61,6 +69,10 @@ public class User {
     public void setEmail(String email) { this.email = email; }
 
     public void setPhone(String phone) { this.phone = phone; }
+
+    public void setFacebookURL(String phone) { this.phone = phone; }
+
+    public void setTwitterURl(String phone) { this.phone = phone; }
 
 
     //==============================================================================================
