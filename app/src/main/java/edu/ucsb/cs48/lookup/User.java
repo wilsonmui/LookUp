@@ -24,8 +24,6 @@ public class User {
     private String facebookURL;
     private String twitterURl;
 
-    private List<ContactInfo> visibleContactInfo;
-
     //==============================================================================================
     // Constructors
     //==============================================================================================
@@ -38,7 +36,6 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.uid = uid;
-        this.visibleContactInfo = new ArrayList<ContactInfo>();
         this.facebookURL = "";
         this.twitterURl = "";
     }
@@ -59,7 +56,6 @@ public class User {
 
     public String getTwitterURl() { return this.uid; }
 
-    public List<ContactInfo> getVisibleContactInfo() { return visibleContactInfo; }
 
     //==============================================================================================
     // Setter Methods
@@ -78,7 +74,7 @@ public class User {
     //==============================================================================================
     // Helper Functions
     //==============================================================================================
-    private int contactInfoExists(List<ContactInfo> contactInfos, ContactInfo contactInfo) {
+    private int contactInfoExists(List<Boolean> contactInfos, ContactInfo contactInfo) {
 
         int size = contactInfos.size();
 
@@ -89,32 +85,6 @@ public class User {
         }
 
         return -1; // False
-    }
-
-    //==============================================================================================
-    // Methods
-    //==============================================================================================
-
-    public String addVisibleContactiInfo(ContactInfo contactInfo) {
-
-        if(contactInfoExists(this.visibleContactInfo, contactInfo) > -1) {
-                return contactInfo.getName() + " already visible.";
-        } else {
-            this.visibleContactInfo.add(contactInfo);
-            return contactInfo.getName() + "is now visible";
-        }
-    }
-
-    public String rmVisibleContactInfo(ContactInfo contactInfo) {
-
-        int contactInfoIndex = contactInfoExists(this.visibleContactInfo, contactInfo);
-
-        if(contactInfoIndex > -1) {
-            visibleContactInfo.remove(contactInfoIndex);
-            return "Successfully made " + contactInfo.getName() + " invisible.";
-        } else {
-            return contactInfo.getName() + " either does not exist or is already invisible";
-        }
     }
 
     @Override
