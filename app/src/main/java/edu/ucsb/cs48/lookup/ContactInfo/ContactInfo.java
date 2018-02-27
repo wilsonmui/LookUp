@@ -1,4 +1,6 @@
-package edu.ucsb.cs48.lookup;
+package edu.ucsb.cs48.lookup.ContactInfo;
+
+import edu.ucsb.cs48.lookup.User;
 
 /**
  * Created by esuarez on 2/23/18.
