@@ -1,18 +1,29 @@
 package edu.ucsb.cs48.lookup;
 
+import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.util.Log;
 
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.net.URL;
 import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
@@ -34,12 +46,16 @@ import static android.content.ContentValues.TAG;
 public class EditUserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
-    private TextView displayName, emailAddress, phoneNumber;
     private EditText editDisplayName, editEmailAddress, editPhoneNumber;
-    private Button buttonSaveProfileEdits;
-    private HashMap<String, String> editedProfileData;
-    private DatabaseReference databaseRef, userRef, nameRef, emailRef, phoneRef;
+    private TextView facebookLink;
+    private Button buttonEditProfilePicture, buttonSaveProfileEdits;
+    private HashMap<String, String> userProfileData;
+    private DatabaseReference databaseRef, userRef, nameRef, emailRef, phoneRef, facebookRef;
     private String userID;
+    private LinearLayout mLinearLayout;
+    private Context mContext;
+    private PopupWindow editProfilePicPopup;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +66,26 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
+        userID = user.getUid();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        mContext = getApplicationContext();
+
+        buttonEditProfilePicture = (Button) findViewById(R.id.buttonEditProfilePicture);
+        buttonEditProfilePicture.setOnClickListener(this);
+
         buttonSaveProfileEdits = (Button) findViewById(R.id.buttonSaveProfileEdits);
         buttonSaveProfileEdits.setOnClickListener(this);
+
+        mLinearLayout = (LinearLayout) findViewById(R.id.editProfileLL);
 
         if (user == null) {
             finish();
             startActivity(new Intent(this, SignInPageActivity.class));
         }
 
-        editedProfileData = new HashMap<String, String>();
+        userProfileData = new HashMap<String, String>();
 
 
         databaseRef = FirebaseDatabase.getInstance().getReference();
@@ -68,9 +95,10 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         nameRef = userRef.child("name");
         nameRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(final DataSnapshot dataSnapshot) {
                 editDisplayName= (EditText) findViewById(R.id.editDisplayName);
                 editDisplayName.setText(dataSnapshot.getValue(String.class));
+                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
                 editDisplayName.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -81,7 +109,10 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                     @Override
                     public void afterTextChanged(Editable editable) {
                         String newDisplayName = editable.toString();
-                        editedProfileData.put("name", newDisplayName);
+                        if (!newDisplayName.equals(""))
+                            userProfileData.put("name", newDisplayName);
+                        else userProfileData.remove("name");
+                        Log.d(TAG, "display name changed!");
                     }
                 });
             }
@@ -94,8 +125,30 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         emailRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                emailAddress = (TextView) findViewById(R.id.editEmailAddress);
-                emailAddress.setText(dataSnapshot.getValue(String.class));
+                editEmailAddress = (EditText) findViewById(R.id.editEmailAddress);
+                editEmailAddress.setText(dataSnapshot.getValue(String.class));
+                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+                editEmailAddress.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        String oldEmailAddress = charSequence.toString();
+                        userProfileData.put("email", oldEmailAddress);
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        String newEmailAddress = editable.toString();
+                        if (!newEmailAddress.equals(""))
+                            userProfileData.put("email", newEmailAddress);
+                        else
+                            userProfileData.remove("email");
+
+                        Log.d(TAG, "email address changed!");
+                    }
+                });
             }
 
             @Override
@@ -106,8 +159,42 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         phoneRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                phoneNumber = (TextView) findViewById(R.id.editPhoneNumber);
-                phoneNumber.setText(dataSnapshot.getValue(String.class));
+                editPhoneNumber = (EditText) findViewById(R.id.editPhoneNumber);
+                editPhoneNumber.setText(dataSnapshot.getValue(String.class));
+                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+                editPhoneNumber.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        String oldPhoneNumber = charSequence.toString();
+                        userProfileData.put("phone", oldPhoneNumber);
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        String newPhoneNumber = editable.toString();
+                        if (!newPhoneNumber.equals(""))
+                            userProfileData.put("phone", newPhoneNumber);
+                        else
+                            userProfileData.remove("phone");
+                        Log.d(TAG, "phone number changed!");
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        facebookRef = userRef.child("facebookID");
+        facebookRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                facebookLink = (TextView) findViewById(R.id.facebookLink);
+                facebookLink.setText("https://facebook.com" + dataSnapshot.getValue(String.class));
+                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
             }
 
             @Override
@@ -120,18 +207,39 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     protected void onStart() {
         super.onStart();
 
-        setContentView(R.layout.edit_user_profile_page);
-
-
     }
 
     @Override
     public void onClick(View view) {
-        Log.d(TAG, "something clicked!");
         switch (view.getId()) {
+            case R.id.buttonEditProfilePicture:
+                Log.d(TAG, "Edit profile picture button clicked");
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+                View customView = inflater.inflate(R.layout.edit_profile_pic_popup, null);
+                editProfilePicPopup = new PopupWindow(customView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                Button buttonImportFromFB = (Button) customView.findViewById(R.id.buttonImportFromFB);
+                buttonImportFromFB.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d(TAG, "Import from FB button clicked");
+                        try {
+                            importProfilePicFromFB();
+                        }
+                        catch (Exception e) {
+
+                        }
+                    }
+                });
+                editProfilePicPopup.showAtLocation(mLinearLayout, Gravity.CENTER, 0, 0);
+                break;
             case R.id.buttonSaveProfileEdits:
                 Log.d(TAG, "Save button clicked!");
                 updateDatabase();
+                finish();
+                startActivity(new Intent(this, UserProfileActivity.class));
+                break;
+            case R.id.buttonCancelProfileEdits:
+                Log.d(TAG, "Cancel");
                 finish();
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
@@ -140,9 +248,18 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
     private void updateDatabase() {
 
-        userRef.setValue(editedProfileData);
+        userRef.setValue(userProfileData);
+
+    }
+
+    private Bitmap importProfilePicFromFB() throws java.net.MalformedURLException, java.io.IOException {
+        String fbUserID = mDatabase.child("users").child(userID).child("facebookID").toString();
+        URL imageURL = new URL("https://graph.facebook.com/" + fbUserID + "/picture?type=large");
+
+        Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+
+        return bitmap;
 
     }
 
 }
-

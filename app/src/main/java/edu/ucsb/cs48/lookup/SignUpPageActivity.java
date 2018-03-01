@@ -57,7 +57,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     //==============================================================================================
     // Declare Variables
     //==============================================================================================
-    private EditText editTextEmail, editTextPassword, editTextName;
+    private EditText editTextEmail, editTextPassword, editTextName, editFacebookLink;
     private ProgressBar progressBar;
     private TextView textViewSignIn;
     private FirebaseAuth mAuth;
@@ -68,7 +68,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference db;
 
     FirebaseUser user;
-    private String fbLink;
+    private String facebookID;
     private static final String NAME = "public_profile", EMAIL = "email";
     private TextView info;
 
@@ -131,10 +131,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                                 @Override
                                 public void onCompleted(JSONObject object, GraphResponse response) {
                                     try {
-                                        String id = object.getString("id");
-                                        Log.d(TAG, "FB id: " + id);
-                                        setFBLink(id);
-                                        Log.d(TAG, "FB link successful");
+                                        facebookID = object.getString("id");
+                                        Log.d(TAG, "FB id: " + facebookID);
                                     }
                                     catch (Exception e) {
                                         e.printStackTrace();
@@ -289,18 +287,14 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         db.child("users").child(userId).setValue(user);
     }
 
-    private void setFBLink(String fbID) {
-        fbLink = "https://facebook.com/" + fbID;
-    }
-
-    private String getFBLink() {
-        return fbLink;
+    private String getFacebookID() {
+        return facebookID;
     }
 
     private void saveFBUserLink(String link, String userId) {
         Map<String,String> userFBData = new HashMap<String,String>();
-        userFBData.put("facebook", link);
-        db.child("users").child(userId).child("facebook").setValue(link);
+        userFBData.put("facebookID", facebookID);
+        db.child("users").child(userId).child("facebookID").setValue(facebookID);
     }
 
     // sign-in for Google
@@ -377,9 +371,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             String email = user.getEmail();
                             String phone = user.getPhoneNumber();
                             String uid = user.getUid();
-                            String link = getFBLink();
+                            String fbID = getFacebookID();
                             saveUserData(name, email, phone, uid);
-                            saveFBUserLink(link, uid);
+                            saveFBUserLink(fbID, uid);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

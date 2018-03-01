@@ -112,12 +112,12 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-        facebookRef = mDatabase.child("users").child(userID).child("facebook");
+        facebookRef = mDatabase.child("users").child(userID).child("facebookID");
         facebookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 facebookLink = (TextView) findViewById(R.id.facebookLink);
-                facebookLink.setText(dataSnapshot.getValue(String.class));
+                facebookLink.setText("https://facebook.com/" + dataSnapshot.getValue(String.class));
             }
 
             @Override
