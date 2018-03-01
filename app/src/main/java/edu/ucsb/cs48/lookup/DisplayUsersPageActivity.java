@@ -17,7 +17,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DisplayUsersPageActivity extends AppCompatActivity{
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabase_name, mDatabase;
+    private DatabaseReference userName, mDatabase;
+    private TextView displayName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +30,17 @@ public class DisplayUsersPageActivity extends AppCompatActivity{
         FirebaseUser user = mAuth.getCurrentUser();
 
         // Variable Set up
-        final String user_id = user.getUid();
-        final TextView name;
-        name = findViewById(R.id.userDisplayName);
-        mDatabase_name = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id).child("name");
+        final String userID = user.getUid();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        userName = mDatabase.child("users").child(userID).child("name");
 
         // Attempt to display the user's name
-        mDatabase_name.addValueEventListener(new ValueEventListener() {
+        userName.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                name.setText(dataSnapshot.getValue(String.class));
+                displayName = (TextView) findViewById(R.id.userDisplayName);
+                displayName.setText(dataSnapshot.getValue(String.class));
             }
 
             @Override
@@ -46,6 +48,7 @@ public class DisplayUsersPageActivity extends AppCompatActivity{
 
             }
         });
+
 
     }
 
