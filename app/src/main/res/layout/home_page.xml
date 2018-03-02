@@ -10,10 +10,11 @@
         android:id="@+id/buttonSignOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="74dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:background="#97c9ed"
         android:text="@string/signout"
         android:textColor="#041a29"
-        android:background="#97c9ed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,11 +23,13 @@
         android:id="@+id/scan_face_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="74dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="76dp"
+        android:background="#97c9ed"
         android:text="@string/scan_person"
         android:textColor="#041a29"
-        android:background="#97c9ed"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/buttonSignOut"
         app:layout_constraintTop_toTopOf="@+id/buttonSignOut" />
 
@@ -34,11 +37,11 @@
         android:id="@+id/user_profile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="56dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:background="#97c9ed"
         android:text="@string/your_profile"
         android:textColor="#041a29"
-        android:background="#97c9ed"
         app:layout_constraintStart_toStartOf="@+id/scan_face_button"
         app:layout_constraintTop_toBottomOf="@+id/scan_face_button" />
 
@@ -48,25 +51,41 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="215dp"
         android:layout_marginTop="216dp"
+        android:background="#97c9ed"
         android:text="@string/your_contacts"
         android:textColor="#041a29"
-        android:background="#97c9ed"
         app:layout_constraintBottom_toBottomOf="@+id/requests_text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scan_face_button" />
+        app:layout_constraintTop_toTopOf="@+id/scan_face_button"
+        app:layout_constraintVertical_bias="0.074" />
 
     <Button
         android:id="@+id/info_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="53dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:background="#97c9ed"
         android:text="@string/info"
         android:textColor="#041a29"
-        android:background="#97c9ed"
         app:layout_constraintStart_toStartOf="@+id/contacts_button"
         app:layout_constraintTop_toBottomOf="@+id/contacts_button" />
+
+    <Button
+        android:id="@+id/buttonDisplayUsers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="228dp"
+        android:background="#97c9ed"
+        android:text="Display Users"
+        android:textColor="#041a29"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/number_of_requests"
