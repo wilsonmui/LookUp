@@ -1,12 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-<<<<<<< HEAD
     compileSdkVersion 26
-=======
-    compileSdkVersion 25
-    buildToolsVersion '26.0.2'
->>>>>>> e0a6d13946378954a02b4636109fcd441dd98bcc
     defaultConfig {
         applicationId "edu.ucsb.cs48.lookup"
         minSdkVersion 23

@@ -53,6 +53,7 @@
         <activity android:name=".EditUserProfileActivity"
                   android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ContactsPageActivity" />
+        <activity android:name=".GenerateCodeActivity" />
         <activity android:name=".DisplayUsersPageActivity"></activity>
     </application>
 
