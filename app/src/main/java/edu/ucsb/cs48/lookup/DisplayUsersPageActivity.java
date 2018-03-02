@@ -15,7 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
+/*
+This activity displays all Users in the database. Must modify to show those with a certain ID for face-matching.
+Uses DisplayUsersAdapter for RecyclerView; recyclerview_users.xml provides format.
+ */
 
 public class DisplayUsersPageActivity extends AppCompatActivity{
     private FirebaseAuth mAuth;
@@ -52,9 +55,10 @@ public class DisplayUsersPageActivity extends AppCompatActivity{
         });
 
 
-        // Attempt to display all User's names from FireBase
-        userParent = mDatabase.child("users"); // The project root node
+        // Display all User names from FireBase
+        userParent = mDatabase.child("users"); // The project user node
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView); // RecycleView on page
+
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayUsersPageActivity.this));
 

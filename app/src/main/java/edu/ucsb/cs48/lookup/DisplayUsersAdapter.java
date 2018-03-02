@@ -9,8 +9,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by Eliza on 3/1/2018.
+ * Created by Eliza Ruiz on 3/1/2018.
  * This is an adapter class for dynamic user display.
+ * Formats the RecyclerView in DisplayUsersPageActivity to look like recyclerview_users.xml.
  */
 
 public class DisplayUsersAdapter extends RecyclerView.Adapter<DisplayUsersAdapter.ViewHolder> {
