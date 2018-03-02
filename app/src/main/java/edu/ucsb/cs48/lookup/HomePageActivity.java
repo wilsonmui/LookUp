@@ -50,6 +50,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         buttonSignOut= (Button) findViewById(R.id.buttonSignOut);
 
         findViewById(R.id.scan_face_button).setOnClickListener(this);
+        findViewById(R.id.view_code).setOnClickListener(this);
         findViewById(R.id.user_profile_button).setOnClickListener(this);
         findViewById(R.id.contacts_button).setOnClickListener(this);
         findViewById(R.id.info_button).setOnClickListener(this);
@@ -85,6 +86,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 mAuth.getInstance().signOut();
                 startActivity(new Intent(this, SignInPageActivity.class));
+                break;
+            case R.id.view_code:
+                finish();
+                startActivity(new Intent(this, GenerateCodeActivity.class));
                 break;
         }
     }
