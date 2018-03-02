@@ -72,5 +72,4 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
     }
 
-
 }
