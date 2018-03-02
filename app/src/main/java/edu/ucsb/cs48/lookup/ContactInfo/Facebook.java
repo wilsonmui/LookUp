@@ -1,4 +1,4 @@
-package edu.ucsb.cs48.lookup;
+package edu.ucsb.cs48.lookup.ContactInfo;
 
 import edu.ucsb.cs48.lookup.ContactInfo.ContactInfo;
 

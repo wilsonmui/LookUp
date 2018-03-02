@@ -1,14 +1,18 @@
 package edu.ucsb.cs48.lookup;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -16,16 +20,26 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.DefaultLogger;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
-import java.security.Provider;
-
+import edu.ucsb.cs48.lookup.ContactInfo.Facebook;
 /**
  * Created by deni on 2/8/18.
  */
@@ -50,6 +64,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     private DatabaseReference userRef, emailRef, phoneRef, facebookRef, twitterRef;
 
+    TwitterLoginButton loginButton;
     //==============================================================================================
     // On Create Setup
     //==============================================================================================
@@ -64,12 +79,47 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             finish();
             startActivity(new Intent(this, SignInPageActivity.class));
         }
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.consumer_key), getResources().getString(R.string.secret_key));
+        TwitterConfig config = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(authConfig)
+                .debug(true)
+                .build();
+        Twitter.initialize(config);
 
         setContentView(R.layout.user_profile_page);
+
+
+        loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
+        loginButton.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+                TwitterAuthToken authToken = session.getAuthToken();
+                String token = authToken.token;
+                String secret = authToken.secret;
+
+                login(session);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                Toast.makeText(UserProfileActivity.this, "Authentication Failed!", Toast.LENGTH_LONG).show();
+            }
+        });
 
         initListeners();
         loadUserData();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result to the login button.
+        loginButton.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     //==============================================================================================
     // Helper Functions
@@ -82,9 +132,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         displayName = (TextView) findViewById(R.id.displayName);
         phoneNumber = (TextView) findViewById(R.id.phoneNumber);
         emailAddress = (TextView) findViewById(R.id.emailAddress);
-
-
-
 
         switchTwitter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -100,7 +147,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        facebook = new Facebook();
+        //facebook = new Facebook();
         switchFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -187,31 +234,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    private void signIn() {
-
-        final Dialog authDialog = new Dialog(this);
-
-        WebView webview = new WebView(this);
-        authDialog.setContentView(webview);
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.loadUrl(URL_TWITTER_SIGN_IN);
-
-        webview.setWebViewClient(new WebViewClient() {
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                if (url.contains("callback.php")) {
-                    view.loadUrl("javascript:JsonViewer.onJsonReceived(document.getElementsByTagName('body')[0].innerHTML);");
-                    authDialog.dismiss();
-                }
-            }
-        });
-        webview.addJavascriptInterface(new MyJavaScriptInterface(getApplicationContext()), "JsonViewer");
-        authDialog.setCancelable(false);
-        authDialog.show();
-
-    }
 
     @Override
     public void onClick(View view) {
@@ -219,21 +241,12 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    class MyJavaScriptInterface {
-        private Context ctx;
+    public void login(TwitterSession session) {
+        String username = session.getUserName();
+        textViewTwitter.setText(username);
 
-        MyJavaScriptInterface(Context ctx) {
-            this.ctx = ctx;
-        }
-
-        @JavascriptInterface
-        public void onJsonReceived(String json) {
-            Gson gson = new GsonBuilder().create();
-            final TwitterOauthResult oauthResult = gson.fromJson(json, TwitterOauthResult.class);
-            if (oauthResult != null && oauthResult.getOauthToken() != null && oauthResult.getOauthTokenSecret() != null) {
-                textViewTwitter.setText(oauthResult.getScreenName());
-            }
-        }
     }
+
+
 }
 

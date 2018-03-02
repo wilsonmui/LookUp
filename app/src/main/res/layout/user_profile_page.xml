@@ -142,6 +142,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="25dp"
                 android:layout_weight="1" />
+            <com.twitter.sdk.android.core.identity.TwitterLoginButton
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
