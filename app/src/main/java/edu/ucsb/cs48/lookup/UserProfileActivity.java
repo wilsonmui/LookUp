@@ -3,7 +3,6 @@ package edu.ucsb.cs48.lookup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,19 +11,17 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
-import com.facebook.internal.LockOnGetVariable;
-import com.google.android.gms.common.data.DataBuffer;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import edu.ucsb.cs48.lookup.ContactInfo.Facebook;
 
 import static android.content.ContentValues.TAG;
 
@@ -148,21 +145,21 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
 //        loadUserData();
 
-        facebook = new Facebook();
-        facebookSwitch = (Switch)findViewById(R.id.switchFacebook);
-        facebookSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    facebook.connect();
+//        facebook = new Facebook();
+//        facebookSwitch = (Switch)findViewById(R.id.switchFacebook);
+//        facebookSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+//                if (isChecked) {
+//                    facebook.connect();
 //                    currentUser.addVisibleContactInfo(facebook);
-                }
-                else {
-                    facebook.disconnect();
+//                }
+//                else {
+//                    facebook.disconnect();
 //                    currentUser.rmVisibleContactInfo(facebook);
-                }
-            }
-        });
+//                }
+//            }
+//        });
 
     }
 
@@ -192,6 +189,5 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     private void loadContactInfoObjects() {
 
     }
-
 
 }

@@ -2,6 +2,8 @@ package edu.ucsb.cs48.lookup;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ucsb.cs48.lookup.ContactInfo.ContactInfo;
+
 /**
  * Created by Wilson on 2/7/18.
  */
@@ -19,8 +21,8 @@ public class User {
     private String email;
     private String phone;
     private String uid;
-
-    private List<ContactInfo> visibleContactInfo;
+    private String facebookURL;
+    private String twitterURl;
 
     //==============================================================================================
     // Constructors
@@ -34,7 +36,8 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.uid = uid;
-        this.visibleContactInfo = new ArrayList<ContactInfo>();
+        this.facebookURL = "";
+        this.twitterURl = "";
     }
 
 
@@ -43,15 +46,16 @@ public class User {
     //==============================================================================================
     public String getName() { return this.name; }
 
-    public String getEmail() {
-        return this.email;
-    }
+    public String getEmail() {return this.email; }
 
     public String getPhone() { return this.phone; }
 
     public String getUid() { return this.uid; }
 
-    public List<ContactInfo> getVisibleContactInfo() { return visibleContactInfo; }
+    public String getFacebookURL() { return this.uid; }
+
+    public String getTwitterURl() { return this.uid; }
+
 
     //==============================================================================================
     // Setter Methods
@@ -62,11 +66,15 @@ public class User {
 
     public void setPhone(String phone) { this.phone = phone; }
 
+    public void setFacebookURL(String phone) { this.phone = phone; }
+
+    public void setTwitterURl(String phone) { this.phone = phone; }
+
 
     //==============================================================================================
     // Helper Functions
     //==============================================================================================
-    private int contactInfoExists(List<ContactInfo> contactInfos, ContactInfo contactInfo) {
+    private int contactInfoExists(List<Boolean> contactInfos, ContactInfo contactInfo) {
 
         int size = contactInfos.size();
 
@@ -79,31 +87,31 @@ public class User {
         return -1; // False
     }
 
-    //==============================================================================================
-    // Methods
-    //==============================================================================================
-
-    public String addVisibleContactInfo(ContactInfo contactInfo) {
-
-        if(contactInfoExists(this.visibleContactInfo, contactInfo) > -1) {
-                return contactInfo.getName() + " already visible.";
-        } else {
-            this.visibleContactInfo.add(contactInfo);
-            return contactInfo.getName() + "is now visible";
-        }
-    }
-
-    public String rmVisibleContactInfo(ContactInfo contactInfo) {
-
-        int contactInfoIndex = contactInfoExists(this.visibleContactInfo, contactInfo);
-
-        if(contactInfoIndex > -1) {
-            visibleContactInfo.remove(contactInfoIndex);
-            return "Successfully made " + contactInfo.getName() + " invisible.";
-        } else {
-            return contactInfo.getName() + " either does not exist or is already invisible";
-        }
-    }
+//    //==============================================================================================
+//    // Methods
+//    //==============================================================================================
+//
+//    public String addVisibleContactInfo(ContactInfo contactInfo) {
+//
+//        if(contactInfoExists(this.visibleContactInfo, contactInfo) > -1) {
+//                return contactInfo.getName() + " already visible.";
+//        } else {
+//            this.visibleContactInfo.add(contactInfo);
+//            return contactInfo.getName() + "is now visible";
+//        }
+//    }
+//
+//    public String rmVisibleContactInfo(ContactInfo contactInfo) {
+//
+//        int contactInfoIndex = contactInfoExists(this.visibleContactInfo, contactInfo);
+//
+//        if(contactInfoIndex > -1) {
+//            visibleContactInfo.remove(contactInfoIndex);
+//            return "Successfully made " + contactInfo.getName() + " invisible.";
+//        } else {
+//            return contactInfo.getName() + " either does not exist or is already invisible";
+//        }
+//    }
 
     @Override
     public boolean equals(Object obj) {

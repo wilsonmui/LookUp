@@ -28,7 +28,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth mAuth;
     private Button buttonSignOut;
 
-
     //==============================================================================================
     // On Create Setup
     //==============================================================================================
@@ -54,8 +53,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.user_profile_button).setOnClickListener(this);
         findViewById(R.id.contacts_button).setOnClickListener(this);
         findViewById(R.id.info_button).setOnClickListener(this);
+        findViewById(R.id.buttonDisplayUsers).setOnClickListener(this);
         buttonSignOut.setOnClickListener(this);
     }
+
     //==============================================================================================
     // Action Listeners
     //==============================================================================================
@@ -68,6 +69,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.user_profile_button:
                 finish();
                 startActivity(new Intent(this, UserProfileActivity.class));
+                break;
+            case R.id.buttonDisplayUsers:
+                finish();
+                startActivity(new Intent(this, DisplayUsersPageActivity.class));
                 break;
             case R.id.contacts_button:
                 startActivity(new Intent(this, ContactsPageActivity.class));

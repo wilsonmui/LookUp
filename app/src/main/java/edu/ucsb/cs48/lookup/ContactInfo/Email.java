@@ -1,15 +1,16 @@
-package edu.ucsb.cs48.lookup;
+package edu.ucsb.cs48.lookup.ContactInfo;
 
 /**
  * Created by esuarez on 2/24/18.
  */
 
-public class Phone extends ContactInfo {
+public class Email extends ContactInfo {
+
     //==============================================================================================
     // Constructor
     //==============================================================================================
 
-    Phone() {
+    Email() {
         super("Email");
     }
 }

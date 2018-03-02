@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/account_login_gradient">
 
     <Button
         android:id="@+id/scan_now"
@@ -13,11 +14,12 @@
         android:layout_marginEnd="126dp"
         android:layout_marginStart="127dp"
         android:layout_marginTop="51dp"
-        android:text="Take Photo"
+        android:text="@string/take_photo"
         app:layout_constraintBottom_toTopOf="@+id/face_imageview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <ImageView
         android:id="@+id/face_imageview"
@@ -37,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="47dp"
-        android:text="Analyze this photo"
+        android:text="@string/analyze_photo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
