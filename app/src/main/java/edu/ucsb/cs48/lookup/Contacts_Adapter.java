@@ -1,5 +1,7 @@
 package edu.ucsb.cs48.lookup;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import static android.support.v4.content.ContextCompat.startActivity;
 
 /**
  * Created by Wilson on 2/25/18.
@@ -39,15 +43,27 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
      */
     @Override
     public void onBindViewHolder(ContactViewHolder holder, int position) {
-        String UserUuid = contactList.get(position);
-        holder.username.setText(findUsername(UserUuid));
+        final String UserUid = contactList.get(position);
+        holder.username.setText(findUsername(UserUid));
         //holder.userImg.
 
         //when contact is clicked, show their info and option to remove them
         holder.username.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //create a dialogFragment (?)
+                //open a new activity showing information about Contact
+                //pass uid onto new activity
+
+                Intent i = new Intent(view.getContext(), ContactsPageActivity.class);
+                i.putExtra("uid", UserUid);
+                view.getContext().startActivity(i);
+
+                /*
+                in other activity:
+                Bundle b = new Bundle();
+                b = getIntent().getExtras();
+                String uid = b.getString("uid")
+                 */
             }
         });
     }
