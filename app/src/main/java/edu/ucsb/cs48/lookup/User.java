@@ -87,6 +87,32 @@ public class User {
         return -1; // False
     }
 
+//    //==============================================================================================
+//    // Methods
+//    //==============================================================================================
+//
+//    public String addVisibleContactInfo(ContactInfo contactInfo) {
+//
+//        if(contactInfoExists(this.visibleContactInfo, contactInfo) > -1) {
+//                return contactInfo.getName() + " already visible.";
+//        } else {
+//            this.visibleContactInfo.add(contactInfo);
+//            return contactInfo.getName() + "is now visible";
+//        }
+//    }
+//
+//    public String rmVisibleContactInfo(ContactInfo contactInfo) {
+//
+//        int contactInfoIndex = contactInfoExists(this.visibleContactInfo, contactInfo);
+//
+//        if(contactInfoIndex > -1) {
+//            visibleContactInfo.remove(contactInfoIndex);
+//            return "Successfully made " + contactInfo.getName() + " invisible.";
+//        } else {
+//            return contactInfo.getName() + " either does not exist or is already invisible";
+//        }
+//    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
