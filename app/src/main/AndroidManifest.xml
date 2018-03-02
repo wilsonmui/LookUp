@@ -57,7 +57,8 @@
         <activity android:name=".InfoPageActivity" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".ContactsPageActivity"></activity>
+        <activity android:name=".ContactsPageActivity" />
+        <activity android:name=".DisplayUsersPageActivity"></activity>
     </application>
 
 </manifest>
