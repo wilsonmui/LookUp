@@ -76,13 +76,27 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             startActivity(new Intent(this, SignInPageActivity.class));
         }
 
-        initTwitterConfig();
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.consumer_key), getResources().getString(R.string.secret_key));
+        TwitterConfig config = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(authConfig)
+                .debug(true)
+                .build();
+        Twitter.initialize(config);
 
         setContentView(R.layout.user_profile_page);
 
         initListeners();
 
         loadUserData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result to the login button.
+        loginButton.onActivityResult(requestCode, resultCode, data);
     }
 
 
