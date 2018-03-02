@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -50,12 +52,13 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private TextView facebookLink;
     private Button buttonEditProfilePicture, buttonSaveProfileEdits;
     private HashMap<String, String> userProfileData;
-    private DatabaseReference databaseRef, userRef, nameRef, emailRef, phoneRef, facebookRef;
-    private String userID;
+    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, facebookRef;
+    private String userID, fbUserID;
     private LinearLayout mLinearLayout;
     private Context mContext;
     private PopupWindow editProfilePicPopup;
     private DatabaseReference mDatabase;
+    private ImageView editUserProfilePic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,8 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         mContext = getApplicationContext();
 
+        editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
+
         buttonEditProfilePicture = (Button) findViewById(R.id.buttonEditProfilePicture);
         buttonEditProfilePicture.setOnClickListener(this);
 
@@ -87,10 +92,11 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         userProfileData = new HashMap<String, String>();
 
-
         databaseRef = FirebaseDatabase.getInstance().getReference();
         userID = user.getUid();
         userRef = databaseRef.child("users").child(userID);
+
+        photoRef = userRef.child("profilePic");
 
         nameRef = userRef.child("name");
         nameRef.addValueEventListener(new ValueEventListener() {
@@ -192,6 +198,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         facebookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                fbUserID = dataSnapshot.getValue(String.class);
                 facebookLink = (TextView) findViewById(R.id.facebookLink);
                 facebookLink.setText("https://facebook.com" + dataSnapshot.getValue(String.class));
                 userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
@@ -223,11 +230,22 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                     public void onClick(View view) {
                         Log.d(TAG, "Import from FB button clicked");
                         try {
-                            importProfilePicFromFB();
+                            URL imageURL = new URL("https://graph.facebook.com/" + fbUserID + "/picture?type=large");
+                            Bitmap userProfilePic = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+                            editUserProfilePic.setImageBitmap(userProfilePic);
+                            addProfilePicToDatabase(userProfilePic);
                         }
-                        catch (Exception e) {
+                        catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                        }
+                    }
+                });
+                Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
+                buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        editProfilePicPopup.dismiss();
                     }
                 });
                 editProfilePicPopup.showAtLocation(mLinearLayout, Gravity.CENTER, 0, 0);
@@ -252,14 +270,20 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
     }
 
-    private Bitmap importProfilePicFromFB() throws java.net.MalformedURLException, java.io.IOException {
-        String fbUserID = mDatabase.child("users").child(userID).child("facebookID").toString();
-        URL imageURL = new URL("https://graph.facebook.com/" + fbUserID + "/picture?type=large");
+//    private Bitmap importProfilePicFromFB() throws IOException {
+//        Log.d(TAG, "facebook id:" + fbUserID);
+//        URL imageURL = new URL("https://graph.facebook.com/" + fbUserID + "/picture?type=large");
+//
+//        Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+//
+//        Log.d(TAG, "success");
+//
+//        return bitmap;
+//
+//    }
 
-        Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-
-        return bitmap;
-
+    private void addProfilePicToDatabase(Bitmap profilePic) {
+        userProfileData.put("profilePic", profilePic.toString());
     }
 
 }
