@@ -57,4 +57,12 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="20dp" />
 
+    <TextView
+        android:id="@+id/uid_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="163dp"
+        tools:layout_editor_absoluteY="476dp" />
+
 </android.support.constraint.ConstraintLayout>
