@@ -94,6 +94,9 @@ public enum Network {
     public void addUserContact(String baseUid, String targetUid) {
         if(!this.isContact(baseUid, targetUid)) {
             this.getNetwork().get(baseUid).add(targetUid);
+            //now add in database as well
+            //(just rewrite hashmap into database?
+
         }
     }
 
@@ -106,6 +109,9 @@ public enum Network {
             for(int i = 0; i < size; i++) {
                 if(contacts.get(i).equals(targetUid)) {
                     contacts.remove(i);
+
+                    //now remove in database as well
+                    //(just rewrite hashmap into database?
                 }
             }
         }

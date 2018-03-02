@@ -9,6 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -24,6 +30,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
 
     //uuid of people in contactList
     private ArrayList<String> contactList;
+    DatabaseReference db;
 
     public Contacts_Adapter(ArrayList<String> contactList){
         this.contactList = contactList;
@@ -42,10 +49,26 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
     must implement way to load image on contact card
      */
     @Override
-    public void onBindViewHolder(ContactViewHolder holder, int position) {
+    public void onBindViewHolder(final ContactViewHolder holder, int position) {
         final String UserUid = contactList.get(position);
-        holder.username.setText(findUsername(UserUid));
-        //holder.userImg.
+
+        db = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(UserUid);
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
+
+                    holder.username.setText(user.getName());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         //when contact is clicked, show their info and option to remove them
         holder.username.setOnClickListener(new View.OnClickListener() {
@@ -88,12 +111,4 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
 
     }
 
-    //find username given uuid
-    public String findUsername(String uuid){
-        return "null";
-    }
-    //find userImg given uuid
-    public void findUserImg(String uuid){
-        return;
-    }
 }
