@@ -280,6 +280,16 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
                     }
                 });
+//                Button buttonRemoveProfilePic = (Button) customView.findViewById(R.id.buttonRemoveProfilePic);
+//                buttonRemoveProfilePic.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Log.d(TAG, "Remove profile picture button clicked");
+//                        userProfileData.remove("profilePic");
+//                        editUserProfilePic.setImageResource(R.drawable.blank_profile_picture);
+//                        editProfilePicPopup.dismiss();
+//                    }
+//                });
                 Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
                 buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -300,6 +310,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                 finish();
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
+
         }
     }
 

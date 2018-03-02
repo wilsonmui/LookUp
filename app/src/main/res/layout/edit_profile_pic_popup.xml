@@ -25,6 +25,12 @@
         android:layout_height="wrap_content"
         android:text="Import from Facebook"/>
 
+    <!--<Button-->
+        <!--android:id="@+id/buttonRemoveProfilePic"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Remove profile picture"/>-->
+
     <Button
         android:id="@+id/buttonCancelEditProfilePic"
         android:layout_width="wrap_content"
