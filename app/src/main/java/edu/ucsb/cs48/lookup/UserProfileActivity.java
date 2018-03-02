@@ -1,5 +1,6 @@
 package edu.ucsb.cs48.lookup;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -22,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import static android.content.ContentValues.TAG;
 
@@ -36,14 +39,16 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     //==============================================================================================
     private FirebaseAuth mAuth;
     private TextView displayName, emailAddress, phoneNumber, facebookLink;
+    private ImageView profilePic;
 //    private User currentUser;
     private Button buttonEditProfile;
     private Switch facebookSwitch;
     private Facebook facebook;
     private String userID;
     private DatabaseReference mDatabase;
+    private Context mContext;
 
-    private DatabaseReference userRef, emailRef, phoneRef, facebookRef;
+    private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef;
 
 
     //==============================================================================================
@@ -66,12 +71,15 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             startActivity(new Intent(this, SignInPageActivity.class));
         }
 
+        mContext = getApplicationContext();
 
         userID = currentUser.getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        userRef = mDatabase.child("users").child(userID).child("name");
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef = mDatabase.child("users").child(userID);
+
+        nameRef= userRef.child("name");
+        nameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 displayName = (TextView) findViewById(R.id.displayName);
@@ -84,7 +92,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-        emailRef = mDatabase.child("users").child(userID).child("email");
+        emailRef = userRef.child("email");
         emailRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -98,7 +106,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-        phoneRef = mDatabase.child("users").child(userID).child("phone");
+        phoneRef = userRef.child("phone");
         phoneRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -112,7 +120,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-        facebookRef = mDatabase.child("users").child(userID).child("facebookID");
+        facebookRef = userRef.child("facebookID");
         facebookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -124,6 +132,18 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             public void onCancelled(DatabaseError databaseError) {
 
             }
+        });
+
+        profilePicRef = userRef.child("profilePic");
+        profilePicRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                profilePic = (ImageView) findViewById(R.id.profilePic);
+                Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).fit().into(profilePic);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
         });
 
 //        loadUserData();

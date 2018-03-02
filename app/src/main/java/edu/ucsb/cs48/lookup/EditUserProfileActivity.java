@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -32,10 +33,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -50,9 +54,9 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private FirebaseAuth mAuth;
     private EditText editDisplayName, editEmailAddress, editPhoneNumber;
     private TextView facebookLink;
-    private Button buttonEditProfilePicture, buttonSaveProfileEdits;
+    private Button buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
     private HashMap<String, String> userProfileData;
-    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, facebookRef;
+    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef;
     private String userID, fbUserID;
     private LinearLayout mLinearLayout;
     private Context mContext;
@@ -75,13 +79,16 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         mContext = getApplicationContext();
 
-        editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
+//        editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
 
         buttonEditProfilePicture = (Button) findViewById(R.id.buttonEditProfilePicture);
         buttonEditProfilePicture.setOnClickListener(this);
 
         buttonSaveProfileEdits = (Button) findViewById(R.id.buttonSaveProfileEdits);
         buttonSaveProfileEdits.setOnClickListener(this);
+
+        buttonCancelProfileEdits = (Button) findViewById(R.id.buttonCancelProfileEdits);
+        buttonCancelProfileEdits.setOnClickListener(this);
 
         mLinearLayout = (LinearLayout) findViewById(R.id.editProfileLL);
 
@@ -208,6 +215,19 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onCancelled(DatabaseError databaseError) {}
         });
 
+        profilePicRef = userRef.child("profilePic");
+        profilePicRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
+                Log.d(TAG, "profile pic url: " + dataSnapshot.getValue(String.class));
+                Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).fit().into(editUserProfilePic);
+                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     @Override
@@ -229,15 +249,34 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onClick(View view) {
                         Log.d(TAG, "Import from FB button clicked");
+//                        try {
+//                            URL imageURL = new URL("http://graph.facebook.com/" + fbUserID + "/picture?type=large");
+//                            Bitmap userProfilePic = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+//                            editUserProfilePic.setImageBitmap(userProfilePic);
+//                            addProfilePicToDatabase(userProfilePic);
+//                            String fbProfilePicURL = "http://graph.facebook.com/" + fbUserID + "/picture?type=large";
+
+                        // this works
+//                        String url = "https://graph.facebook.com/" + fbUserID + "/picture?type=large";
+//                        new AsyncTaskLoadImage(editUserProfilePic).execute(url);
+
+                        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                        StrictMode.setThreadPolicy(policy);
                         try {
-                            URL imageURL = new URL("https://graph.facebook.com/" + fbUserID + "/picture?type=large");
-                            Bitmap userProfilePic = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-                            editUserProfilePic.setImageBitmap(userProfilePic);
-                            addProfilePicToDatabase(userProfilePic);
+                            URL url = new URL("https://graph.facebook.com/" + fbUserID + "/picture?type=large");
+                            editUserProfilePic.setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
+                            Log.d(TAG, "TEST");
+                            String userProfilePicURL = getRedirectedURL(url.toString());
+                            userProfileData.put("profilePic", userProfilePicURL);
+
+                        } catch (IOException e) {
+                            Log.e(TAG, e.getMessage());
                         }
-                        catch (IOException e) {
-                            e.printStackTrace();
-                        }
+
+//                        }
+//                        catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
 
                     }
                 });
@@ -284,6 +323,38 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
     private void addProfilePicToDatabase(Bitmap profilePic) {
         userProfileData.put("profilePic", profilePic.toString());
+    }
+
+    public static String getRedirectedURL(String url) throws IOException {
+        HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+        con.setInstanceFollowRedirects(false);
+        con.connect();
+        con.getInputStream();
+
+        if (con.getResponseCode() == HttpURLConnection.HTTP_MOVED_PERM || con.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
+            String redirectUrl = con.getHeaderField("Location");
+            return getRedirectedURL(redirectUrl);
+        }
+        return url;
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+//            Log.e("src", src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+//            Log.e("Bitmap", "returned");
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+//            Log.e("Exception", e.getMessage());
+            return null;
+        }
+
     }
 
 }
