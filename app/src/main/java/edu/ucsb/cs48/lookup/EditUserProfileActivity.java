@@ -246,10 +246,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onClick(View view) {
-
-    }
-
-}
         switch (view.getId()) {
             case R.id.buttonEditProfilePicture:
                 Log.d(TAG, "Edit profile picture button clicked");
@@ -325,6 +321,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         }
     }
+
 
     private void updateDatabase() {
 

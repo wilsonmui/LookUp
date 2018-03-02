@@ -1,5 +1,6 @@
 package edu.ucsb.cs48.lookup;
 
+import edu.ucsb.cs48.lookup.ContactInfo.Facebook;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,11 +44,9 @@ import java.util.HashMap;
 import java.util.Map;
 import com.squareup.picasso.Picasso;
 
-import edu.ucsb.cs48.lookup.ContactInfo.Facebook;
 
 import static android.content.ContentValues.TAG;
 
-import edu.ucsb.cs48.lookup.ContactInfo.Facebook;
 /**
  * Created by deni on 2/8/18.
  */
@@ -62,14 +61,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     //    private FirebaseDatabase database;
     private TextView displayName, emailAddress, phoneNumber, textViewFacebook, textViewTwitter;
 
-    //    private User currentUser;
-    private Switch switchFacebook, switchTwitter;
-    private Facebook facebook;
-    private DatabaseReference mDatabase;
-    private DatabaseReference userRef, emailRef, phoneRef, facebookRef, twitterRef;
+    private Switch switchFacebook;
 
     private TwitterLoginButton loginButton;
-    private TextView displayName, emailAddress, phoneNumber, facebookLink;
     private ImageView profilePic;
     //    private User currentUser;
     private Button buttonEditProfile;
@@ -79,7 +73,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private DatabaseReference mDatabase;
     private Context mContext;
 
-    private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef;
+    private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
 
 
     //==============================================================================================
@@ -260,5 +254,5 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         childUpdates.put("/users/" + uid + "/twitter", username);
         mDatabase.updateChildren(childUpdates);
     }
+
   }
-}
