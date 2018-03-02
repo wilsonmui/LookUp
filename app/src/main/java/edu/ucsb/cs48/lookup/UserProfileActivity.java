@@ -24,11 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.Provider;
+
 /**
  * Created by deni on 2/8/18.
  */
 
-public class UserProfileActivity  extends AppCompatActivity implements View.OnClickListener{
+public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
     //==============================================================================================
     // Declare Variables
@@ -38,16 +40,14 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     final String URL_TWITTER_SIGN_IN = "http://androidsmile.com/lab/twitter/sign_in.php";
 
     //    private FirebaseDatabase database;
-    private TextView displayName, emailAddress, phoneNumber, facebookLink, textViewTwitter;
+    private TextView displayName, emailAddress, phoneNumber, textViewFacebook, textViewTwitter;
 
     //    private User currentUser;
-    private Switch facebookSwitch;
+    private Switch switchFacebook, switchTwitter;
     private Facebook facebook;
     private String userID;
     private DatabaseReference mDatabase;
-    private DatabaseReference databaseRef;
 
-    private FirebaseDatabase database;
     private DatabaseReference userRef, emailRef, phoneRef, facebookRef, twitterRef;
 
     //==============================================================================================
@@ -67,14 +67,64 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
         setContentView(R.layout.user_profile_page);
 
-        userID = currentUser.getUid();
+        initListeners();
+        loadUserData();
+    }
+
+    //==============================================================================================
+    // Helper Functions
+    //==============================================================================================
+    private void initListeners() {
+        textViewFacebook = (TextView) findViewById(R.id.textViewFacebook);
+        textViewTwitter = (TextView) findViewById(R.id.textViewTwitter);
+        switchFacebook = (Switch)findViewById(R.id.switchFacebook);
+        switchTwitter = (Switch)findViewById(R.id.switchTwitter);
+        displayName = (TextView) findViewById(R.id.displayName);
+        phoneNumber = (TextView) findViewById(R.id.phoneNumber);
+        emailAddress = (TextView) findViewById(R.id.emailAddress);
+
+
+
+
+        switchTwitter.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    //facebook.connect();
+//                    currentUser.addVisibleContactInfo(facebook);
+                }
+                else {
+                    //signIn();
+//                    facebook.disconnect();
+//                    currentUser.rmVisibleContactInfo(facebook);
+                }
+            }
+        });
+
+        facebook = new Facebook();
+        switchFacebook.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    // facebook.connect();
+                }
+                else {
+                    // facebook.disconnect();
+                }
+            }
+        });
+
+    }
+
+    private void loadUserData() {
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        userRef = mDatabase.child("users").child(userID).child("name");
+        userRef = mDatabase.child("users").child(uid).child("name");
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                displayName = (TextView) findViewById(R.id.displayName);
                 displayName.setText(dataSnapshot.getValue(String.class));
             }
 
@@ -84,11 +134,10 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-        emailRef = mDatabase.child("users").child(userID).child("email");
+        emailRef = mDatabase.child("users").child(uid).child("email");
         emailRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                emailAddress = (TextView) findViewById(R.id.emailAddress);
                 emailAddress.setText(dataSnapshot.getValue(String.class));
             }
 
@@ -98,11 +147,10 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-        phoneRef = mDatabase.child("users").child(userID).child("phone");
+        phoneRef = mDatabase.child("users").child(uid).child("phone");
         phoneRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                phoneNumber = (TextView) findViewById(R.id.phoneNumber);
                 phoneNumber.setText(dataSnapshot.getValue(String.class));
             }
 
@@ -112,12 +160,11 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-        facebookRef = mDatabase.child("users").child(userID).child("facebook");
+        facebookRef = mDatabase.child("users").child(uid).child("facebook");
         facebookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                facebookLink = (TextView) findViewById(R.id.facebookLink);
-                facebookLink.setText(dataSnapshot.getValue(String.class));
+                textViewFacebook.setText(dataSnapshot.getValue(String.class));
             }
 
             @Override
@@ -126,7 +173,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             }
         });
 
-        twitterRef = mDatabase.child("users").child(userID).child("twitter");
+        twitterRef = mDatabase.child("users").child(uid).child("twitter");
         twitterRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,48 +185,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
             }
         });
-
-        facebook = new Facebook();
-        facebookSwitch = (Switch)findViewById(R.id.switchFacebook);
-        facebookSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    facebook.connect();
-//                    currentUser.addVisibleContactInfo(facebook);
-                }
-                else {
-                    facebook.disconnect();
-//                    currentUser.rmVisibleContactInfo(facebook);
-                }
-            }
-        });
-
     }
-
-    //==============================================================================================
-    // Action Listeners
-    //==============================================================================================
-    @Override
-    public void onClick(View view) {
-        switch(view.getId()){
-//            case R.id.switchFacebook:
-//                if ()
-//                Facebook facebook = new Facebook();
-//                facebook.connect();
-//                currentUser.addVisibleContactiInfo(facebook);
-//                break;
-            case R.id.switchTwitter:
-                Toast.makeText(this, "Hey", Toast.LENGTH_SHORT).show();
-                signIn();
-                break;
-        }
-    }
-
-    //==============================================================================================
-    // Helper Functions
-    //==============================================================================================
-
 
     private void signIn() {
 
@@ -207,9 +213,13 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
     }
 
+    @Override
+    public void onClick(View view) {
+        // nothing
+    }
+
 
     class MyJavaScriptInterface {
-
         private Context ctx;
 
         MyJavaScriptInterface(Context ctx) {

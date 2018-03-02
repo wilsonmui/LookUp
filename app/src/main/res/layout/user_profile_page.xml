@@ -99,7 +99,7 @@
                 android:paddingHorizontal="15dp"
                 android:layout_weight="0.9">
                 <TextView
-                    android:id="@+id/facebookLink"
+                    android:id="@+id/textViewFacebook"
                     android:textStyle="bold"
                     android:scrollHorizontally="true"
                     android:layout_gravity="center_vertical"
