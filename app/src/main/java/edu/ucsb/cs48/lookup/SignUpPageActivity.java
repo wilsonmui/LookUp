@@ -76,7 +76,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference db;
 
     FirebaseUser user;
+
     private String fbLink;
+
     private static final String NAME = "public_profile", EMAIL = "email";
     private TextView info;
 

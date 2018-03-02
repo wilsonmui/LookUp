@@ -1,5 +1,6 @@
 package edu.ucsb.cs48.lookup;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,9 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +41,11 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import java.util.HashMap;
 import java.util.Map;
+import com.squareup.picasso.Picasso;
+
+import edu.ucsb.cs48.lookup.ContactInfo.Facebook;
+
+import static android.content.ContentValues.TAG;
 
 import edu.ucsb.cs48.lookup.ContactInfo.Facebook;
 /**
@@ -49,7 +58,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     // Declare Variables
     //==============================================================================================
     private FirebaseAuth mAuth;
-
+  
     //    private FirebaseDatabase database;
     private TextView displayName, emailAddress, phoneNumber, textViewFacebook, textViewTwitter;
 
@@ -60,6 +69,18 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private DatabaseReference userRef, emailRef, phoneRef, facebookRef, twitterRef;
 
     private TwitterLoginButton loginButton;
+    private TextView displayName, emailAddress, phoneNumber, facebookLink;
+    private ImageView profilePic;
+    //    private User currentUser;
+    private Button buttonEditProfile;
+    private Switch facebookSwitch;
+    private Facebook facebook;
+    private String userID;
+    private DatabaseReference mDatabase;
+    private Context mContext;
+
+    private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef;
+
 
     //==============================================================================================
     // On Create Setup
@@ -76,13 +97,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             startActivity(new Intent(this, SignInPageActivity.class));
         }
 
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.consumer_key), getResources().getString(R.string.secret_key));
-        TwitterConfig config = new TwitterConfig.Builder(this)
-                .logger(new DefaultLogger(Log.DEBUG))
-                .twitterAuthConfig(authConfig)
-                .debug(true)
-                .build();
-        Twitter.initialize(config);
+        initTwitterConfig();
 
         setContentView(R.layout.user_profile_page);
 
@@ -122,7 +137,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         phoneNumber = (TextView) findViewById(R.id.phoneNumber);
         emailAddress = (TextView) findViewById(R.id.emailAddress);
         loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
-
+        buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
+        
+        buttonEditProfile.setOnClickListener(this);
         loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
@@ -152,6 +169,23 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         });
+      
+      
+      //        facebook = new Facebook();
+//        facebookSwitch = (Switch)findViewById(R.id.switchFacebook);
+//        facebookSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+//                if (isChecked) {
+//                    facebook.connect();
+//                    currentUser.addVisibleContactInfo(facebook);
+//                }
+//                else {
+//                    facebook.disconnect();
+//                    currentUser.rmVisibleContactInfo(facebook);
+//                }
+//            }
+//        });
 
     }
 
@@ -175,6 +209,18 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
         twitterRef = mDatabase.child("users").child(uid).child("twitter");
         loadUserField(twitterRef, textViewTwitter);
+      
+        profilePicRef = userRef.child("profilePic");
+        profilePicRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                profilePic = (ImageView) findViewById(R.id.profilePic);
+                Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).fit().into(profilePic);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
 
@@ -191,12 +237,16 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
-
-    @Override
+  
     public void onClick(View view) {
-        // nothing
+        switch(view.getId()){
+            case R.id.buttonEditProfile:
+                Log.d(TAG, "Edit profile button clicked!");
+                finish();
+                startActivity(new Intent(this, EditUserProfileActivity.class));
+                break;
+        }
     }
-
 
     public void login(TwitterSession session) {
         String username = session.getUserName();
@@ -210,7 +260,5 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         childUpdates.put("/users/" + uid + "/twitter", username);
         mDatabase.updateChildren(childUpdates);
     }
-
-
+  }
 }
-
