@@ -51,6 +51,7 @@
         <activity android:name=".CameraActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".ContactsPageActivity" />
+        <activity android:name=".GenerateCodeActivity" />
         <activity android:name=".DisplayUsersPageActivity"></activity>
     </application>
 
