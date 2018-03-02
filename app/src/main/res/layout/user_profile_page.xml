@@ -93,6 +93,8 @@
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_marginHorizontal="25dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -110,7 +112,7 @@
                 android:paddingHorizontal="15dp"
                 android:layout_weight="0.9">
                 <TextView
-                    android:id="@+id/facebookLink"
+                    android:id="@+id/textViewFacebook"
                     android:textStyle="bold"
                     android:scrollHorizontally="true"
                     android:layout_gravity="center_vertical"
@@ -140,16 +142,18 @@
                 android:layout_height="36dp"
                 android:src="@drawable/twitter"/>
             <TextView
+                android:id="@+id/textViewTwitter"
                 android:textStyle="bold"
-
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:text=""/>
-            <Switch
-                android:id="@+id/switchTwitter"
+
+            <com.twitter.sdk.android.core.identity.TwitterLoginButton
+                android:id="@+id/login_button"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
                 android:layout_height="wrap_content"
                 android:layout_marginRight="25dp"
                 android:layout_weight="1" />

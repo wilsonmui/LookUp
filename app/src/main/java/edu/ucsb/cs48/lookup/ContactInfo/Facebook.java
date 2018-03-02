@@ -1,4 +1,4 @@
-package edu.ucsb.cs48.lookup.ContactInfo;
+package edu.ucsb.cs48.lookup.ContactInfo.ContactInfo;
 
 /**
  * Created by Tina on 2/25/2018.
