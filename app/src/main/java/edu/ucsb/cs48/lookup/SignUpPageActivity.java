@@ -296,6 +296,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
     private void saveUserData(String name, String email, String phone, String userId) {
         User user = new User(name, email, phone, userId);
+        Network.getInstance().addNewUser(userId);
         db.child("users").child(userId).setValue(user);
     }
 
@@ -349,7 +350,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //saveUserData(user.getUid(), "null", user.getEmail());
+                            //prompt user to enter name and phone
+                            saveUserData("null", "null","null", user.getUid());
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -386,6 +388,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                     }
                 });
     }
+
 
 
 

@@ -1,5 +1,13 @@
 package edu.ucsb.cs48.lookup;
 
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -39,24 +47,34 @@ public enum Network {
     // Methods
     //==============================================================================================
 
-
+    //make sure this is called when a new user is created
     public void addNewUser(String uid) {
+        pullfromfirebase();
         if(this.getNetwork().containsKey(uid)) {
             System.out.println("Unsuccesfully Added User: " + uid + " to Network; user already exists.");
         } else {
             this.getNetwork().put(uid, new ArrayList<String>());
+
+            DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
+                    .child("network");
+            networkref.setValue(this.getNetwork());
         }
     }
 
     public void rmUser(String uid) {
+        pullfromfirebase();
         if(this.getNetwork().containsKey(uid)) {
             this.getNetwork().remove(uid);
+            DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
+                    .child("network");
+            networkref.setValue(this.getNetwork());
         } else {
             System.out.println("Unsuccesfully removed User: " + uid + " from Network; user already exists.");
         }
     }
 
     public ArrayList<String> getContacts(String uid) {
+        pullfromfirebase();
         if(this.getNetwork().containsKey(uid)) {
             return this.getNetwork().get(uid);
         } else {
@@ -66,6 +84,7 @@ public enum Network {
     }
 
     public boolean isContact(String baseUid, String targetUid) {
+        pullfromfirebase();
         if(this.getNetwork().containsKey(baseUid)) {
             int size = this.getNetwork().get(baseUid).size();
 
@@ -92,15 +111,22 @@ public enum Network {
     }
 
     public void addUserContact(String baseUid, String targetUid) {
+        pullfromfirebase();
+        //if not already a contact
         if(!this.isContact(baseUid, targetUid)) {
             this.getNetwork().get(baseUid).add(targetUid);
+
             //now add in database as well
-            //(just rewrite hashmap into database?
+            DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
+                    .child("network");
+            networkref.setValue(this.getNetwork());
 
         }
     }
 
     public void rmUserContact(String baseUid, String targetUid) {
+        pullfromfirebase();
+        //if targetUid is a contact
         if(this.isContact(baseUid, targetUid)) {
             int size = this.getNetwork().get(baseUid).size();
 
@@ -110,11 +136,32 @@ public enum Network {
                 if(contacts.get(i).equals(targetUid)) {
                     contacts.remove(i);
 
-                    //now remove in database as well
-                    //(just rewrite hashmap into database?
+                    DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
+                            .child("network");
+                    networkref.setValue(this.getNetwork());
+
                 }
             }
         }
+    }
+
+    //update network from firebase
+    private void pullfromfirebase(){
+        DatabaseReference db;
+        db = FirebaseDatabase.getInstance().getReference()
+                .child("network");
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Network dbnetwork = dataSnapshot.getValue(Network.class);
+                network = dbnetwork.getNetwork();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }
