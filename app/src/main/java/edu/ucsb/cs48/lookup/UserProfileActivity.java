@@ -7,19 +7,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,8 +20,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Result;
@@ -58,14 +49,12 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     //==============================================================================================
     private FirebaseAuth mAuth;
   
-    //    private FirebaseDatabase database;
     private TextView displayName, emailAddress, phoneNumber, textViewFacebook, textViewTwitter;
 
     private Switch switchFacebook;
 
     private TwitterLoginButton loginButton;
     private ImageView profilePic;
-    //    private User currentUser;
     private Button buttonEditProfile;
     private Switch facebookSwitch;
     private Facebook facebook;
@@ -134,6 +123,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
         
         buttonEditProfile.setOnClickListener(this);
+
         loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
