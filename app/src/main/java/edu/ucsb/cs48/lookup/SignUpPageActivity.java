@@ -76,7 +76,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference db;
 
     FirebaseUser user;
-    private String facebookID;
+
+    private String fbLink;
+
     private static final String NAME = "public_profile", EMAIL = "email";
     private TextView info;
 
@@ -155,8 +157,10 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                                 @Override
                                 public void onCompleted(JSONObject object, GraphResponse response) {
                                     try {
-                                        facebookID = object.getString("id");
-                                        Log.d(TAG, "FB id: " + facebookID);
+                                        String id = object.getString("id");
+                                        Log.d(TAG, "FB id: " + id);
+                                        setFBLink(id);
+                                        Log.d(TAG, "FB link successful");
                                     }
                                     catch (Exception e) {
                                         e.printStackTrace();
@@ -334,14 +338,18 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         db.child("users").child(userId).setValue(user);
     }
 
-    private String getFacebookID() {
-        return facebookID;
+    private void setFBLink(String fbID) {
+        fbLink = "https://facebook.com/" + fbID;
+    }
+
+    private String getFBLink() {
+        return fbLink;
     }
 
     private void saveFBUserLink(String link, String userId) {
         Map<String,String> userFBData = new HashMap<String,String>();
-        userFBData.put("facebookID", facebookID);
-        db.child("users").child(userId).child("facebookID").setValue(facebookID);
+        userFBData.put("facebook", link);
+        db.child("users").child(userId).child("facebook").setValue(link);
     }
 
     // sign-in for Google
@@ -423,9 +431,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             String email = user.getEmail();
                             String phone = user.getPhoneNumber();
                             String uid = user.getUid();
-                            String fbID = getFacebookID();
+                            String link = getFBLink();
                             saveUserData(name, email, phone, uid);
-                            saveFBUserLink(fbID, uid);
+                            saveFBUserLink(link, uid);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

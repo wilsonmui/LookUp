@@ -1,5 +1,6 @@
 package edu.ucsb.cs48.lookup;
 
+import edu.ucsb.cs48.lookup.ContactInfo.Facebook;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -29,6 +36,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +44,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.DefaultLogger;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import java.util.HashMap;
+import java.util.Map;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -52,15 +75,21 @@ import static android.content.ContentValues.TAG;
  * Created by deni on 2/8/18.
  */
 
-public class UserProfileActivity  extends AppCompatActivity implements View.OnClickListener{
+public class UserProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
     //==============================================================================================
     // Declare Variables
     //==============================================================================================
     private FirebaseAuth mAuth;
-    private TextView displayName, emailAddress, phoneNumber, facebookLink;
+  
+    //    private FirebaseDatabase database;
+    private TextView displayName, emailAddress, phoneNumber, textViewFacebook, textViewTwitter;
+
+    private Switch switchFacebook;
+
+    private TwitterLoginButton loginButton;
     private ImageView profilePic;
-//    private User currentUser;
+    //    private User currentUser;
     private Button buttonEditProfile;
     private Switch facebookSwitch;
     private Facebook facebook;
@@ -69,7 +98,7 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     private Context mContext;
     private CallbackManager callbackManager;
 
-    private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef;
+    private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
 
 
     //==============================================================================================
@@ -79,11 +108,6 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.user_profile_page);
-
-        buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
-        buttonEditProfile.setOnClickListener(this);
-
         // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -92,52 +116,62 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             startActivity(new Intent(this, SignInPageActivity.class));
         }
 
-        mContext = getApplicationContext();
+        initTwitterConfig();
 
-        userID = currentUser.getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        setContentView(R.layout.user_profile_page);
 
-        userRef = mDatabase.child("users").child(userID);
+        initListeners();
 
-        nameRef= userRef.child("name");
-        nameRef.addValueEventListener(new ValueEventListener() {
+        loadUserData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Pass the activity result to the login button.
+        loginButton.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    //==============================================================================================
+    // Helper Functions
+    //==============================================================================================
+
+    private void initTwitterConfig() {
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(getResources().getString(R.string.consumer_key), getResources().getString(R.string.secret_key));
+        TwitterConfig config = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(authConfig)
+                .debug(true)
+                .build();
+        Twitter.initialize(config);
+    }
+
+    private void initListeners() {
+        textViewFacebook = (TextView) findViewById(R.id.textViewFacebook);
+        textViewTwitter = (TextView) findViewById(R.id.textViewTwitter);
+        switchFacebook = (Switch)findViewById(R.id.switchFacebook);
+        displayName = (TextView) findViewById(R.id.displayName);
+        phoneNumber = (TextView) findViewById(R.id.phoneNumber);
+        emailAddress = (TextView) findViewById(R.id.emailAddress);
+        loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
+        buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
+        
+        buttonEditProfile.setOnClickListener(this);
+        loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                displayName = (TextView) findViewById(R.id.displayName);
-                displayName.setText(dataSnapshot.getValue(String.class));
-            }
+            public void success(Result<TwitterSession> result) {
+                TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+                TwitterAuthToken authToken = session.getAuthToken();
+                String token = authToken.token;
+                String secret = authToken.secret;
+                login(session);
+                          }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        emailRef = userRef.child("email");
-        emailRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                emailAddress = (TextView) findViewById(R.id.emailAddress);
-                emailAddress.setText(dataSnapshot.getValue(String.class));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        phoneRef = userRef.child("phone");
-        phoneRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                phoneNumber = (TextView) findViewById(R.id.phoneNumber);
-                phoneNumber.setText(dataSnapshot.getValue(String.class));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void failure(TwitterException exception) {
+                Toast.makeText(UserProfileActivity.this, "Authentication Failed!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -206,13 +240,29 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
 
                 }
             }
+    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+    private void loadUserData() {
 
-            }
-        });
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        userRef = mDatabase.child("users").child(uid).child("name");
+        loadUserField(userRef, displayName);
+
+        emailRef = mDatabase.child("users").child(uid).child("email");
+        loadUserField(emailRef, emailAddress);
+
+        phoneRef = mDatabase.child("users").child(uid).child("phone");
+        loadUserField(phoneRef, phoneNumber);
+
+        facebookRef = mDatabase.child("users").child(uid).child("facebook");
+        loadUserField(facebookRef, textViewFacebook);
+
+        twitterRef = mDatabase.child("users").child(uid).child("twitter");
+        loadUserField(twitterRef, textViewTwitter);
+      
         profilePicRef = userRef.child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -224,31 +274,23 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
-
-//        loadUserData();
-
-//        facebook = new Facebook();
-//        facebookSwitch = (Switch)findViewById(R.id.switchFacebook);
-//        facebookSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-//                if (isChecked) {
-//                    facebook.connect();
-//                    currentUser.addVisibleContactInfo(facebook);
-//                }
-//                else {
-//                    facebook.disconnect();
-//                    currentUser.rmVisibleContactInfo(facebook);
-//                }
-//            }
-//        });
-
     }
 
-    //==============================================================================================
-    // Action Listeners
-    //==============================================================================================
-    @Override
+
+    public void loadUserField(DatabaseReference databaseReference, final TextView textView) {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                textView.setText(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+  
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.buttonEditProfile:
@@ -259,23 +301,17 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
         }
     }
 
-    //==============================================================================================
-    // Helper Functions
-    //==============================================================================================
-    private void loadUserData() {
-        FirebaseUser user = mAuth.getCurrentUser();
+    public void login(TwitterSession session) {
+        String username = session.getUserName();
+        textViewTwitter.setText(username);
 
-        String name = user.getDisplayName();
-    }
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-    private void loadContactInfoObjects() {
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/users/" + uid + "/twitter", username);
+        mDatabase.updateChildren(childUpdates);
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -290,3 +326,4 @@ public class UserProfileActivity  extends AppCompatActivity implements View.OnCl
     }
 
 }
+  }
