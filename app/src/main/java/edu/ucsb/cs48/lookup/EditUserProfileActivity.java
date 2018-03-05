@@ -1,12 +1,5 @@
 package edu.ucsb.cs48.lookup;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -59,7 +52,6 @@ import static android.content.ContentValues.TAG;
 public class EditUserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
-
     private EditText editDisplayName, editEmailAddress, editPhoneNumber;
     private TextView facebookLink;
     private Button buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
@@ -209,7 +201,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        facebookRef = userRef.child("facebookID");
+        facebookRef = userRef.child("facebook");
         facebookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -246,7 +238,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     @Override
     protected void onStart() {
         super.onStart();
-        setContentView(R.layout.edit_user_profile_page);
+
     }
 
     @Override
@@ -316,7 +308,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         }
     }
-
 
     private void updateDatabase() {
 
