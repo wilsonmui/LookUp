@@ -6,7 +6,7 @@ android {
     buildToolsVersion '27.0.3' //This gives build errors for some reason
     defaultConfig {
         applicationId "edu.ucsb.cs48.lookup"
-        minSdkVersion 23
+        minSdkVersion 22 //23
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
