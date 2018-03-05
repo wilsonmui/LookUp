@@ -28,7 +28,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth mAuth;
     private Button buttonSignOut;
 
-
     //==============================================================================================
     // On Create Setup
     //==============================================================================================
@@ -51,11 +50,14 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
         buttonSignOut= (Button) findViewById(R.id.buttonSignOut);
 
         findViewById(R.id.scan_face_button).setOnClickListener(this);
+        findViewById(R.id.view_code).setOnClickListener(this);
         findViewById(R.id.user_profile_button).setOnClickListener(this);
         findViewById(R.id.contacts_button).setOnClickListener(this);
         findViewById(R.id.info_button).setOnClickListener(this);
+        findViewById(R.id.buttonDisplayUsers).setOnClickListener(this);
         buttonSignOut.setOnClickListener(this);
     }
+
     //==============================================================================================
     // Action Listeners
     //==============================================================================================
@@ -63,18 +65,22 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.scan_face_button:
+
                 scanPerson();
                 break;
             case R.id.user_profile_button:
-                finish();
+
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
+            case R.id.buttonDisplayUsers:
+
+                startActivity(new Intent(this, DisplayUsersPageActivity.class));
+                break;
             case R.id.contacts_button:
-                //TODO contacts button selected
-//                startActivity(new Intent(this, ContactsActivity.class)); //TODO implement ContactsActivity.class
+                startActivity(new Intent(this, ContactsPageActivity.class));
                 break;
             case R.id.info_button:
-                finish();
+
                 startActivity(new Intent(this, InfoPageActivity.class));
                 break;
             case R.id.buttonSignOut:
@@ -82,11 +88,14 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 mAuth.getInstance().signOut();
                 startActivity(new Intent(this, SignInPageActivity.class));
                 break;
+            case R.id.view_code:
+
+                startActivity(new Intent(this, GenerateCodeActivity.class));
+                break;
         }
     }
 
     private void scanPerson(){
-        //TODO stub
         startActivity(new Intent(this, CameraActivity.class));
     }
 }

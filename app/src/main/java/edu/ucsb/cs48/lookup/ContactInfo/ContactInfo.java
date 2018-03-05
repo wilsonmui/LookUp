@@ -1,4 +1,6 @@
-package edu.ucsb.cs48.lookup;
+package edu.ucsb.cs48.lookup.ContactInfo;
+
+import edu.ucsb.cs48.lookup.User;
 
 /**
  * Created by esuarez on 2/23/18.
@@ -11,6 +13,14 @@ public abstract class ContactInfo {
     //==============================================================================================
 
     private String name;
+
+    //==============================================================================================
+    // Constructor
+    //==============================================================================================
+
+    public ContactInfo(String name) {
+        this.name = name;
+    }
 
     //==============================================================================================
     // Accessor Methods
@@ -34,6 +44,10 @@ public abstract class ContactInfo {
 
     public boolean disconnect() {
         // Must be Overriden by children
+        return false;
+    }
+
+    public boolean isConnected() {
         return false;
     }
 

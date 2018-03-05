@@ -1,5 +1,8 @@
 package edu.ucsb.cs48.lookup;
 import java.util.ArrayList;
+import java.util.List;
+
+import edu.ucsb.cs48.lookup.ContactInfo.ContactInfo;
 
 /**
  * Created by Wilson on 2/7/18.
@@ -18,9 +21,8 @@ public class User {
     private String email;
     private String phone;
     private String uid;
-
-    private ArrayList<ContactInfo> connectedContactInfo;
-    private ArrayList<ContactInfo> visibleContactInfo;
+    private String facebook;
+    private String twitter;
 
     //==============================================================================================
     // Constructors
@@ -34,8 +36,8 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.uid = uid;
-        this.connectedContactInfo = new ArrayList<ContactInfo>();
-        this.visibleContactInfo = new ArrayList<ContactInfo>();
+        this.facebook = "";
+        this.twitter = "";
     }
 
 
@@ -44,17 +46,16 @@ public class User {
     //==============================================================================================
     public String getName() { return this.name; }
 
-    public String getEmail() {
-        return this.email;
-    }
+    public String getEmail() {return this.email; }
 
     public String getPhone() { return this.phone; }
 
     public String getUid() { return this.uid; }
 
-    public ArrayList<ContactInfo> getConnectedContactInfo() { return connectedContactInfo; }
+    public String getFacebook() { return this.facebook; }
 
-    public ArrayList<ContactInfo> getVisibleContactInfo() { return visibleContactInfo; }
+    public String getTwitter() { return this.twitter; }
+
 
     //==============================================================================================
     // Setter Methods
@@ -65,81 +66,39 @@ public class User {
 
     public void setPhone(String phone) { this.phone = phone; }
 
+    public void setFacebook(String phone) { this.facebook = phone; }
 
-    //==============================================================================================
-    // Helper Functions
-    //==============================================================================================
-    private int contactInfoExists(ArrayList<ContactInfo> contactInfos, ContactInfo contactInfo) {
-
-        int size = contactInfos.size();
-
-        for(int i = 0; i < size; i++) {
-            if (contactInfos.get(i).equals(contactInfo)) {
-                return i; // True
-            }
-        }
-
-        return -1; // False
-    }
+    public void setTwitter(String phone) { this.twitter = phone; }
 
     //==============================================================================================
     // Methods
     //==============================================================================================
 
-    public String addConnectedContactInfo(ContactInfo contactInfo) {
-
-        if(contactInfoExists(this.connectedContactInfo, contactInfo) > -1) {
-            return "Already connected through " + contactInfo.getName();
-        } else {
-            if (contactInfo.connect()) {
-                this.connectedContactInfo.add(contactInfo);
-                return "Successfully connected" + contactInfo.getName();
-            } else {
-                return "Disonnected " + contactInfo.getName() + " was unsuccessful.";
-            }
-        }
-    }
-
-    public String rmConnectedContactInfo(ContactInfo contactInfo) {
-
-        int contactInfoIndex = contactInfoExists(this.connectedContactInfo, contactInfo);
-
-        if(contactInfoIndex > -1) {
-
-                // Attempt to disconnect the Contact Info
-                if (contactInfo.disconnect()) {
-                    connectedContactInfo.remove(contactInfoIndex);
-                    return "Successfully disconnected" + contactInfo.getName();
-                } else {
-                    return "Disconnecting " + contactInfo.getName() + " was unsuccessful.";
-                }
-        } else {
-            return contactInfo.getName() + " does not exist";
-        }
-    }
-
-
-    public String addVisibleContactiInfo(ContactInfo contactInfo) {
-
-        if(contactInfoExists(this.visibleContactInfo, contactInfo) > -1) {
-                return contactInfo.getName() + " already visible.";
-        } else {
-            this.visibleContactInfo.add(contactInfo);
-            return contactInfo.getName() + "is now visible";
-        }
-    }
-
-    public String rmVisibleContactInfo(ContactInfo contactInfo) {
-
-        int contactInfoIndex = contactInfoExists(this.connectedContactInfo, contactInfo);
-
-        if(contactInfoIndex > -1) {
-            visibleContactInfo.remove(contactInfoIndex);
-            return "Successfully made " + contactInfo.getName() + " invisible.";
-        } else {
-            return contactInfo.getName() + " either does not exist or is already invisible";
-        }
-    }
+//    //==============================================================================================
+//    // Methods
+//    //==============================================================================================
+//
+//    public String addVisibleContactInfo(ContactInfo contactInfo) {
+//
+//        if(contactInfoExists(this.visibleContactInfo, contactInfo) > -1) {
+//                return contactInfo.getName() + " already visible.";
+//        } else {
+//            this.visibleContactInfo.add(contactInfo);
+//            return contactInfo.getName() + "is now visible";
+//        }
+//    }
+//
+//    public String rmVisibleContactInfo(ContactInfo contactInfo) {
+//
+//        int contactInfoIndex = contactInfoExists(this.visibleContactInfo, contactInfo);
+//
+//        if(contactInfoIndex > -1) {
+//            visibleContactInfo.remove(contactInfoIndex);
+//            return "Successfully made " + contactInfo.getName() + " invisible.";
+//        } else {
+//            return contactInfo.getName() + " either does not exist or is already invisible";
+//        }
+//    }
 
     @Override
     public boolean equals(Object obj) {

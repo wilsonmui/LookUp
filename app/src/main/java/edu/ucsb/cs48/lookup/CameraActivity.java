@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.util.Log;
 
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-
 public class CameraActivity extends Activity {
     private static final int CAMERA_REQUEST = 1888;
     ImageView imageView;
@@ -30,7 +29,7 @@ public class CameraActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camera_activity_page); //TODO
+        setContentView(R.layout.camera_activity_page);
 
         uid = this.findViewById(R.id.uid_result);
         imageView = (ImageView) this.findViewById(R.id.face_imageview);
