@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">LookUp</string>
-    <string name="com.twitter.sdk.android.CONSUMER_KEY">2G8zigd9fSrkZNa8rDCI4vhPD</string>
-    <string name="com.twitter.sdk.android.CONSUMER_SECRET">0bkPvwSBr9GtE9nWJvgR5PGXp76mqQt4JPOHsud12YCKjDZ6Iw</string>
-    <string name="consumer_key">2G8zigd9fSrkZNa8rDCI4vhPD</string>
-    <string name="secret_key">0bkPvwSBr9GtE9nWJvgR5PGXp76mqQt4JPOHsud12YCKjDZ6Iw</string>
+
     <!--
     <string name="fb_login_protocol_scheme">fb1959796554047932</string>
     <string name="sign_in_with_facebook">Sign in with Facebook</string>

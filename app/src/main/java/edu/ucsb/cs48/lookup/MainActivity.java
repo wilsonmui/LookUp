@@ -32,10 +32,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, HomePageActivity.class));
         }
 
+        // Layout Setup
         setContentView(R.layout.activity_main);
-
-        initListeners();
+        findViewById(R.id.buttonGetStarted).setOnClickListener(this);
+        findViewById(R.id.buttonSignIn).setOnClickListener(this);
     }
+
+    //==============================================================================================
+    // Action Listeners
+    //==============================================================================================
 
     @Override
     public void onClick(View view) {
@@ -47,14 +52,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, SignInPageActivity.class));
                 break;
         }
-    }
-
-    //==============================================================================================
-    // Helper Functions
-    //==============================================================================================
-
-    private void initListeners() {
-        findViewById(R.id.buttonGetStarted).setOnClickListener(this);
-        findViewById(R.id.buttonSignIn).setOnClickListener(this);
     }
 }

@@ -76,9 +76,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference db;
 
     FirebaseUser user;
-
-    private String fbLink;
-
+    private String facebookID;
     private static final String NAME = "public_profile", EMAIL = "email";
     private TextView info;
 
@@ -102,7 +100,30 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
         setContentView(R.layout.sign_up_page);
 
-        initListeners();
+        imageButton = (ImageButton) this.findViewById(R.id.user_profile_photo);
+        Button photoButton = (Button) this.findViewById(R.id.set_photo_button);
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
+
+        // Set up UI variables and Listeners
+        editTextName = (EditText) findViewById(R.id.editTextName);
+        editTextEmail = (EditText)findViewById(R.id.editTextEmail);
+        editTextPassword = (EditText)findViewById(R.id.editTextPassword);
+        editTextPhone = (EditText)findViewById(R.id.editTextPhone);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
+        textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
+
+
+        buttonSignUp.setOnClickListener(this);
+        textViewSignIn.setOnClickListener(this);
 
         db = FirebaseDatabase.getInstance().getReference();
 
@@ -134,10 +155,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                                 @Override
                                 public void onCompleted(JSONObject object, GraphResponse response) {
                                     try {
-                                        String id = object.getString("id");
-                                        Log.d(TAG, "FB id: " + id);
-                                        setFBLink(id);
-                                        Log.d(TAG, "FB link successful");
+                                        facebookID = object.getString("id");
+                                        Log.d(TAG, "FB id: " + facebookID);
                                     }
                                     catch (Exception e) {
                                         e.printStackTrace();
@@ -219,31 +238,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             Log.d(TAG, "current user is null");
         }
 
-    }
-
-    private void initListeners() {
-
-        editTextName = (EditText) findViewById(R.id.editTextName);
-        editTextEmail = (EditText)findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText)findViewById(R.id.editTextPassword);
-        editTextPhone = (EditText)findViewById(R.id.editTextPhone);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
-        textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
-        imageButton = (ImageButton) findViewById(R.id.user_profile_photo);
-        Button photoButton = (Button) findViewById(R.id.set_photo_button);
-
-        photoButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-        });
-
-        buttonSignUp.setOnClickListener(this);
-        textViewSignIn.setOnClickListener(this);
     }
 
     private void registerUser() {
@@ -340,18 +334,14 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         db.child("users").child(userId).setValue(user);
     }
 
-    private void setFBLink(String fbID) {
-        fbLink = "https://facebook.com/" + fbID;
-    }
-
-    private String getFBLink() {
-        return fbLink;
+    private String getFacebookID() {
+        return facebookID;
     }
 
     private void saveFBUserLink(String link, String userId) {
         Map<String,String> userFBData = new HashMap<String,String>();
-        userFBData.put("facebook", link);
-        db.child("users").child(userId).child("facebook").setValue(link);
+        userFBData.put("facebookID", facebookID);
+        db.child("users").child(userId).child("facebookID").setValue(facebookID);
     }
 
     // sign-in for Google
@@ -433,9 +423,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             String email = user.getEmail();
                             String phone = user.getPhoneNumber();
                             String uid = user.getUid();
-                            String link = getFBLink();
+                            String fbID = getFacebookID();
                             saveUserData(name, email, phone, uid);
-                            saveFBUserLink(link, uid);
+                            saveFBUserLink(fbID, uid);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
