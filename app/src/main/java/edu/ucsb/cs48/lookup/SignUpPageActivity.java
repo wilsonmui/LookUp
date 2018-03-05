@@ -1,6 +1,8 @@
 package edu.ucsb.cs48.lookup;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -62,6 +64,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private static final int SIGN_IN_REQUEST = 0;
     private Button buttonSignUp;
     private CallbackManager callbackManager;
+    private String g_username = "";
 
     private DatabaseReference db;
 
@@ -350,8 +353,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //prompt user to enter name and phone
-                            saveUserData("null", "null","null", user.getUid());
+
+                            saveUserData(user.getDisplayName(), user.getEmail(),user.getPhoneNumber(), user.getUid());
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

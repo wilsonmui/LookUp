@@ -1,5 +1,6 @@
 package edu.ucsb.cs48.lookup;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -10,6 +11,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static android.content.ContentValues.TAG;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by esuarez on 2/23/18.
@@ -49,15 +53,20 @@ public enum Network {
 
     //make sure this is called when a new user is created
     public void addNewUser(String uid) {
-        pullfromfirebase();
+        //pullfromfirebase();
         if(this.getNetwork().containsKey(uid)) {
             System.out.println("Unsuccesfully Added User: " + uid + " to Network; user already exists.");
+            Log.d(TAG, "Unsuccessfully Added User: " + uid + "to Network, user already exists");
+
         } else {
             this.getNetwork().put(uid, new ArrayList<String>());
 
             DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
                     .child("network");
             networkref.setValue(this.getNetwork());
+
+            Toast.makeText(getApplicationContext(), "added: " + uid,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -154,7 +163,9 @@ public enum Network {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Network dbnetwork = dataSnapshot.getValue(Network.class);
-                network = dbnetwork.getNetwork();
+                //Log.d(TAG, "size of network: " + dbnetwork.getNetwork().size());
+
+                //network = dbnetwork.getNetwork();
             }
 
             @Override
