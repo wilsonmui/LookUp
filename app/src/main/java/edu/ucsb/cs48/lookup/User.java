@@ -21,8 +21,8 @@ public class User {
     private String email;
     private String phone;
     private String uid;
-    private String facebookURL;
-    private String twitterURl;
+    private String facebook;
+    private String twitter;
 
     //==============================================================================================
     // Constructors
@@ -36,8 +36,8 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.uid = uid;
-        this.facebookURL = "";
-        this.twitterURl = "";
+        this.facebook = "";
+        this.twitter = "";
     }
 
 
@@ -52,9 +52,9 @@ public class User {
 
     public String getUid() { return this.uid; }
 
-    public String getFacebookURL() { return this.uid; }
+    public String getFacebook() { return this.facebook; }
 
-    public String getTwitterURl() { return this.uid; }
+    public String getTwitter() { return this.twitter; }
 
 
     //==============================================================================================
@@ -66,26 +66,13 @@ public class User {
 
     public void setPhone(String phone) { this.phone = phone; }
 
-    public void setFacebookURL(String phone) { this.phone = phone; }
+    public void setFacebook(String phone) { this.facebook = phone; }
 
-    public void setTwitterURl(String phone) { this.phone = phone; }
-
+    public void setTwitter(String phone) { this.twitter = phone; }
 
     //==============================================================================================
-    // Helper Functions
+    // Methods
     //==============================================================================================
-    private int contactInfoExists(List<Boolean> contactInfos, ContactInfo contactInfo) {
-
-        int size = contactInfos.size();
-
-        for(int i = 0; i < size; i++) {
-            if (contactInfos.get(i).equals(contactInfo)) {
-                return i; // True
-            }
-        }
-
-        return -1; // False
-    }
 
 //    //==============================================================================================
 //    // Methods

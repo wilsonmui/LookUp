@@ -201,14 +201,19 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        facebookRef = userRef.child("facebookID");
+        facebookRef = userRef.child("facebook");
         facebookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 fbUserID = dataSnapshot.getValue(String.class);
                 facebookLink = (TextView) findViewById(R.id.facebookLink);
-                facebookLink.setText("https://facebook.com" + dataSnapshot.getValue(String.class));
-                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+                if (fbUserID != null) {
+                    facebookLink.setText("https://facebook.com" + fbUserID);
+                    userProfileData.put(dataSnapshot.getKey(), fbUserID);
+                }
+                else {
+                    facebookLink.setText("");
+                }
             }
 
             @Override
@@ -249,16 +254,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                     @Override
                     public void onClick(View view) {
                         Log.d(TAG, "Import from FB button clicked");
-//                        try {
-//                            URL imageURL = new URL("http://graph.facebook.com/" + fbUserID + "/picture?type=large");
-//                            Bitmap userProfilePic = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-//                            editUserProfilePic.setImageBitmap(userProfilePic);
-//                            addProfilePicToDatabase(userProfilePic);
-//                            String fbProfilePicURL = "http://graph.facebook.com/" + fbUserID + "/picture?type=large";
-
-                        // this works
-//                        String url = "https://graph.facebook.com/" + fbUserID + "/picture?type=large";
-//                        new AsyncTaskLoadImage(editUserProfilePic).execute(url);
 
                         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                         StrictMode.setThreadPolicy(policy);
