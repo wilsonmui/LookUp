@@ -128,7 +128,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     private void initListeners() {
         textViewTwitter = (TextView) findViewById(R.id.textViewTwitter);
-        switchFacebook = (Switch)findViewById(R.id.switchFacebook);
         displayName = (TextView) findViewById(R.id.displayName);
         phoneNumber = (TextView) findViewById(R.id.phoneNumber);
         emailAddress = (TextView) findViewById(R.id.emailAddress);
