@@ -16,6 +16,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.BitmapFactory;
 import android.util.SparseArray;
 import android.widget.TextView;
+import android.util.Log;
 
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
@@ -24,6 +25,7 @@ public class CameraActivity extends Activity {
     ImageView imageView;
     Bitmap bitmapPhoto;
     TextView uid;
+    String uidGrabbed;
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -65,7 +67,8 @@ public class CameraActivity extends Activity {
                 new BarcodeDetector.Builder(getApplicationContext())
                         .setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE)
                         .build();
-        if(!detector.isOperational()){ //TODO log error!
+        if(!detector.isOperational()){
+            Log.e("ShitDontWork", "Shit dont work");
             return;
         }
 
@@ -73,6 +76,7 @@ public class CameraActivity extends Activity {
         SparseArray<Barcode> barcodes = detector.detect(frame);
 
         Barcode thisCode = barcodes.valueAt(0);
-        uid.setText(thisCode.rawValue);
+        uidGrabbed = thisCode.rawValue;
+        uid.setText(uidGrabbed);
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.FirebaseApp;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         // Check if User is Authenticated
+        FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser() != null) {
             finish();
