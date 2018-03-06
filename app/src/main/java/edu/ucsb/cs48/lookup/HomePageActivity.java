@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import android.os.Environment;
 import android.net.Uri;
@@ -75,8 +76,13 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.info_button:
                 //finish();
                 //startActivity(new Intent(this, InfoPageActivity.class));
-                Network.getInstance().addUserContact("L6sAuqQnv6c_vxGwEVp", "NOOOpe");
-                Network.getInstance().addUserContact("NOOOpe", "L6sAuqQnv6c_vxGwEVp");
+                //Network.getInstance().addUserContact("NOOOpe", "3HpDljXnxLObxxliJsL6dZnz4LF2");
+                //Network.getInstance().addUserContact("NOOOpe", "hello");
+
+                ArrayList<String> dummy = Network.getInstance().getContacts("NOOOpe");
+                for(int i = 0; i < dummy.size(); i++) {
+                    System.out.println(dummy.get(i));
+                }
                 break;
             case R.id.buttonSignOut:
                 finish();

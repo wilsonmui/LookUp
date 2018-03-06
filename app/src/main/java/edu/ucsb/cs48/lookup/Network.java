@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class Network {
     //==============================================================================================
     private static Network instance = null;
     private boolean isContact;
+    private ArrayList<String> contacts;
 
     //==============================================================================================
     // Constructor
@@ -38,6 +40,7 @@ public class Network {
 
     private Network() {
         this.isContact = false;
+        this.contacts = new ArrayList();
     }
 
     //==============================================================================================
@@ -57,32 +60,50 @@ public class Network {
 
     public void setIsContact(boolean isContact) { this.isContact = isContact; }
 
+    public String getContactsArray(int index) { return this.contacts.get(index); }
+
+    public ArrayList<String> getContactsRef() { return this.contacts;}
+
+    public void addElementToContactsArray(String uid) { this.contacts.add(uid); }
+
+    public int sizeContactsArray() { return this.contacts.size(); }
+
+    public void clearContactsArray() { this.contacts.clear(); }
+
     //==============================================================================================
     // Methods
     //==============================================================================================
 
-//    public void rmUser(String uid) {
-//        databasePull();
-//        if(this.getNetwork().containsKey(uid)) {
-//            this.getNetwork().remove(uid);
-//            DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
-//                    .child("network");
-//            networkref.setValue(this.getNetwork());
-//        } else {
-//            System.out.println("Unsuccesfully removed User: " + uid + " from Network; user already exists.");
-//        }
-//    }
+    public void mReadDataOnce(String child, final OnGetDataListener listener) {
+        listener.onStart();
+        FirebaseDatabase.getInstance().getReference().child(child).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
 
-//    public ArrayList<String> getContacts(String uid) {
-//        databasePull();
-//        if(this.getNetwork().containsKey(uid)) {
-//            return this.getNetwork().get(uid);
-//        } else {
-//            System.out.println("Unsuccesfully obtained User: " + uid + "'s contacts; user does not exist.");
-//            return null;
-//        }
-//    }
-    public void addUserContact(final String baseUid, final String targetUid) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
+    }
+    public void mReadDataOnce(String child, String innerChild, final OnGetDataListener listener) {
+        listener.onStart();
+        FirebaseDatabase.getInstance().getReference().child(child).child(innerChild).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
+    }
+
+    public void rmUser(final String uid) {
 
         DatabaseReference networkRef;
         networkRef = FirebaseDatabase.getInstance().getReference()
@@ -92,6 +113,92 @@ public class Network {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    boolean userExists = false;
+                    for (DataSnapshot networkDs : dataSnapshot.getChildren()) {
+                        String key = "";
+
+                        if (networkDs.getKey().equals(uid)) {
+                            userExists = true;
+                            key = networkDs.getKey();
+                        }
+                    }
+
+                    if (!userExists) {
+                        System.out.println("Removing User: " + uid + "failed: User does not exist");
+                    } else {
+                        //TODO: Remove User from everyone elses contact list
+                        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+                                .child("network").child(uid);
+
+                        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
+                                    rmUserContact(keyDs.getValue().toString(), uid);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                // handle error
+                            }
+                        });
+
+                        userRef.removeValue();
+                        System.out.println("User: " + uid + "was successfully removed");                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // handle error
+            }
+        });
+    }
+
+    public void getContacts(final String uid) {
+
+        mReadDataOnce("network", uid, new OnGetDataListener() {
+            @Override
+            public void onStart() {
+                //DO SOME THING WHEN START GET DATA HERE
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                for (DataSnapshot contactsDs : data.getChildren()) {
+
+                    Network.getInstance().addElementToContactsArray(contactsDs.getValue().toString());
+
+                    System.out.println("Start of array printing in inner data change------------------");
+                    for(int i = 0; i < Network.getInstance().sizeContactsArray(); i++)
+                    {
+                            System.out.println(Network.getInstance().getContactsArray(i));
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                System.out.println("-- Get User Contacts Failed --");
+            }
+        });
+    }
+
+    public void addUserContact(final String baseUid, final String targetUid) {
+
+        DatabaseReference networkRef;
+        networkRef = FirebaseDatabase.getInstance().getReference()
+                .child("network");
+
+        networkRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+
                     boolean userExists = false;
                     for (DataSnapshot networkDs : dataSnapshot.getChildren()) {
                         final String parentKey = networkDs.getKey().toString();
@@ -127,11 +234,6 @@ public class Network {
                                     // handle error
                                 }
                             });
-                        } else {
-                            System.out.println("Else reached, parent key doesnt equal base uid.");
-//                            DatabaseReference networkRef = FirebaseDatabase.getInstance().getReference()
-//                                    .child("network");
-//                            networkRef.child(baseUid).push().setValue(targetUid);
                         }
                     }
 
@@ -150,24 +252,66 @@ public class Network {
         });
     }
 
-//    public void rmUserContact(String baseUid, String targetUid) {
-//        databasePull();
-//        //if targetUid is a contact
-//        if(this.isContact(baseUid, targetUid)) {
-//            int size = this.getNetwork().get(baseUid).size();
-//
-//            ArrayList<String> contacts = this.getNetwork().get(baseUid);
-//
-//            for(int i = 0; i < size; i++) {
-//                if(contacts.get(i).equals(targetUid)) {
-//                    contacts.remove(i);
-//
-//                    DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
-//                            .child("network");
-//                    networkref.setValue(this.getNetwork());
-//
-//                }
-//            }
-//        }
-//    }
+    public void rmUserContact(final String baseUid, final String targetUid) {
+
+        DatabaseReference networkRef;
+        networkRef = FirebaseDatabase.getInstance().getReference()
+                .child("network");
+
+        networkRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    boolean userExists = false;
+                    for (DataSnapshot networkDs : dataSnapshot.getChildren()) {
+                        final String parentKey = networkDs.getKey().toString();
+
+                        if (parentKey.equals(baseUid)) {
+                            userExists = true;
+                            DatabaseReference keyRef = FirebaseDatabase.getInstance().getReference()
+                                    .child("network").child(parentKey);
+                            keyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    boolean isContact = false;
+                                    String targetKey = "";
+                                    for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
+                                        if (keyDs.getValue().toString().equals(targetUid) && parentKey.equals(baseUid)) {
+                                            isContact = true;
+                                            targetKey = keyDs.getKey().toString();
+                                            break;
+                                        }
+                                    }
+
+                                    if (isContact) {
+                                        DatabaseReference targetRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("network").child(baseUid).child(targetKey);
+                                        targetRef.removeValue();
+                                        System.out.println("User: " + baseUid + " contact: " + targetUid + " successfully removed");
+                                    } else {
+                                        System.out.println("Removing contact failed, User: " + baseUid + " does not have contact: " + targetUid);
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    // handle error
+                                }
+                            });
+                        }
+                    }
+
+                    if (!userExists) {
+                        System.out.println("Removing contact failed, User: " + baseUid + " does not exist");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // handle error
+            }
+        });
+    }
 }
