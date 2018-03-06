@@ -73,8 +73,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(new Intent(this, ContactsPageActivity.class));
                 break;
             case R.id.info_button:
-                finish();
-                startActivity(new Intent(this, InfoPageActivity.class));
+                //finish();
+                //startActivity(new Intent(this, InfoPageActivity.class));
+                Network.getInstance().addUserContact("L6sAuqQnv6c_vxGwEVp", "NOOOpe");
+                Network.getInstance().addUserContact("NOOOpe", "L6sAuqQnv6c_vxGwEVp");
                 break;
             case R.id.buttonSignOut:
                 finish();

@@ -10,7 +10,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -19,160 +23,151 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by esuarez on 2/23/18.
  */
 
-public enum Network {
+public class Network {
 
-    INSTANCE(new HashMap<String, ArrayList<String>>());
 
     //==============================================================================================
     // Fields
     //==============================================================================================
-    private HashMap<String, ArrayList<String>> network;
+    private static Network instance = null;
+    private boolean isContact;
 
     //==============================================================================================
     // Constructor
     //==============================================================================================
 
-    Network(HashMap<String, ArrayList<String>> network) {
-        this.network = network;
+    private Network() {
+        this.isContact = false;
     }
 
     //==============================================================================================
     // Singleton Accessor Methods
     //==============================================================================================
-    public static Network getInstance() {
-        return INSTANCE;
+
+    public static Network getInstance(){
+        if (instance == null)
+            instance = new Network();
+
+        return instance;
     }
 
-    public HashMap<String, ArrayList<String>> getNetwork() {
-        return this.network;
+    public boolean getIsContact() {
+        return this.isContact;
     }
+
+    public void setIsContact(boolean isContact) { this.isContact = isContact; }
 
     //==============================================================================================
     // Methods
     //==============================================================================================
 
-    //make sure this is called when a new user is created
-    public void addNewUser(String uid) {
-        //pullfromfirebase();
-        if(this.getNetwork().containsKey(uid)) {
-            System.out.println("Unsuccesfully Added User: " + uid + " to Network; user already exists.");
-            Log.d(TAG, "Unsuccessfully Added User: " + uid + "to Network, user already exists");
+//    public void rmUser(String uid) {
+//        databasePull();
+//        if(this.getNetwork().containsKey(uid)) {
+//            this.getNetwork().remove(uid);
+//            DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
+//                    .child("network");
+//            networkref.setValue(this.getNetwork());
+//        } else {
+//            System.out.println("Unsuccesfully removed User: " + uid + " from Network; user already exists.");
+//        }
+//    }
 
-        } else {
-            this.getNetwork().put(uid, new ArrayList<String>());
+//    public ArrayList<String> getContacts(String uid) {
+//        databasePull();
+//        if(this.getNetwork().containsKey(uid)) {
+//            return this.getNetwork().get(uid);
+//        } else {
+//            System.out.println("Unsuccesfully obtained User: " + uid + "'s contacts; user does not exist.");
+//            return null;
+//        }
+//    }
+    public void addUserContact(final String baseUid, final String targetUid) {
 
-            DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
-                    .child("network");
-            networkref.setValue(this.getNetwork());
-
-            Toast.makeText(getApplicationContext(), "added: " + uid,
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void rmUser(String uid) {
-        pullfromfirebase();
-        if(this.getNetwork().containsKey(uid)) {
-            this.getNetwork().remove(uid);
-            DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
-                    .child("network");
-            networkref.setValue(this.getNetwork());
-        } else {
-            System.out.println("Unsuccesfully removed User: " + uid + " from Network; user already exists.");
-        }
-    }
-
-    public ArrayList<String> getContacts(String uid) {
-        pullfromfirebase();
-        if(this.getNetwork().containsKey(uid)) {
-            return this.getNetwork().get(uid);
-        } else {
-            System.out.println("Unsuccesfully obtained User: " + uid + "'s contacts; user does not exist.");
-            return null;
-        }
-    }
-
-    public boolean isContact(String baseUid, String targetUid) {
-        pullfromfirebase();
-        if(this.getNetwork().containsKey(baseUid)) {
-            int size = this.getNetwork().get(baseUid).size();
-
-            // CHeck if array is empty
-            if(size == 0) {
-                System.out.println("User: " + baseUid + " has no contacts");
-                return false;
-            }
-
-            ArrayList<String> contacts = this.getNetwork().get(baseUid);
-
-            for(int i = 0; i < size; i++) {
-                if(contacts.get(i).equals(targetUid)) {
-                    return true;
-                }
-            }
-
-            return false;
-
-        } else {
-            System.out.println("Could not retrieve User: " + baseUid + "'s contact: " + targetUid + "; origin does not exist.");
-            return false;
-        }
-    }
-
-    public void addUserContact(String baseUid, String targetUid) {
-        pullfromfirebase();
-        //if not already a contact
-        if(!this.isContact(baseUid, targetUid)) {
-            this.getNetwork().get(baseUid).add(targetUid);
-
-            //now add in database as well
-            DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
-                    .child("network");
-            networkref.setValue(this.getNetwork());
-
-        }
-    }
-
-    public void rmUserContact(String baseUid, String targetUid) {
-        pullfromfirebase();
-        //if targetUid is a contact
-        if(this.isContact(baseUid, targetUid)) {
-            int size = this.getNetwork().get(baseUid).size();
-
-            ArrayList<String> contacts = this.getNetwork().get(baseUid);
-
-            for(int i = 0; i < size; i++) {
-                if(contacts.get(i).equals(targetUid)) {
-                    contacts.remove(i);
-
-                    DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
-                            .child("network");
-                    networkref.setValue(this.getNetwork());
-
-                }
-            }
-        }
-    }
-
-    //update network from firebase
-    private void pullfromfirebase(){
-        DatabaseReference db;
-        db = FirebaseDatabase.getInstance().getReference()
+        DatabaseReference networkRef;
+        networkRef = FirebaseDatabase.getInstance().getReference()
                 .child("network");
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        networkRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Network dbnetwork = dataSnapshot.getValue(Network.class);
-                //Log.d(TAG, "size of network: " + dbnetwork.getNetwork().size());
+                if (dataSnapshot.exists()) {
+                    boolean userExists = false;
+                    for (DataSnapshot networkDs : dataSnapshot.getChildren()) {
+                        final String parentKey = networkDs.getKey().toString();
 
-                //network = dbnetwork.getNetwork();
+                        if (parentKey.equals(baseUid)) {
+                            userExists = true;
+                            DatabaseReference keyRef = FirebaseDatabase.getInstance().getReference()
+                                    .child("network").child(parentKey);
+                            keyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    boolean isContact = false;
+                                    for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
+                                        if (keyDs.getValue().toString().equals(targetUid) && parentKey.equals(baseUid)) {
+                                            System.out.println("IS INDEED A CONTACT");
+                                            isContact = true;
+                                            break;
+                                        }
+                                    }
+
+                                    System.out.println(isContact);
+                                    if (!isContact) {
+                                        System.out.println("Contact does NOT exist, and isContact is " + isContact);
+                                        DatabaseReference networkRef = FirebaseDatabase.getInstance().getReference()
+                                                .child("network");
+                                        networkRef.child(baseUid).push().setValue(targetUid);
+                                        System.out.println("Contact added!");
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    // handle error
+                                }
+                            });
+                        } else {
+                            System.out.println("Else reached, parent key doesnt equal base uid.");
+//                            DatabaseReference networkRef = FirebaseDatabase.getInstance().getReference()
+//                                    .child("network");
+//                            networkRef.child(baseUid).push().setValue(targetUid);
+                        }
+                    }
+
+                    if(!userExists) {
+                        DatabaseReference networkRef = FirebaseDatabase.getInstance().getReference()
+                                .child("network");
+                        networkRef.child(baseUid).push().setValue(targetUid);
+                    }
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                // handle error
             }
         });
     }
 
+//    public void rmUserContact(String baseUid, String targetUid) {
+//        databasePull();
+//        //if targetUid is a contact
+//        if(this.isContact(baseUid, targetUid)) {
+//            int size = this.getNetwork().get(baseUid).size();
+//
+//            ArrayList<String> contacts = this.getNetwork().get(baseUid);
+//
+//            for(int i = 0; i < size; i++) {
+//                if(contacts.get(i).equals(targetUid)) {
+//                    contacts.remove(i);
+//
+//                    DatabaseReference networkref = FirebaseDatabase.getInstance().getReference()
+//                            .child("network");
+//                    networkref.setValue(this.getNetwork());
+//
+//                }
+//            }
+//        }
+//    }
 }

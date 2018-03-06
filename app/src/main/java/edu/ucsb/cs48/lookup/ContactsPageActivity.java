@@ -35,7 +35,7 @@ public class ContactsPageActivity extends AppCompatActivity {
         //pass in list of contacts
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         Toast.makeText(this, "" + currentFirebaseUser.getUid(), Toast.LENGTH_SHORT).show();
-        contacts = Network.getInstance().getContacts(currentFirebaseUser.getUid());
+        contacts = null;//network.getContacts(currentFirebaseUser.getUid());
         Contacts_Adapter ca = new Contacts_Adapter(contacts);
 
         contacts_list.setAdapter(ca);
