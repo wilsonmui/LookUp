@@ -63,6 +63,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     private Switch switchFacebook;
 
+    private LoginButton buttonConnectToFacebook;
     private TwitterLoginButton loginButton;
     private ImageView profilePic;
     private Button buttonEditProfile;
@@ -98,6 +99,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         initListeners();
 
         loadUserData();
+
     }
 
     @Override
@@ -106,6 +108,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
         // Pass the activity result to the login button.
         loginButton.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -125,12 +128,13 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     private void initListeners() {
         textViewTwitter = (TextView) findViewById(R.id.textViewTwitter);
-        switchFacebook = (Switch)findViewById(R.id.switchFacebook);
         displayName = (TextView) findViewById(R.id.displayName);
         phoneNumber = (TextView) findViewById(R.id.phoneNumber);
         emailAddress = (TextView) findViewById(R.id.emailAddress);
+        textViewFacebook = (TextView) findViewById(R.id.facebookLink);
         loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
         buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
+
         
         buttonEditProfile.setOnClickListener(this);
 
@@ -150,18 +154,56 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        facebookRef = userRef.child("facebookID");
+    }
+
+    private void loadUserData() {
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        userRef = mDatabase.child("users").child(uid);
+
+        nameRef = mDatabase.child("users").child(uid).child("name");
+        loadUserField(nameRef, displayName);
+
+        emailRef = mDatabase.child("users").child(uid).child("email");
+        loadUserField(emailRef, emailAddress);
+
+        phoneRef = mDatabase.child("users").child(uid).child("phone");
+        loadUserField(phoneRef, phoneNumber);
+
+        twitterRef = mDatabase.child("users").child(uid).child("twitter");
+        loadUserField(twitterRef, textViewTwitter);
+      
+        profilePicRef = userRef.child("profilePic");
+        profilePicRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+//                if (!dataSnapshot.getValue(String.class).is
+                if (dataSnapshot.getValue(String.class) != null) {
+                    profilePic = (ImageView) findViewById(R.id.profilePic);
+                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).fit().into(profilePic);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        facebookRef = userRef.child("facebook");
         facebookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 facebookLink = (TextView) findViewById(R.id.facebookLink);
-                LoginButton buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
+                buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
 
-                if (dataSnapshot.getValue(String.class) != null) {
+                if (!dataSnapshot.getValue(String.class).equals("")) {
                     buttonConnectToFacebook.setVisibility(View.GONE);
                     facebookLink.setText("https://facebook.com/" + dataSnapshot.getValue(String.class));
                 } else {
+                    Log.d(TAG, "not connected to fb");
                     facebookLink.setText("");
                     FacebookSdk.sdkInitialize(getApplicationContext());
                     buttonConnectToFacebook.setVisibility(View.VISIBLE);
@@ -171,6 +213,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                         @Override
                         public void onSuccess(LoginResult loginResult) {
                             try {
+                                Log.d(TAG, "onSuccess started");
                                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                                         new GraphRequest.GraphJSONObjectCallback() {
                                             @Override
@@ -218,40 +261,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 //...
             }
         });
-    }
 
-    private void loadUserData() {
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        String uid = currentUser.getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        userRef = mDatabase.child("users").child(uid).child("name");
-        loadUserField(userRef, displayName);
-
-        emailRef = mDatabase.child("users").child(uid).child("email");
-        loadUserField(emailRef, emailAddress);
-
-        phoneRef = mDatabase.child("users").child(uid).child("phone");
-        loadUserField(phoneRef, phoneNumber);
-
-        facebookRef = mDatabase.child("users").child(uid).child("facebook");
-        loadUserField(facebookRef, textViewFacebook);
-
-        twitterRef = mDatabase.child("users").child(uid).child("twitter");
-        loadUserField(twitterRef, textViewTwitter);
-      
-        profilePicRef = userRef.child("profilePic");
-        profilePicRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                profilePic = (ImageView) findViewById(R.id.profilePic);
-                Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).fit().into(profilePic);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
     }
 
 
@@ -300,7 +310,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void saveFBUserID(String fbID) {
-        userRef.child("facebookID").setValue(fbID);
+        userRef.child("facebook").setValue(fbID);
     }
 
 }
