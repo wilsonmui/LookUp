@@ -5,6 +5,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +28,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -44,7 +50,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
+import org.json.JSONObject;
+
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -68,7 +78,11 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
     private DatabaseReference db;
 
-    private static final String EMAIL = "email";
+    FirebaseUser user;
+
+    private String fbLink;
+
+    private static final String NAME = "public_profile", EMAIL = "email";
     private TextView info;
 
     GoogleSignInClient mGoogleSignInClient;
@@ -91,30 +105,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
         setContentView(R.layout.sign_up_page);
 
-        imageButton = (ImageButton) this.findViewById(R.id.user_profile_photo);
-        Button photoButton = (Button) this.findViewById(R.id.set_photo_button);
-
-        photoButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-        });
-
-        // Set up UI variables and Listeners
-        editTextName = (EditText) findViewById(R.id.editTextName);
-        editTextEmail = (EditText)findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText)findViewById(R.id.editTextPassword);
-        editTextPhone = (EditText)findViewById(R.id.editTextPhone);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
-        textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
-
-
-        buttonSignUp.setOnClickListener(this);
-        textViewSignIn.setOnClickListener(this);
+        initListeners();
 
         db = FirebaseDatabase.getInstance().getReference();
 
@@ -134,12 +125,37 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         callbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.fb_sign_up_button); //TODO: why this happen ??!!??!
         info = (TextView)findViewById(R.id.info);
-        loginButton.setReadPermissions(Arrays.asList(EMAIL));
+        loginButton.setReadPermissions(Arrays.asList(NAME, EMAIL));
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                try {
+                    GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    try {
+                                        String id = object.getString("id");
+                                        Log.d(TAG, "FB id: " + id);
+                                        setFBLink(id);
+                                        Log.d(TAG, "FB link successful");
+                                    }
+                                    catch (Exception e) {
+                                        e.printStackTrace();
+                                        Log.d(TAG, "FB link unsuccessful");
+                                    }
+                                }
+                            });
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields","link");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+                }
+                catch (Exception e) {
+                    Log.d("FACEBOOK ERROR", "cancelled");
+                }
                 setResult(RESULT_OK);
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
@@ -206,6 +222,31 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             Log.d(TAG, "current user is null");
         }
 
+    }
+
+    private void initListeners() {
+
+        editTextName = (EditText) findViewById(R.id.editTextName);
+        editTextEmail = (EditText)findViewById(R.id.editTextEmail);
+        editTextPassword = (EditText)findViewById(R.id.editTextPassword);
+        editTextPhone = (EditText)findViewById(R.id.editTextPhone);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
+        textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
+        imageButton = (ImageButton) findViewById(R.id.user_profile_photo);
+        Button photoButton = (Button) findViewById(R.id.set_photo_button);
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
+
+        buttonSignUp.setOnClickListener(this);
+        textViewSignIn.setOnClickListener(this);
     }
 
     private void registerUser() {
@@ -303,6 +344,20 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         db.child("users").child(userId).setValue(user);
     }
 
+    private void setFBLink(String fbID) {
+        fbLink = "https://facebook.com/" + fbID;
+    }
+
+    private String getFBLink() {
+        return fbLink;
+    }
+
+    private void saveFBUserLink(String link, String userId) {
+        Map<String,String> userFBData = new HashMap<String,String>();
+        userFBData.put("facebook", link);
+        db.child("users").child(userId).child("facebook").setValue(link);
+    }
+
     // sign-in for Google
     // note sign out: FirebaseAuth.getInstance().signOut();
     private void signIn() {
@@ -352,7 +407,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            user = mAuth.getCurrentUser();
 
                             saveUserData(user.getDisplayName(), user.getEmail(),user.getPhoneNumber(), user.getUid());
                             updateUI(user);
@@ -378,7 +433,14 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            user = mAuth.getCurrentUser();
+                            String name = user.getDisplayName();
+                            String email = user.getEmail();
+                            String phone = user.getPhoneNumber();
+                            String uid = user.getUid();
+                            String link = getFBLink();
+                            saveUserData(name, email, phone, uid);
+                            saveFBUserLink(link, uid);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

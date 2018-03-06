@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5fb0c9">
+
+    <TextView
+        android:id="@+id/text_your_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="53dp"
+        android:text="Your code is:"
+        android:textColor="@color/tw__composer_white"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/codeView"
+        android:layout_width="173dp"
+        android:layout_height="173dp"
+        android:layout_marginTop="56dp"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintStart_toStartOf="@+id/text_your_code"
+        app:layout_constraintTop_toBottomOf="@+id/text_your_code"
+        app:srcCompat="@drawable/account_login_gradient" />
+</android.support.constraint.ConstraintLayout>
