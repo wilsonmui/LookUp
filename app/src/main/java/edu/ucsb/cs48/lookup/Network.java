@@ -23,6 +23,8 @@ public enum Network {
 
     INSTANCE(new HashMap<String, ArrayList<String>>());
 
+    Network(){}
+
     //==============================================================================================
     // Fields
     //==============================================================================================
@@ -155,7 +157,7 @@ public enum Network {
     }
 
     //update network from firebase
-    private void pullfromfirebase(){
+    public void pullfromfirebase(){
         DatabaseReference db;
         db = FirebaseDatabase.getInstance().getReference()
                 .child("network");
@@ -163,9 +165,11 @@ public enum Network {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Network dbnetwork = dataSnapshot.getValue(Network.class);
-                //Log.d(TAG, "size of network: " + dbnetwork.getNetwork().size());
+                Log.d(TAG, "size of network: " + dbnetwork.getNetwork().size());
+                Toast.makeText(getApplicationContext(), "size of network: " + dbnetwork.getNetwork().size(),
+                        Toast.LENGTH_SHORT).show();
 
-                //network = dbnetwork.getNetwork();
+                network = dbnetwork.getNetwork();
             }
 
             @Override

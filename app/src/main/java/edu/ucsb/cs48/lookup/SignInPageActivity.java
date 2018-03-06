@@ -166,6 +166,7 @@ public class SignInPageActivity extends Activity implements View.OnClickListener
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         findViewById(R.id.google_login).setOnClickListener(this);
+
     }
   
     //==============================================================================================
