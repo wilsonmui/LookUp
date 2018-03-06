@@ -9,6 +9,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -58,6 +60,15 @@ public class SignInTest {
 
         onView(withId(R.id.editTextEmail)).check(matches(withText(testEmail)));
         onView(withId(R.id.editTextPassword)).check(matches(withText(testPassword)));
+
+    }
+
+    // Test authentication
+    @Test
+    public void testSetup() throws IOException {
+        onView(withId(R.id.editTextEmail)).perform(typeText("testUser@gmail.com"), closeSoftKeyboard());
+        onView(withId(R.id.editTextPassword)).perform(typeText("123456"), closeSoftKeyboard());
+        onView(withId(R.id.buttonSignIn)).perform(click());
 
     }
 }
