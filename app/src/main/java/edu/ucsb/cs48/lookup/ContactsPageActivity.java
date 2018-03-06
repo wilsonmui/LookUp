@@ -35,6 +35,8 @@ public class ContactsPageActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         contacts_list.setLayoutManager(llm);
+        Contacts_Adapter ca = new Contacts_Adapter(contacts);
+        contacts_list.setAdapter(ca);
 
         FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 

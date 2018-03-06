@@ -9,7 +9,8 @@ public class Phone extends ContactInfo {
     // Constructor
     //==============================================================================================
 
+    // Changed to "Phone"; was "Email"
     Phone() {
-        super("Email");
+            super("Phone");
     }
 }

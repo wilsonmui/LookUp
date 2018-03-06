@@ -50,6 +50,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
      */
     @Override
     public void onBindViewHolder(final ContactViewHolder holder, int position) {
+        System.out.println("BIND");
         final String UserUid = contactList.get(position);
 
         db = FirebaseDatabase.getInstance().getReference()
@@ -63,8 +64,9 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
                             dataSnapshot.child("uid").getValue().toString(),
                             dataSnapshot.child("facebookURL").getValue().toString(),
                             dataSnapshot.child("twitterURl").getValue().toString());
+                System.out.println(user.getName());
 
-                    holder.username.setText(user.getName());
+                holder.username.setText(user.getName());
 
             }
 
@@ -98,7 +100,8 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
 
     @Override
     public int getItemCount() {
-        return contactList.size();
+        return 0;
+//        return contactList.size();
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder{

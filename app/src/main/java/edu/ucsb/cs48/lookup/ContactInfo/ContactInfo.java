@@ -18,7 +18,7 @@ public abstract class ContactInfo {
     // Constructor
     //==============================================================================================
 
-    ContactInfo(String name) {
+    public ContactInfo(String name) {
         this.name = name;
     }
 
