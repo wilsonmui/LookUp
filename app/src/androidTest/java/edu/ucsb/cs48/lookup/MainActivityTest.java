@@ -61,13 +61,13 @@ public class MainActivityTest {
     @Test
     public void buttonSignUpActivity_googleLogin() {
         onView(withId(R.id.buttonGetStarted)).perform(click());
-        onView(withId(R.id.google_login)).check(matches(allOf(isDescendantOfA(withId(R.id.signUpPage)), isDisplayed())));
+        onView(withId(R.id.sign_in_button)).check(matches(allOf(isDescendantOfA(withId(R.id.signUpPage)))));
     }
 
     @Test
     public void buttonSignUpActivity_FBLogin() {
         onView(withId(R.id.buttonGetStarted)).perform(click());
-        onView(withId(R.id.fb_sign_in_button)).check(matches(allOf(isDescendantOfA(withId(R.id.signUpPage)), isDisplayed())));
+        onView(withId(R.id.fb_sign_up_button)).check(matches(allOf(isDescendantOfA(withId(R.id.signUpPage)))));
     }
 
 
