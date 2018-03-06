@@ -21,10 +21,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static junit.framework.Assert.assertNotNull;
+
 
 /**
  * Created by Eliza on 3/5/2018.
@@ -36,6 +34,11 @@ public class SignInTest {
     // Launch the SignIn page.
     @Rule
     public ActivityTestRule<SignInPageActivity> signInActivityRule = new ActivityTestRule<SignInPageActivity>(SignInPageActivity.class);
+
+    @Test
+    public void SignInPageActivityExists() {
+        assertNotNull(signInActivityRule);
+    }
 
     @Test
     public void checkTestInputs(){
@@ -65,10 +68,9 @@ public class SignInTest {
 
     // Test authentication
     @Test
-    public void testSetup() throws IOException {
+    public void testSignIn() throws IOException {
         onView(withId(R.id.editTextEmail)).perform(typeText("testUser@gmail.com"), closeSoftKeyboard());
         onView(withId(R.id.editTextPassword)).perform(typeText("123456"), closeSoftKeyboard());
         onView(withId(R.id.buttonSignIn)).perform(click());
-
     }
 }

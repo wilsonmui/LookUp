@@ -13,6 +13,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.CoreMatchers.allOf;
 
 /**
@@ -26,6 +27,11 @@ public class MainActivityTest {
     // Launch the MainActivity page.
     @Rule
     public ActivityTestRule<MainActivity> mainActivityRule = new ActivityTestRule<MainActivity>(MainActivity.class);
+
+    @Test
+    public void mainActivityExists() {
+        assertNotNull(mainActivityRule);
+    }
 
     // Test clicking 'Get Started' leads to Sign Up Page.
     @Test
