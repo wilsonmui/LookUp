@@ -76,13 +76,8 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.info_button:
                 //finish();
                 //startActivity(new Intent(this, InfoPageActivity.class));
-                //Network.getInstance().addUserContact("NOOOpe", "3HpDljXnxLObxxliJsL6dZnz4LF2");
-                //Network.getInstance().addUserContact("NOOOpe", "hello");
-
-                ArrayList<String> dummy = Network.getInstance().getContacts("NOOOpe");
-                for(int i = 0; i < dummy.size(); i++) {
-                    System.out.println(dummy.get(i));
-                }
+                Network.getInstance().addUserContact("6DIZtspD3Egw17VUdnxCbnR1pfF2", "3HpDljXnxLObxxliJsL6dZnz4LF2");
+                Network.getInstance().addUserContact("6DIZtspD3Egw17VUdnxCbnR1pfF2", "3PANpyEvjcear2ExIa1qygHjCAs2");
                 break;
             case R.id.buttonSignOut:
                 finish();

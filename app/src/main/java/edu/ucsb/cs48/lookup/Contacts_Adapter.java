@@ -57,11 +57,15 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    User user = userSnapshot.getValue(User.class);
+                    User user = new User(dataSnapshot.child("name").getValue().toString(),
+                            dataSnapshot.child("email").getValue().toString(),
+                            dataSnapshot.child("phone").getValue().toString(),
+                            dataSnapshot.child("uid").getValue().toString(),
+                            dataSnapshot.child("facebookURL").getValue().toString(),
+                            dataSnapshot.child("twitterURl").getValue().toString());
 
                     holder.username.setText(user.getName());
-                }
+
             }
 
             @Override
@@ -76,8 +80,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
             public void onClick(View view) {
                 //open a new activity showing information about Contact
                 //pass uid onto new activity
-
-                Intent i = new Intent(view.getContext(), ContactsPageActivity.class);
+                Intent i = new Intent(view.getContext(), ContactProfileActivity.class);
                 i.putExtra("uid", UserUid);
                 view.getContext().startActivity(i);
 

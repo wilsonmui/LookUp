@@ -88,6 +88,7 @@ public class Network {
             }
         });
     }
+
     public void mReadDataOnce(String child, String innerChild, final OnGetDataListener listener) {
         listener.onStart();
         FirebaseDatabase.getInstance().getReference().child(child).child(innerChild).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -157,35 +158,6 @@ public class Network {
         });
     }
 
-    public void getContacts(final String uid) {
-
-        mReadDataOnce("network", uid, new OnGetDataListener() {
-            @Override
-            public void onStart() {
-                //DO SOME THING WHEN START GET DATA HERE
-            }
-
-            @Override
-            public void onSuccess(DataSnapshot data) {
-                for (DataSnapshot contactsDs : data.getChildren()) {
-
-                    Network.getInstance().addElementToContactsArray(contactsDs.getValue().toString());
-
-                    System.out.println("Start of array printing in inner data change------------------");
-                    for(int i = 0; i < Network.getInstance().sizeContactsArray(); i++)
-                    {
-                            System.out.println(Network.getInstance().getContactsArray(i));
-                    }
-                }
-            }
-
-
-            @Override
-            public void onFailed(DatabaseError databaseError) {
-                System.out.println("-- Get User Contacts Failed --");
-            }
-        });
-    }
 
     public void addUserContact(final String baseUid, final String targetUid) {
 

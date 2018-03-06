@@ -40,6 +40,14 @@ public class User {
         this.twitterURl = "";
     }
 
+    public User(String name, String email, String phone, String uid, String facebookURL, String twitterUrl) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.uid = uid;
+        this.facebookURL = facebookURL;
+        this.twitterURl = twitterUrl;
+    }
 
     //==============================================================================================
     // Accessor Methods
