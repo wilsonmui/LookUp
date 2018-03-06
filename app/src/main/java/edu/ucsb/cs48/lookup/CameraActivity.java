@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.util.SparseArray;
 import android.widget.TextView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 public class CameraActivity extends Activity {
@@ -73,6 +74,11 @@ public class CameraActivity extends Activity {
 
         Frame frame = new Frame.Builder().setBitmap(bitmapPhoto).build();
         SparseArray<Barcode> barcodes = detector.detect(frame);
+
+        if(barcodes.size() <= 0){
+            Toast.makeText(getApplicationContext(), "Please take a better photo.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Barcode thisCode = barcodes.valueAt(0);
         uidGrabbed = thisCode.rawValue;
