@@ -8,6 +8,10 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +36,54 @@ public class ContactsPageActivity extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         contacts_list.setLayoutManager(llm);
 
-        //pass in list of contacts
-        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        Toast.makeText(this, "" + currentFirebaseUser.getUid(), Toast.LENGTH_SHORT).show();
-        contacts = Network.getInstance().getContacts(currentFirebaseUser.getUid());
-        Contacts_Adapter ca = new Contacts_Adapter(contacts);
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        contacts_list.setAdapter(ca);
+        loadContacts(currentFirebaseUser.getUid(), contacts_list);
     }
 
+    public void loadContacts(final String uid, final RecyclerView contacts_list) {
 
+        mReadDataOnce("network", uid, new OnGetDataListener() {
+            @Override
+            public void onStart() {
+                //DO SOME THING WHEN START GET DATA HERE
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                ArrayList<String> contacts = new ArrayList<>();
+
+                for (DataSnapshot contactsDs : data.getChildren()) {
+                    contacts.add(contactsDs.getValue().toString());
+                }
+
+                Contacts_Adapter ca = new Contacts_Adapter(contacts);
+
+                contacts_list.setAdapter(ca);
+            }
+
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                System.out.println("-- Get User Contacts Failed --");
+            }
+        });
+    }
+
+    public void mReadDataOnce(String child, String innerChild, final OnGetDataListener listener) {
+        listener.onStart();
+        FirebaseDatabase.getInstance().getReference().child(child).child(innerChild).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
+    }
 
 
 }

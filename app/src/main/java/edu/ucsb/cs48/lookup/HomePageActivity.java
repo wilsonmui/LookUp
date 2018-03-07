@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import android.os.Environment;
 import android.net.Uri;
@@ -65,31 +66,30 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.scan_face_button:
-
                 scanPerson();
                 break;
-            case R.id.user_profile_button:
 
+            case R.id.user_profile_button:
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
             case R.id.buttonDisplayUsers:
-
                 startActivity(new Intent(this, DisplayUsersPageActivity.class));
                 break;
+
             case R.id.contacts_button:
                 startActivity(new Intent(this, ContactsPageActivity.class));
                 break;
             case R.id.info_button:
-
+                finish();
                 startActivity(new Intent(this, InfoPageActivity.class));
-                break;
+            break;
             case R.id.buttonSignOut:
                 finish();
                 mAuth.getInstance().signOut();
                 startActivity(new Intent(this, SignInPageActivity.class));
                 break;
-            case R.id.view_code:
 
+            case R.id.view_code:
                 startActivity(new Intent(this, GenerateCodeActivity.class));
                 break;
         }

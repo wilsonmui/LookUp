@@ -45,6 +45,7 @@
 
             <Button
                 android:id="@+id/buttonSignIn"
+                android:visibility="visible"
                 android:layout_width="188dp"
                 android:layout_height="63dp"
                 android:layout_gravity="center_horizontal"
@@ -57,6 +58,7 @@
 
             <Button
                 android:id="@+id/buttonGetStarted"
+                android:visibility="visible"
                 android:layout_width="188dp"
                 android:layout_height="63dp"
                 android:layout_gravity="center_horizontal"

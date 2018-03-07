@@ -50,18 +50,24 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
      */
     @Override
     public void onBindViewHolder(final ContactViewHolder holder, int position) {
-        final String UserUid = contactList.get(position);
+        System.out.println("BIND");
+        final String userUid = contactList.get(position);
 
         db = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(UserUid);
+                .child("users").child(userUid);
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    User user = userSnapshot.getValue(User.class);
+                    User user = new User(dataSnapshot.child("name").getValue().toString(),
+                            dataSnapshot.child("email").getValue().toString(),
+                            dataSnapshot.child("phone").getValue().toString(),
+                            dataSnapshot.child("uid").getValue().toString(),
+                            dataSnapshot.child("facebookURL").getValue().toString(),
+                            dataSnapshot.child("twitterURl").getValue().toString());
+                System.out.println(user.getName());
 
-                    holder.username.setText(user.getName());
-                }
+                holder.username.setText(user.getName());
+
             }
 
             @Override
@@ -76,9 +82,9 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
             public void onClick(View view) {
                 //open a new activity showing information about Contact
                 //pass uid onto new activity
-
-                Intent i = new Intent(view.getContext(), ContactsPageActivity.class);
-                i.putExtra("uid", UserUid);
+                System.out.println("TIDDIES");
+                Intent i = new Intent(view.getContext(), ContactProfileActivity.class);
+                i.putExtra("uid", userUid);
                 view.getContext().startActivity(i);
 
                 /*
@@ -95,8 +101,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
 
     @Override
     public int getItemCount() {
-        return 0;
-//        return contactList.size();
+        return contactList.size();
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder{
