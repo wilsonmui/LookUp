@@ -74,7 +74,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private Context mContext;
     private CallbackManager callbackManager;
 
-    private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
+    private DatabaseReference userRef, uidRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
 
 
     //==============================================================================================
@@ -86,6 +86,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
         // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
+
+        mContext = getApplicationContext();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser == null) {
             finish();
@@ -176,14 +178,14 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         twitterRef = mDatabase.child("users").child(uid).child("twitter");
         loadUserField(twitterRef, textViewTwitter);
       
-        profilePicRef = userRef.child("profilePic");
+        profilePicRef = userRef.child("profile_pic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 //                if (!dataSnapshot.getValue(String.class).is
                 if (dataSnapshot.getValue(String.class) != null) {
                     profilePic = (ImageView) findViewById(R.id.profilePic);
-                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).fit().into(profilePic);
+                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(profilePic);
                 }
             }
 
