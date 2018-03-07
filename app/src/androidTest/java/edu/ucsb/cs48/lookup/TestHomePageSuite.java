@@ -9,8 +9,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         SignInForTest.class,
-        HomePageTest.class
+        HomePageTest.class,
+        SignOutForTest.class
 })
 
-public class TestHomePageSuite {
-}
+public class TestHomePageSuite {}

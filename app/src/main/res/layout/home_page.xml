@@ -9,6 +9,7 @@
 
     <Button
         android:id="@+id/buttonSignOut"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -22,6 +23,7 @@
 
     <Button
         android:id="@+id/scan_face_button"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -36,6 +38,7 @@
 
     <Button
         android:id="@+id/user_profile_button"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -48,6 +51,7 @@
 
     <Button
         android:id="@+id/contacts_button"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="215dp"
@@ -64,6 +68,7 @@
 
     <Button
         android:id="@+id/info_button"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -76,6 +81,7 @@
 
     <Button
         android:id="@+id/buttonDisplayUsers"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -90,6 +96,7 @@
 
     <EditText
         android:id="@+id/number_of_requests"
+        android:visibility="visible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="37dp"
@@ -108,6 +115,7 @@
 
     <TextView
         android:id="@+id/requests_text"
+        android:visibility="visible"
         android:layout_width="0dp"
         android:layout_height="36dp"
         android:layout_marginEnd="58dp"
@@ -121,6 +129,7 @@
 
     <Button
         android:id="@+id/view_code"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View my Code"

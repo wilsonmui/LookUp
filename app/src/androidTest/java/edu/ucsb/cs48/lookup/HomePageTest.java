@@ -13,6 +13,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertNotNull;
 
 /**
  * Created by Eliza on 3/6/2018.
@@ -22,11 +23,23 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class HomePageTest {
 
     @Rule
-    public ActivityTestRule<HomePageActivity> homePageActivityRule = new ActivityTestRule<HomePageActivity>(HomePageActivity.class);
+    public ActivityTestRule<HomePageActivity> HomePageActivityRule =
+            new ActivityTestRule<>(HomePageActivity.class);
+    @Test
+    public void HomePageActivityExists() {
+        assertNotNull(HomePageActivityRule);
+    }
 
     @Test
-    public void checkForSignOutButton(){
+    public void checkForAllComponents(){
         onView(withId(R.id.buttonSignOut)).check(matches(isDisplayed()));
+        onView(withId(R.id.view_code)).check(matches(isDisplayed()));
+        onView(withId(R.id.scan_face_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.user_profile_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.contacts_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.info_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.number_of_requests)).check(matches(isDisplayed()));
+        onView(withId(R.id.requests_text)).check(matches(isDisplayed()));
     }
 
 }

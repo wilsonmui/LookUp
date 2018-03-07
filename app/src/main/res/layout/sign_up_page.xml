@@ -140,6 +140,7 @@
 
             <Button
                 android:id="@+id/buttonSignUp"
+                android:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
@@ -152,6 +153,7 @@
 
             <Button
                 android:id="@+id/set_photo_button"
+                android:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center_horizontal"
