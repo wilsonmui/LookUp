@@ -177,7 +177,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         twitterRef = mDatabase.child("users").child(uid).child("twitter");
         loadUserField(twitterRef, textViewTwitter);
       
-        profilePicRef = userRef.child("profilePic");
+        profilePicRef = userRef.child("profile_pic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
