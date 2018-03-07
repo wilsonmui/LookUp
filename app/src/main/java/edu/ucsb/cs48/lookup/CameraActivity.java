@@ -20,6 +20,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class CameraActivity extends Activity {
     private static final int CAMERA_REQUEST = 1888;
     ImageView imageView;
@@ -84,11 +92,37 @@ public class CameraActivity extends Activity {
         uidGrabbed = thisCode.rawValue;
         uid.setText(uidGrabbed);
 
-        //start ContactProfileActivity with uid string
-        Intent intent = new Intent (CameraActivity.this, ContactProfileActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("uid", uidGrabbed);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        //check if user exists
+//        FirebaseUser user;
+//        FirebaseAuth mAuth;
+//        mAuth = FirebaseAuth.getInstance();
+//        if(mAuth.getCurrentUser() == null) {
+//            finish();
+//            startActivity(new Intent(this, SignInPageActivity.class));
+//        }
+//        user = mAuth.getCurrentUser();
+//        boolean userExists = true;
+
+        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users");
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.hasChild(uidGrabbed)){
+                    Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_SHORT).show();
+                }else{
+                    //start ContactProfileActivity with uid string
+                    Intent intent = new Intent (CameraActivity.this, ContactProfileActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("uid", uidGrabbed);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
