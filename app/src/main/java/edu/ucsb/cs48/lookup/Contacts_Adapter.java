@@ -51,10 +51,10 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
     @Override
     public void onBindViewHolder(final ContactViewHolder holder, int position) {
         System.out.println("BIND");
-        final String UserUid = contactList.get(position);
+        final String userUid = contactList.get(position);
 
         db = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(UserUid);
+                .child("users").child(userUid);
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,8 +82,9 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
             public void onClick(View view) {
                 //open a new activity showing information about Contact
                 //pass uid onto new activity
+                System.out.println("TIDDIES");
                 Intent i = new Intent(view.getContext(), ContactProfileActivity.class);
-                i.putExtra("uid", UserUid);
+                i.putExtra("uid", userUid);
                 view.getContext().startActivity(i);
 
                 /*
@@ -100,8 +101,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
 
     @Override
     public int getItemCount() {
-        return 0;
-//        return contactList.size();
+        return contactList.size();
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder{
