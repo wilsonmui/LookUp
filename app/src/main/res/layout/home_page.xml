@@ -49,13 +49,13 @@
         android:id="@+id/contacts_button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="24dp"
         android:background="#ececec"
         android:text="@string/your_contacts"
         android:textColor="#468396"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonDisplayUsers" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_button" />
 
     <Button
         android:id="@+id/info_button"
@@ -70,21 +70,7 @@
         app:layout_constraintTop_toBottomOf="@+id/contacts_button" />
 
     <Button
-        android:id="@+id/buttonDisplayUsers"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="22dp"
-        android:background="#ececec"
-        android:text="Display Users"
-        android:textColor="#468396"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_profile_button" />
-
-    <Button
         android:id="@+id/view_code"
-        android:visibility="visible"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -93,6 +79,7 @@
         android:background="#ececec"
         android:text="View my Code"
         android:textColor="#468396"
+        android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scan_face_button" />

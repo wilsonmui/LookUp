@@ -112,23 +112,23 @@ public class UserTest {
 
     @Test
     public void getBlankUserFacebook_testUser() throws Exception {
-        assertEquals("", testUser.getFacebookURL());
+        assertEquals("", testUser.getFacebook());
     }
 
     @Test
     public void getBlankUserFacebook_blankUser() throws Exception {
-        assertEquals("", blankUser.getFacebookURL());
+        assertEquals("", blankUser.getFacebook());
     }
 
 
     @Test
     public void getBlankUserTwitter_testUser() throws Exception {
-        assertEquals("", testUser.getTwitterURL());
+        assertEquals("", testUser.getTwitter());
     }
 
     @Test
     public void getBlankUserTwitter_blankUser() throws Exception {
-        assertEquals("", blankUser.getTwitterURL());
+        assertEquals("", blankUser.getTwitter());
     }
 
     ///
@@ -228,29 +228,29 @@ public class UserTest {
     @Test
     public void setFBOfTestUser_dummyFB() throws Exception {
         User dummyUser = new User(testName, testEmail, testPhone, testUID);
-        dummyUser.setFacebookURL(dummyFB);
-        assertEquals(dummyFB, dummyUser.getFacebookURL());
+        dummyUser.setFacebook(dummyFB);
+        assertEquals(dummyFB, dummyUser.getFacebook());
     }
 
     @Test
     public void setFBOfTestUser_testFB() throws Exception {
         User dummyUser = new User(testName, testEmail, testPhone, testUID);
-        dummyUser.setFacebookURL(testFB);
-        assertEquals(testFB, dummyUser.getFacebookURL());
+        dummyUser.setFacebook(testFB);
+        assertEquals(testFB, dummyUser.getFacebook());
     }
 
     @Test
     public void setFBOfBlankUser_dummyFB() throws Exception {
         User dummyUser = new User("", "", "", "");
-        dummyUser.setFacebookURL(dummyFB);
-        assertEquals(dummyFB, dummyUser.getFacebookURL());
+        dummyUser.setFacebook(dummyFB);
+        assertEquals(dummyFB, dummyUser.getFacebook());
     }
 
     @Test
     public void setFBOfTestUser_blank() throws Exception {
         User dummyUser = new User(testName, testEmail, testPhone, testUID);
-        dummyUser.setFacebookURL("");
-        assertEquals("", dummyUser.getFacebookURL());
+        dummyUser.setFacebook("");
+        assertEquals("", dummyUser.getFacebook());
     }
 
 
@@ -258,28 +258,28 @@ public class UserTest {
     @Test
     public void setTWOfTestUser_dummyTwitter() throws Exception {
         User dummyUser = new User(testName, testEmail, testPhone, testUID);
-        dummyUser.setTwitterURL(dummyTwitter);
-        assertEquals(dummyTwitter, dummyUser.getTwitterURL());
+        dummyUser.setTwitter(dummyTwitter);
+        assertEquals(dummyTwitter, dummyUser.getTwitter());
     }
 
     @Test
     public void setTWOfTestUser_testTwitter() throws Exception {
         User dummyUser = new User(testName, testEmail, testPhone, testUID);
-        dummyUser.setTwitterURL(testTwitter);
-        assertEquals(testTwitter, dummyUser.getTwitterURL());
+        dummyUser.setTwitter(testTwitter);
+        assertEquals(testTwitter, dummyUser.getTwitter());
     }
 
     @Test
     public void setTWOfBlankUser_dummyTwitter() throws Exception {
         User dummyUser = new User("", "", "", "");
-        dummyUser.setTwitterURL(dummyTwitter);
-        assertEquals(dummyTwitter, dummyUser.getTwitterURL());
+        dummyUser.setTwitter(dummyTwitter);
+        assertEquals(dummyTwitter, dummyUser.getTwitter());
     }
 
     @Test
     public void setTWOfTestUser_blank() throws Exception {
         User dummyUser = new User(testName, testEmail, testPhone, testUID);
-        dummyUser.setTwitterURL("");
-        assertEquals("", dummyUser.getTwitterURL());
+        dummyUser.setTwitter("");
+        assertEquals("", dummyUser.getTwitter());
     }
 }

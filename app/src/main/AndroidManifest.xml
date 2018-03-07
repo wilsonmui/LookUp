@@ -62,7 +62,6 @@
         <activity android:name=".EditUserProfileActivity"
                   android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".GenerateCodeActivity" />
-        <activity android:name=".DisplayUsersPageActivity"/>
     </application>
 
 </manifest>
