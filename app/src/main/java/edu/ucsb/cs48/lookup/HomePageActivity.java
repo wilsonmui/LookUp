@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import android.os.Environment;
 import android.net.Uri;
@@ -78,11 +79,10 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.contacts_button:
                 startActivity(new Intent(this, ContactsPageActivity.class));
                 break;
-
             case R.id.info_button:
+                finish();
                 startActivity(new Intent(this, InfoPageActivity.class));
-                break;
-
+            break;
             case R.id.buttonSignOut:
                 finish();
                 mAuth.getInstance().signOut();
