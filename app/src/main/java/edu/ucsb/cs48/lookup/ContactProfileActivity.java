@@ -46,8 +46,8 @@ public class ContactProfileActivity extends AppCompatActivity {
         loadUserField(db.child("users").child(uid).child("email"), email);
         loadUserField(db.child("users").child(uid).child("phone"), userphone);
         loadUserField(db.child("users").child(uid).child("name"), username);
-        loadUserField(db.child("users").child(uid).child("facebookURL"), facebook);
-        loadUserField(db.child("users").child(uid).child("twitterURl"), twitter);
+        loadUserField(db.child("users").child(uid).child("facebook"), facebook);
+        loadUserField(db.child("users").child(uid).child("twitter"), twitter);
 
         findViewById(R.id.add_friend_button).setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v) {
