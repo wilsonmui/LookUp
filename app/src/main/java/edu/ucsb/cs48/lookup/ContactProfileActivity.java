@@ -1,8 +1,12 @@
 package edu.ucsb.cs48.lookup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -37,28 +41,39 @@ public class ContactProfileActivity extends AppCompatActivity {
         email = (TextView) findViewById(R.id.user_email);
         userphone = (TextView) findViewById(R.id.user_phone);
 
-        db = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(uid);
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
+        db = FirebaseDatabase.getInstance().getReference();
+
+        loadUserField(db.child("users").child(uid).child("email"), email);
+        loadUserField(db.child("users").child(uid).child("phone"), userphone);
+        loadUserField(db.child("users").child(uid).child("name"), username);
+        loadUserField(db.child("users").child(uid).child("facebookURL"), facebook);
+        loadUserField(db.child("users").child(uid).child("twitterURl"), twitter);
+
+        findViewById(R.id.add_friend_button).setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v) {
+                sendUID();
+            }
+        });
+    }
+
+    private void sendUID(){
+        //TODO send UID to network!!!
+
+    }
+
+    public void loadUserField(DatabaseReference databaseReference, final TextView textView) {
+        System.out.println("LOAD");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    User user = userSnapshot.getValue(User.class);
-
-                    username.setText(user.getName());
-                    twitter.setText(user.getTwitterURl());
-                    facebook.setText(user.getFacebookURL());
-                    email.setText(user.getEmail());
-                    userphone.setText(user.getPhone());
-                }
+                textView.setText(dataSnapshot.getValue(String.class));
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.e("Database Error:", "Error connecting to database");
             }
         });
-
     }
 
 }

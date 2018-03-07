@@ -13,6 +13,12 @@
             android:layout_height="200dp"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/add_friend_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Friend" />
+
             <ImageView
                 android:id="@+id/user_img"
                 android:layout_width="100dp"

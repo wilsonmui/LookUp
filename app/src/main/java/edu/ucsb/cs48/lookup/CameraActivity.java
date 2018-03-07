@@ -83,5 +83,12 @@ public class CameraActivity extends Activity {
         Barcode thisCode = barcodes.valueAt(0);
         uidGrabbed = thisCode.rawValue;
         uid.setText(uidGrabbed);
+
+        //start ContactProfileActivity with uid string
+        Intent intent = new Intent (CameraActivity.this, ContactProfileActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("uid", uidGrabbed);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
