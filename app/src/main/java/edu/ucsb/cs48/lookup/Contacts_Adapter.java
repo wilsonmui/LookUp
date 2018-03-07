@@ -2,6 +2,7 @@ package edu.ucsb.cs48.lookup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +78,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
         });
 
         //when contact is clicked, show their info and option to remove them
-        holder.username.setOnClickListener(new View.OnClickListener() {
+        holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //open a new activity showing information about Contact
@@ -105,6 +106,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder{
+        protected ConstraintLayout layout;
         protected TextView username;
         protected ImageView userImg;
 
@@ -112,6 +114,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
             super(v);
 
             username = (TextView) v.findViewById(R.id.user_name);
+            layout = (ConstraintLayout) v.findViewById(R.id.holder_layout);
             userImg = (ImageView) v.findViewById(R.id.user_avatar);
         }
 
