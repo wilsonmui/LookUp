@@ -80,15 +80,13 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private HashMap<String, String> userProfileData;
     private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef;
     private StorageReference storageRef;
-    private String userID, fbUserID, userProfilePicURL, currentStorageChild;
-    private String imageStoragePath = "All image uploads";
+    private String userID, fbUserID, userProfilePicURL;
     private LinearLayout mLinearLayout;
     private Context mContext;
     private PopupWindow editProfilePicPopup;
     private ImageView editUserProfilePic;
     private Uri imageFilePathUri;
-    private static int CAMERA_CAPTURE = 1, IMAGE_REQUEST_CODE = 7, RESULT_CROP = 400, CAMERA_REQUEST = 1888;
-    private boolean uploadImageIsComplete = false;
+    private static int IMAGE_REQUEST_CODE = 7, CAMERA_REQUEST = 1888;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -485,7 +483,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
                             // Showing exception erro message.
                             Toast.makeText(EditUserProfileActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
-                            uploadImageIsComplete = true;
                         }
                     })
 

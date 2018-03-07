@@ -52,7 +52,7 @@
             android:orientation="vertical"
             android:paddingTop="30dp">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/user_profile_photo"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
