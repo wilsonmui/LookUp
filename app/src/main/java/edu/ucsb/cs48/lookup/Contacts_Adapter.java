@@ -2,6 +2,7 @@ package edu.ucsb.cs48.lookup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,6 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
      */
     @Override
     public void onBindViewHolder(final ContactViewHolder holder, int position) {
-        System.out.println("BIND");
         final String userUid = contactList.get(position);
 
         db = FirebaseDatabase.getInstance().getReference()
@@ -62,8 +62,8 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
                             dataSnapshot.child("email").getValue().toString(),
                             dataSnapshot.child("phone").getValue().toString(),
                             dataSnapshot.child("uid").getValue().toString(),
-                            dataSnapshot.child("facebookURL").getValue().toString(),
-                            dataSnapshot.child("twitterURl").getValue().toString());
+                            dataSnapshot.child("facebook").getValue().toString(),
+                            dataSnapshot.child("twitter").getValue().toString());
                 System.out.println(user.getName());
 
                 holder.username.setText(user.getName());
@@ -77,12 +77,11 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
         });
 
         //when contact is clicked, show their info and option to remove them
-        holder.username.setOnClickListener(new View.OnClickListener() {
+        holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //open a new activity showing information about Contact
                 //pass uid onto new activity
-                System.out.println("TIDDIES");
                 Intent i = new Intent(view.getContext(), ContactProfileActivity.class);
                 i.putExtra("uid", userUid);
                 view.getContext().startActivity(i);
@@ -105,6 +104,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
     }
 
     public static class ContactViewHolder extends RecyclerView.ViewHolder{
+        protected ConstraintLayout layout;
         protected TextView username;
         protected ImageView userImg;
 
@@ -112,6 +112,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
             super(v);
 
             username = (TextView) v.findViewById(R.id.user_name);
+            layout = (ConstraintLayout) v.findViewById(R.id.holder_layout);
             userImg = (ImageView) v.findViewById(R.id.user_avatar);
         }
 
