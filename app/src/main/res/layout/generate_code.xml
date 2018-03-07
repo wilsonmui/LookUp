@@ -12,8 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="53dp"
         android:text="Your code is:"
+        android:textAllCaps="false"
         android:textColor="@color/tw__composer_white"
         android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

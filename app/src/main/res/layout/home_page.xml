@@ -4,127 +4,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ececec">
+    android:background="#5fb0c9">
 
     <Button
         android:id="@+id/buttonSignOut"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginStart="9dp"
         android:layout_marginTop="16dp"
-        android:background="#5fb0c9"
+        android:background="#ececec"
         android:text="@string/signout"
-        android:textColor="#fff"
-        app:layout_constraintStart_toStartOf="@+id/scan_face_button"
+        android:textColor="#468396"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/scan_face_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginEnd="34dp"
-        android:layout_marginTop="20dp"
-        android:background="#5fb0c9"
+        android:layout_marginTop="22dp"
+        android:background="#ececec"
         android:text="@string/scan_person"
-        android:textColor="#fff"
-        app:layout_constraintEnd_toStartOf="@+id/view_code"
+        android:textColor="#468396"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonSignOut" />
 
     <Button
         android:id="@+id/user_profile_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="18dp"
-        android:layout_marginStart="7dp"
-        android:background="#5fb0c9"
+        android:layout_marginTop="18dp"
+        android:background="#ececec"
         android:text="My Profile"
-        android:textColor="#fff"
-        app:layout_constraintBottom_toTopOf="@+id/buttonDisplayUsers"
-        app:layout_constraintStart_toStartOf="@+id/buttonDisplayUsers" />
+        android:textColor="#468396"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_code" />
 
     <Button
         android:id="@+id/contacts_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:background="#5fb0c9"
+        android:layout_marginTop="21dp"
+        android:background="#ececec"
         android:text="@string/your_contacts"
-        android:textColor="#fff"
-        app:layout_constraintBottom_toTopOf="@+id/info_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textColor="#468396"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDisplayUsers" />
 
     <Button
         android:id="@+id/info_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="102dp"
-        android:layout_marginStart="6dp"
-        android:background="#5fb0c9"
+        android:layout_marginTop="24dp"
+        android:background="#ececec"
         android:text="@string/info"
-        android:textColor="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/contacts_button" />
+        android:textColor="#468396"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contacts_button" />
 
     <Button
         android:id="@+id/buttonDisplayUsers"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="25dp"
-        android:layout_marginStart="5dp"
-        android:background="#5fb0c9"
+        android:layout_marginTop="22dp"
+        android:background="#ececec"
         android:text="Display Users"
-        android:textColor="#fff"
-        app:layout_constraintBottom_toTopOf="@+id/contacts_button"
-        app:layout_constraintStart_toStartOf="@+id/contacts_button" />
-
-    <TextView
-        android:id="@+id/requests_text"
-        android:layout_width="203dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="58dp"
-        android:layout_marginStart="20dp"
-        android:text="@string/request"
-        android:textColor="#d66e29"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/number_of_requests"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/number_of_requests"
-        app:layout_constraintStart_toStartOf="@+id/info_button"
-        app:layout_constraintTop_toTopOf="@+id/number_of_requests" />
+        android:textColor="#468396"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_profile_button" />
 
     <Button
         android:id="@+id/view_code"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/holo_orange_light"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="19dp"
+        android:background="#ececec"
         android:text="View my Code"
-        android:textColor="#fff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#468396"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scan_face_button" />
 
     <TextView
-        android:id="@+id/number_of_requests"
-        android:layout_width="24dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="43dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="103dp"
-        android:text="0"
-        android:textAlignment="textEnd"
-        android:textColor="@color/tw__composer_red"
-        android:textSize="30sp"
+        android:id="@+id/num_requests"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="59dp"
+        android:text="0 new requests!"
+        android:textAlignment="center"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/requests_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_button" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
