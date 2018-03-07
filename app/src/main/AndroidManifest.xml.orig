@@ -16,7 +16,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
@@ -35,10 +34,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
-=======
         <activity android:name=".SignUpPageActivity"/>
->>>>>>> e0a6d13946378954a02b4636109fcd441dd98bcc
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
