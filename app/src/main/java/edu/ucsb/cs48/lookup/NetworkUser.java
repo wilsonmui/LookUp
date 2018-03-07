@@ -30,16 +30,15 @@ public class NetworkUser {
     //==============================================================================================
     // Accessor Methods
     //==============================================================================================
+
     public String getUid() { return this.uid; }
 
     public List<String> getNetworkUserContactsl() {return this.networkUserContacts; }
 
-
-
-
     //==============================================================================================
     // Setter Methods
     //==============================================================================================
+
     public void setUid(String name) { this.uid = name; }
 
     public void setNetworkUserContacts(List<String> networkUserContacts) { this.networkUserContacts = networkUserContacts; }
@@ -50,8 +49,8 @@ public class NetworkUser {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof User) {
-            User o = (User) obj;
+        if (obj instanceof NetworkUser) {
+            NetworkUser o = (NetworkUser) obj;
             return this.uid.equals(o.getUid());
         }
         return false;

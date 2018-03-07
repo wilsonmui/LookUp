@@ -62,7 +62,7 @@ public class User {
 
     public String getFacebookURL() { return this.facebookURL; }
 
-    public String getTwitterURl() { return this.twitterURl; }
+    public String getTwitterURL() { return this.twitterURl; }
 
 
     //==============================================================================================
@@ -76,7 +76,7 @@ public class User {
 
     public void setFacebookURL(String phone) { this.facebookURL = phone; }
 
-    public void setTwitterURl(String phone) { this.twitterURl = phone; }
+    public void setTwitterURL(String phone) { this.twitterURl = phone; }
 
     //==============================================================================================
     // Methods
