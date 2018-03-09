@@ -101,7 +101,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         mContext = getApplicationContext();
 
-//        editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
+        editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
 
         buttonEditProfilePicture = (Button) findViewById(R.id.buttonEditProfilePicture);
         buttonEditProfilePicture.setOnClickListener(this);
@@ -232,7 +232,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onDataChange(DataSnapshot dataSnapshot) {
                 fbUserID = dataSnapshot.getValue(String.class);
                 facebookLink = (TextView) findViewById(R.id.facebookLink);
-                if (!fbUserID.isEmpty()) {
+                if (fbUserID != null && !fbUserID.isEmpty()) {
                     facebookLink.setText("https://facebook.com" + fbUserID);
                     userProfileData.put(dataSnapshot.getKey(), fbUserID);
                 }
@@ -249,10 +249,12 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-                editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
-                Log.d(TAG, "profile pic url: " + dataSnapshot.getValue(String.class));
-                Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(editUserProfilePic);
-                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+//                editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
+                if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
+                    Log.d(TAG, "profile pic url: " + dataSnapshot.getValue(String.class));
+                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(editUserProfilePic);
+                    userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+                }
             }
 
             @Override

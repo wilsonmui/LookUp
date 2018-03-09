@@ -1,6 +1,4 @@
 package edu.ucsb.cs48.lookup;
-import android.net.Uri;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +23,6 @@ public class User {
     private String uid;
     private String facebook;
     private String twitter;
-    private Uri photoUrl;
 
     //==============================================================================================
     // Constructors
@@ -34,14 +31,13 @@ public class User {
         // Required empty constructor for Firebase
     }
 
-    public User(String name, String email, String phone, String uid, Uri photoUrl) {
+    public User(String name, String email, String phone, String uid) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.uid = uid;
         this.facebook = "";
         this.twitter = "";
-        this.photoUrl = photoUrl;
     }
 
     public User(String name, String email, String phone, String uid, String facebook, String twitter) {
@@ -78,11 +74,9 @@ public class User {
 
     public void setPhone(String phone) { this.phone = phone; }
 
-    public void setFacebook(String facebook) { this.facebook = facebook; }
+    public void setFacebook(String phone) { this.facebook = phone; }
 
-    public void setTwitter(String twitter) { this.twitter = twitter; }
-
-    public void setPhotoUrl(Uri photoUrl) { this.photoUrl = photoUrl; }
+    public void setTwitter(String phone) { this.twitter = phone; }
 
     //==============================================================================================
     // Methods

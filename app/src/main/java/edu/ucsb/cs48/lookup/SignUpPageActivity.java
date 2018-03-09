@@ -2,7 +2,6 @@ package edu.ucsb.cs48.lookup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -41,8 +39,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -52,9 +48,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 
 import org.json.JSONObject;
@@ -265,6 +259,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         String password = editTextPassword.getText().toString().trim();
         final String phone = editTextPhone.getText().toString().trim();
 
+
         if(name.isEmpty()) {
             editTextName.setError("Name is required");
             editTextName.requestFocus();
@@ -327,10 +322,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                     String phone = editTextPhone.getText().toString().trim();
                     FirebaseUser currUser = mAuth.getCurrentUser();
                     String uid = currUser.getUid();
-                    Uri photoUrl = currUser.getPhotoUrl();
 
                     // Save User Data to DataBase
-                    saveUserData(name, email, phone, uid, photoUrl);
+                    saveUserData(name, email, phone, uid);
 
                     // Sign in success, update UI with the signed in User's Information
                     updateUI(currUser);
@@ -346,8 +340,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    private void saveUserData(String name, String email, String phone, String userId, Uri photoUrl) {
-        User user = new User(name, email, phone, userId, photoUrl);
+    private void saveUserData(String name, String email, String phone, String userId) {
+        User user = new User(name, email, phone, userId);
         db.child("users").child(userId).setValue(user);
     }
 
@@ -388,7 +382,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         if (requestCode == CAMERA_REQUEST) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             user_profile_photo.setImageBitmap(photo);
-
         }
     }
 
@@ -417,7 +410,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             Log.d(TAG, "signInWithCredential:success");
                             user = mAuth.getCurrentUser();
 
-                            saveUserData(user.getDisplayName(), user.getEmail(),user.getPhoneNumber(), user.getUid(), user.getPhotoUrl());
+                            saveUserData(user.getDisplayName(), user.getEmail(),user.getPhoneNumber(), user.getUid());
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -448,7 +441,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             String uid = user.getUid();
                             Uri photoUrl = user.getPhotoUrl();
                             String link = getFBLink();
-                            saveUserData(name, email, phone, uid, photoUrl);
+                            saveUserData(name, email, phone, uid);
                             saveFBUserLink(link, uid);
                             updateUI(user);
                         } else {
@@ -464,88 +457,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    public void uploadImageFileToFirebaseStorage(String userID, Uri imageFilePathUri) {
 
-        // Checking whether FilePathUri Is empty or not.
-        if (imageFilePathUri != null) {
-
-            // Setting progressDialog Title.
-//            progressDialog.setTitle("Image is Uploading...");
-
-            // Showing progressDialog.
-//            progressDialog.show();
-
-            // Creating second StorageReference.
-            StorageReference storageRef2 = storageRef.child(userID + "_" + System.currentTimeMillis() + "." + GetFileExtension(imageFilePathUri));
-
-            // Adding addOnSuccessListener to second StorageReference.
-            storageRef2.putFile(imageFilePathUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            // Getting image name from EditText and store into string variable.
-//                            String TempImageName = ImageName.getText().toString().trim();
-
-                            // Hiding the progressDialog after done uploading.
-//                            progressDialog.dismiss();
-
-                            // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
-//                            @SuppressWarnings("VisibleForTests")
-//                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(userID + "_profile_pic", taskSnapshot.getDownloadUrl().toString());
-
-//                            // Getting image upload ID.
-//                            String ImageUploadId = databaseRef.push().getKey();
-//
-//                            // Adding image upload id s child element into databaseReference.
-//                            databaseRef.child(ImageUploadId).setValue(imageUploadInfo);
-
-=                            Log.d(TAG, "pic to upload: " + taskSnapshot.getDownloadUrl().toString());
-                            userProfilePicURL = taskSnapshot.getDownloadUrl().toString();
-
-                            // put the changes to the database
-                            updateDatabase();
-                        }
-                    })
-                    // If something goes wrong .
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-
-                            // Hiding the progressDialog.
-//                            progressDialog.dismiss();
-
-                            // Showing exception erro message.
-                            Toast.makeText(SignUpPageActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    })
-
-                    // On progress change upload time.
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            // Setting progressDialog Title.
-//                            progressDialog.setTitle("Image is Uploading...");
-
-                        }
-
-                    })
-
-        }
-
-    }
-
-    public String GetFileExtension(Uri uri) {
-
-        ContentResolver contentResolver = getContentResolver();
-
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-
-        // Returning the file Extension.
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
-
-    }
 
 }
