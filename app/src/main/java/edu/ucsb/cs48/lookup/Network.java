@@ -184,15 +184,12 @@ public class Network {
                                     boolean isContact = false;
                                     for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
                                         if (keyDs.getValue().toString().equals(targetUid) && parentKey.equals(baseUid)) {
-                                            System.out.println("IS INDEED A CONTACT");
                                             isContact = true;
                                             break;
                                         }
                                     }
 
-                                    System.out.println(isContact);
                                     if (!isContact) {
-                                        System.out.println("Contact does NOT exist, and isContact is " + isContact);
                                         DatabaseReference networkRef = FirebaseDatabase.getInstance().getReference()
                                                 .child("network");
                                         networkRef.child(baseUid).push().setValue(targetUid);
