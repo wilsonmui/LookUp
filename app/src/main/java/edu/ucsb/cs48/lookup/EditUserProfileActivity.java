@@ -245,7 +245,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        profilePicRef = userRef.child("profile_pic");
+        profilePicRef = userRef.child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -289,7 +289,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                             editUserProfilePic.setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
                             Log.d(TAG, "TEST");
                             userProfilePicURL = getRedirectedURL(url.toString());
-                            userProfileData.put("profile_pic", userProfilePicURL);
+                            userProfileData.put("profilePic", userProfilePicURL);
 
                         } catch (IOException e) {
                             Log.e(TAG, e.getMessage());
@@ -406,9 +406,12 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         // for taking a picture
         else if (requestCode == CAMERA_REQUEST) {
-            imageFilePathUri = data.getData();
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            editUserProfilePic.setImageBitmap(bitmap);
+            try {
+                imageFilePathUri = data.getData();
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                editUserProfilePic.setImageBitmap(bitmap);
+            }
+            catch (NullPointerException e) {}
         }
 
 //        else if (resultCode == RESULT_OK && requestCode == CAMERA_CAPTURE) {
@@ -467,7 +470,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 //                            // Adding image upload id s child element into databaseReference.
 //                            databaseRef.child(ImageUploadId).setValue(imageUploadInfo);
 
-                            userProfileData.put("profile_pic", taskSnapshot.getDownloadUrl().toString());
+                            userProfileData.put("profilePic", taskSnapshot.getDownloadUrl().toString());
                             Log.d(TAG, "pic to upload: " + taskSnapshot.getDownloadUrl().toString());
                             userProfilePicURL = taskSnapshot.getDownloadUrl().toString();
 

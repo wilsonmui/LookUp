@@ -2,24 +2,36 @@ package edu.ucsb.cs48.lookup;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +51,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -48,11 +62,19 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,10 +108,11 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
     private static final String NAME = "public_profile", EMAIL = "email";
     private TextView info;
+    private PopupWindow setProfilePicPopup;
 
     GoogleSignInClient mGoogleSignInClient;
 
-    private static final int CAMERA_REQUEST = 1888;
+    private static final int IMAGE_REQUEST_CODE = 7, CAMERA_REQUEST = 1888;
     private ImageView user_profile_photo;
     //==============================================================================================
     // On Create Setup
@@ -103,6 +126,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currUser = mAuth.getCurrentUser();
+        storageRef = FirebaseStorage.getInstance().getReference();
         updateUI(currUser);
 
         setContentView(R.layout.sign_up_page);
@@ -236,14 +260,55 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
         user_profile_photo =(ImageView) findViewById(R.id.user_profile_photo);
+        user_profile_photo.setDrawingCacheEnabled(true);
         Button photoButton = (Button) findViewById(R.id.set_photo_button);
 
         photoButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                LayoutInflater inflater = (LayoutInflater) getApplication().getSystemService(LAYOUT_INFLATER_SERVICE);
+                View customView = inflater.inflate(R.layout.edit_profile_pic_popup, null);
+                setProfilePicPopup = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                // remove the import from facebook option
+                ((Button)customView.findViewById(R.id.buttonImportFromFB)).setVisibility(View.GONE);
+
+                Button buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
+                buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent =  new Intent();
+
+                        // set intent type as image to select image from phone storage
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
+
+                        setProfilePicPopup.dismiss();
+                    }
+                });
+
+                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
+                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+                        setProfilePicPopup.dismiss();
+                    }
+                });
+
+                Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
+                buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setProfilePicPopup.dismiss();
+                    }
+                });
+                setProfilePicPopup.showAtLocation((RelativeLayout) findViewById(R.id.signUpPage), Gravity.CENTER, 0, 0);
+
             }
         });
 
@@ -258,7 +323,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         final String phone = editTextPhone.getText().toString().trim();
-
 
         if(name.isEmpty()) {
             editTextName.setError("Name is required");
@@ -322,9 +386,17 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                     String phone = editTextPhone.getText().toString().trim();
                     FirebaseUser currUser = mAuth.getCurrentUser();
                     String uid = currUser.getUid();
+                    Bitmap profilePicBitmap = user_profile_photo.getDrawingCache();
+                    Uri profilePicUri = getImageUri(getApplicationContext(), profilePicBitmap);
+//                    String profilePicString = profilePicUri.toString();
+
+                    // save the user profile pic to storage
+//                    String userProfilePicUrl = uploadImageFileToFirebaseStorage(profilePicUri, uid);
+//                    Log.d(TAG, userProfilePicUrl);
 
                     // Save User Data to DataBase
-                    saveUserData(name, email, phone, uid);
+                    saveUserData(name, email, phone, uid, profilePicUri);
+
 
                     // Sign in success, update UI with the signed in User's Information
                     updateUI(currUser);
@@ -340,9 +412,52 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    private void saveUserData(String name, String email, String phone, String userId) {
-        User user = new User(name, email, phone, userId);
-        db.child("users").child(userId).setValue(user);
+    private void saveUserData(String name, String email, String phone, String userId, Uri imageFilePathUri) {
+
+        // upload the profile pic to firebase
+
+        // use an array to make it "effectively final"
+        final String[] profilePicUrl = {""};
+        final String[] userProfileData = {name, email, phone, userId, null};
+
+        // Checking whether FilePathUri Is empty or not.
+        if (imageFilePathUri != null) {
+
+            // Creating second StorageReference.
+            StorageReference storageRef2 = storageRef.child(userId + "_" + System.currentTimeMillis() + "." + GetFileExtension(imageFilePathUri));
+
+            // Adding addOnSuccessListener to second StorageReference.
+            storageRef2.putFile(imageFilePathUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            userProfilePicURL = taskSnapshot.getDownloadUrl().toString();
+                            profilePicUrl[0] = taskSnapshot.getDownloadUrl().toString();
+                            Log.d(TAG, "profile pic url: " + profilePicUrl[0]);
+                            // Showing toast message after done uploading.
+                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                            User user = new User(userProfileData[0], userProfileData[1], userProfileData[2], userProfileData[3],
+                                profilePicUrl[0]);
+                            db.child("users").child(userProfileData[3]).setValue(user);
+                        }
+                    })
+                    // If something goes wrong .
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Showing exception error message.
+                            Toast.makeText(SignUpPageActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    })
+
+                    // On progress change upload time.
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {}
+                    });
+        }
+
+
     }
 
     private void setFBLink(String fbID) {
@@ -379,9 +494,29 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             handleSignInResult(task);
         }
 
+        // for uploading from camera roll
+        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
+            Uri imageFilePathUri = data.getData();
+            try {
+
+                //    getting selected image into Bitmap
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
+                user_profile_photo.setImageBitmap(bitmap);
+
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         if (requestCode == CAMERA_REQUEST) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            user_profile_photo.setImageBitmap(photo);
+            try {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                user_profile_photo.setImageBitmap(photo);
+            }
+            catch (NullPointerException e) {
+
+            }
         }
     }
 
@@ -410,7 +545,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             Log.d(TAG, "signInWithCredential:success");
                             user = mAuth.getCurrentUser();
 
-                            saveUserData(user.getDisplayName(), user.getEmail(),user.getPhoneNumber(), user.getUid());
+                            saveUserData(user.getDisplayName(), user.getEmail(),user.getPhoneNumber(), user.getUid(), null);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -439,9 +574,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             String email = user.getEmail();
                             String phone = user.getPhoneNumber();
                             String uid = user.getUid();
-                            Uri photoUrl = user.getPhotoUrl();
                             String link = getFBLink();
-                            saveUserData(name, email, phone, uid);
+                            saveUserData(name, email, phone, uid, null);
                             saveFBUserLink(link, uid);
                             updateUI(user);
                         } else {
@@ -456,7 +590,65 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                 });
     }
 
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
+        return Uri.parse(path);
+    }
 
+    public String uploadImageFileToFirebaseStorage(Uri imageFilePathUri, String userID) {
 
+        // use an array to make it "effectively final"
+        final String[] profilePicUrl = {""};
+
+        // Checking whether FilePathUri Is empty or not.
+        if (imageFilePathUri != null) {
+
+            // Creating second StorageReference.
+            StorageReference storageRef2 = storageRef.child(userID + "_" + System.currentTimeMillis() + "." + GetFileExtension(imageFilePathUri));
+
+            // Adding addOnSuccessListener to second StorageReference.
+            storageRef2.putFile(imageFilePathUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            userProfilePicURL = taskSnapshot.getDownloadUrl().toString();
+                            profilePicUrl[0] = taskSnapshot.getDownloadUrl().toString();
+                            Log.d(TAG, "profile pic url: " + profilePicUrl[0]);
+                            // Showing toast message after done uploading.
+                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                        }
+                    })
+                    // If something goes wrong .
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Showing exception error message.
+                            Toast.makeText(SignUpPageActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    })
+
+                    // On progress change upload time.
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {}
+                    });
+        }
+
+        return profilePicUrl[0];
+
+    }
+
+    public String GetFileExtension(Uri uri) {
+
+        ContentResolver contentResolver = getContentResolver();
+
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+
+        // Returning the file Extension.
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
+
+    }
 
 }
