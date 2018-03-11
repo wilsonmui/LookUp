@@ -4,18 +4,24 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -98,6 +104,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private Button buttonSignUp;
     private CallbackManager callbackManager;
     private String g_username = "";
+    private static String GALLERY = "GALLERY", CAMERA = "CAMERA";
 
     private DatabaseReference db;
     private StorageReference storageRef;
@@ -114,6 +121,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
     private static final int IMAGE_REQUEST_CODE = 7, CAMERA_REQUEST = 1888;
     private ImageView user_profile_photo;
+
+    private Bitmap userProfilePic;
+
     //==============================================================================================
     // On Create Setup
     //==============================================================================================
@@ -390,7 +400,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 //                    String profilePicString = profilePicUri.toString();
 
                     // save the user profile pic to storage
-//                    String userProfilePicUrl = uploadImageFileToFirebaseStorage(profilePicUri, uid);
+//                    uploadImageFileToFirebaseStorage(uid);
 //                    Log.d(TAG, userProfilePicUrl);
 
                     // Save User Data to DataBase
@@ -418,15 +428,16 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         // use an array to make it "effectively final"
         final String[] profilePicUrl = {""};
         final String[] userProfileData = {name, email, phone, userId, null};
+        Uri uri = getImageUri(getApplicationContext(), userProfilePic);
 
         // Checking whether FilePathUri Is empty or not.
-        if (imageFilePathUri != null) {
+        if (uri != null) {
 
             // Creating second StorageReference.
             StorageReference storageRef2 = storageRef.child(userId + "_" + System.currentTimeMillis() + "." + GetFileExtension(imageFilePathUri));
 
             // Adding addOnSuccessListener to second StorageReference.
-            storageRef2.putFile(imageFilePathUri)
+            storageRef2.putFile(uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -493,10 +504,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
             Uri imageFilePathUri = data.getData();
             try {
-
-                //    getting selected image into Bitmap
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
-                user_profile_photo.setImageBitmap(bitmap);
+                userProfilePic = rotateBitmap(getApplicationContext(), imageFilePathUri, bitmap, GALLERY);
+                user_profile_photo.setImageBitmap(userProfilePic);
 
             }
             catch (IOException e) {
@@ -504,14 +514,17 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
+        // for uploading from camera
         if (requestCode == CAMERA_REQUEST) {
+            Uri imageFilePathUri = data.getData();
+            Log.d(TAG, "camera uri " + imageFilePathUri.toString());
             try {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                user_profile_photo.setImageBitmap(photo);
+                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFilePathUri), null, null);
+                Log.d(TAG, imageFilePathUri.toString());
+                userProfilePic = rotateBitmap(getApplicationContext(), imageFilePathUri, bitmap, CAMERA);
+                user_profile_photo.setImageBitmap(userProfilePic);
             }
-            catch (NullPointerException e) {
-
-            }
+            catch (IOException e) {}
         }
     }
 
@@ -584,13 +597,6 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                 });
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
-        return Uri.parse(path);
-    }
-
     public String GetFileExtension(Uri uri) {
 
         ContentResolver contentResolver = getContentResolver();
@@ -600,6 +606,127 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         // Returning the file Extension.
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
 
+    }
+
+    public String getRealPathFromURI(Context context, Uri uri, String source) {
+
+        String path = "";
+
+        if (source.equals(GALLERY)) {
+
+            int currentAPIVersion;
+            try {
+                currentAPIVersion = Build.VERSION.SDK_INT;
+            } catch (NumberFormatException e) {
+                currentAPIVersion = 3;
+            }
+
+            if (currentAPIVersion >= 19)
+                path = getRealPathFromURI_API19(context, uri);
+            else if (currentAPIVersion >= 11 && currentAPIVersion <= 18)
+                path = getRealPathFromURI_API11to18(context, uri);
+            else if (currentAPIVersion < 11)
+                path = getRealPathFromURI_BelowAPI11(context, uri);
+        }
+        else if (source.equals(CAMERA)) {
+            Cursor cursor = null;
+            try {
+                String[] proj = { MediaStore.Images.Media.DATA };
+                cursor = getContentResolver().query(uri,  proj, null, null, null);
+                int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                path = cursor.getString(index);
+                cursor.close();
+            }
+            catch (NullPointerException e) {}
+        }
+
+        return path;
+
+    }
+
+    public static String getRealPathFromURI_API19(Context context, Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
+
+    public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        String result = null;
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                contentUri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        if(cursor != null){
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            result = cursor.getString(column_index);
+        }
+        return result;
+    }
+
+    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri){
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index
+                = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+
+    private static int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+        return 0;
+    }
+
+    private Bitmap rotateBitmap(Context context, Uri uri, Bitmap bitmap, String source) throws IOException {
+        ExifInterface exif = null;
+        if (source.equals("GALLERY"))
+            exif = new ExifInterface(getRealPathFromURI(context, uri, GALLERY));
+        else if (source.equals("CAMERA")) {
+            exif = new ExifInterface(getRealPathFromURI(context, uri, CAMERA));
+        }
+        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        int rotationInDegrees = exifToDegrees(rotation);
+        Matrix matrix = new Matrix();
+        if (rotation != 0f) {
+            matrix.preRotate(rotationInDegrees);
+        }
+        //    getting selected image into Bitmap
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return rotatedBitmap;
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
+        return Uri.parse(path);
     }
 
 }

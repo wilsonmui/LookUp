@@ -89,7 +89,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private Context mContext;
     private PopupWindow editProfilePicPopup;
     private ImageView editUserProfilePic;
-    private Uri imageFilePathUri;
     private Bitmap userProfilePic;
     private static int IMAGE_REQUEST_CODE = 7, CAMERA_REQUEST = 1888;
     private static String CAMERA = "CAMERA", GALLERY = "GALLERY";
@@ -390,7 +389,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         // for uploading from camera roll
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
-            imageFilePathUri = data.getData();
+            Uri imageFilePathUri = data.getData();
             Log.d(TAG, "gallery uri " + imageFilePathUri.toString());
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
@@ -406,7 +405,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         // for taking a picture
         else if (requestCode == CAMERA_REQUEST) {
-            imageFilePathUri = data.getData();
+            Uri imageFilePathUri = data.getData();
             Log.d(TAG, "camera uri " + imageFilePathUri.toString());
             try {
 //                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
@@ -639,43 +638,11 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         return rotatedBitmap;
     }
 
-//    private void rotateImage(Context context, Uri uri) throws IOException {
-//        ExifInterface exif = new ExifInterface(getRealPathFromURI(context, uri));
-//        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-//        int rotationInDegrees = exifToDegrees(rotation);
-//        editUserProfilePic.setRotation(rotationInDegrees);
-//        // rotate the image view in UserProfilePageActivity as well
-//        findViewById(R.id.profilePic).setRotation(rotationInDegrees);
-//    }
-
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
         return Uri.parse(path);
-    }
-
-    public static Uri getImageContentUri(Context context, File imageFile) {
-        String filePath = imageFile.getAbsolutePath();
-        Cursor cursor = context.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[] { MediaStore.Images.Media._ID },
-                MediaStore.Images.Media.DATA + "=? ",
-                new String[] { filePath }, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
-            cursor.close();
-            return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "" + id);
-        } else {
-            if (imageFile.exists()) {
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DATA, filePath);
-                return context.getContentResolver().insert(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            } else {
-                return null;
-            }
-        }
     }
 
 }
