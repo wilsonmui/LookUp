@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonSignIn:
                 startActivity(new Intent(this, SignInPageActivity.class));
                 break;
+            case R.id.info_button:
+                finish();
+                startActivity(new Intent(this, InfoPageActivity.class));
         }
     }
 
@@ -58,5 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initListeners() {
         findViewById(R.id.buttonGetStarted).setOnClickListener(this);
         findViewById(R.id.buttonSignIn).setOnClickListener(this);
+        findViewById(R.id.info_button).setOnClickListener(this);
     }
 }
