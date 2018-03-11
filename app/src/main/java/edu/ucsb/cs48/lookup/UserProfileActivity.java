@@ -185,6 +185,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 //                if (!dataSnapshot.getValue(String.class).is
                 if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
                     profilePic = (ImageView) findViewById(R.id.profilePic);
+                    Log.d(TAG, dataSnapshot.getValue(String.class));
                     Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(profilePic);
                 }
             }

@@ -104,7 +104,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
     FirebaseUser user;
 
-    private String fbLink;
+    private String fbID;
 
     private static final String NAME = "public_profile", EMAIL = "email";
     private TextView info;
@@ -163,9 +163,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                                 @Override
                                 public void onCompleted(JSONObject object, GraphResponse response) {
                                     try {
-                                        String id = object.getString("id");
-                                        Log.d(TAG, "FB id: " + id);
-                                        setFBLink(id);
+                                        fbID = object.getString("id");
+                                        Log.d(TAG, "FB id: " + fbID);
                                         Log.d(TAG, "FB link successful");
                                     }
                                     catch (Exception e) {
@@ -456,22 +455,18 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {}
                     });
         }
+        else {
+            User user = new User(name, email, phone, userId, null);
+            db.child("users").child(userId).setValue(user);
+        }
 
 
     }
 
-    private void setFBLink(String fbID) {
-        fbLink = "https://facebook.com/" + fbID;
-    }
-
-    private String getFBLink() {
-        return fbLink;
-    }
-
-    private void saveFBUserLink(String link, String userId) {
+    private void saveFBUserID(String id, String userId) {
         Map<String,String> userFBData = new HashMap<String,String>();
-        userFBData.put("facebook", link);
-        db.child("users").child(userId).child("facebook").setValue(link);
+        userFBData.put("facebook", id);
+        db.child("users").child(userId).child("facebook").setValue(id);
     }
 
     // sign-in for Google
@@ -574,9 +569,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             String email = user.getEmail();
                             String phone = user.getPhoneNumber();
                             String uid = user.getUid();
-                            String link = getFBLink();
                             saveUserData(name, email, phone, uid, null);
-                            saveFBUserLink(link, uid);
+                            saveFBUserID(fbID, uid);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -592,52 +586,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
         return Uri.parse(path);
-    }
-
-    public String uploadImageFileToFirebaseStorage(Uri imageFilePathUri, String userID) {
-
-        // use an array to make it "effectively final"
-        final String[] profilePicUrl = {""};
-
-        // Checking whether FilePathUri Is empty or not.
-        if (imageFilePathUri != null) {
-
-            // Creating second StorageReference.
-            StorageReference storageRef2 = storageRef.child(userID + "_" + System.currentTimeMillis() + "." + GetFileExtension(imageFilePathUri));
-
-            // Adding addOnSuccessListener to second StorageReference.
-            storageRef2.putFile(imageFilePathUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            userProfilePicURL = taskSnapshot.getDownloadUrl().toString();
-                            profilePicUrl[0] = taskSnapshot.getDownloadUrl().toString();
-                            Log.d(TAG, "profile pic url: " + profilePicUrl[0]);
-                            // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    // If something goes wrong .
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Showing exception error message.
-                            Toast.makeText(SignUpPageActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    })
-
-                    // On progress change upload time.
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {}
-                    });
-        }
-
-        return profilePicUrl[0];
-
     }
 
     public String GetFileExtension(Uri uri) {
