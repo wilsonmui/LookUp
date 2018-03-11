@@ -25,9 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class GenerateCodeActivity extends Activity {
     ImageView imageView;
     Button button;
-    EditText editText;
-    String EditTextValue ;
-    Thread thread ;
     public final static int QRcodeWidth = 500 ;
     Bitmap bitmap ;
 
