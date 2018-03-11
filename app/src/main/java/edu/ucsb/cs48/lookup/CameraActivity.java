@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,7 @@ public class CameraActivity extends Activity {
     Bitmap bitmapPhoto;
     TextView uid;
     String uidGrabbed;
+    private Uri imageFilePathUri;
 
     public void onCreate(Bundle savedInstanceState) {
 
@@ -67,6 +69,7 @@ public class CameraActivity extends Activity {
         if (requestCode == CAMERA_REQUEST) {
             bitmapPhoto = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(bitmapPhoto);
+            imageFilePathUri = data.getData();
         }
     }
 
@@ -125,4 +128,7 @@ public class CameraActivity extends Activity {
             }
         });
     }
+
+    public Uri getImageFilePathUri() { return imageFilePathUri; }
+
 }
