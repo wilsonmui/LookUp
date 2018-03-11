@@ -89,7 +89,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private Context mContext;
     private PopupWindow editProfilePicPopup;
     private ImageView editUserProfilePic;
-    private Bitmap userProfilePic;
+    private Bitmap userProfilePic = null;
     private static int IMAGE_REQUEST_CODE = 7, CAMERA_REQUEST = 1888;
     private static String CAMERA = "CAMERA", GALLERY = "GALLERY";
 
@@ -444,7 +444,9 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     public void uploadImageFileToFirebaseStorage() {
 
 //        Bitmap bitmap = editUserProfilePic.getDrawingCache();
-        Uri uri = getImageUri(mContext, userProfilePic);
+        Uri uri = null;
+        if (userProfilePic != null)
+            uri = getImageUri(mContext, userProfilePic);
 
         // Checking whether uri Is empty or not.
         if (uri != null) {
