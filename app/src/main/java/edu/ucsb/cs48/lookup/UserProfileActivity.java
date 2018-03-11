@@ -74,7 +74,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private Context mContext;
     private CallbackManager callbackManager;
 
-    private DatabaseReference userRef, uidRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
+    private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
 
 
     //==============================================================================================
@@ -86,8 +86,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
         // Check if User is Authenticated
         mAuth = FirebaseAuth.getInstance();
-
-        mContext = getApplicationContext();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser == null) {
             finish();
@@ -183,10 +181,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 //                if (!dataSnapshot.getValue(String.class).is
-                if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
+                if (dataSnapshot.getValue(String.class) != null) {
                     profilePic = (ImageView) findViewById(R.id.profilePic);
-                    Log.d(TAG, dataSnapshot.getValue(String.class));
-                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(profilePic);
+                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).fit().into(profilePic);
                 }
             }
 
@@ -202,7 +199,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 facebookLink = (TextView) findViewById(R.id.facebookLink);
                 buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
 
-                if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
+                if (!dataSnapshot.getValue(String.class).equals("")) {
                     buttonConnectToFacebook.setVisibility(View.GONE);
                     facebookLink.setText("https://facebook.com/" + dataSnapshot.getValue(String.class));
                 } else {
