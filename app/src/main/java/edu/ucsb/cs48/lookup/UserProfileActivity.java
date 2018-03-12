@@ -3,6 +3,7 @@ package edu.ucsb.cs48.lookup;
 import edu.ucsb.cs48.lookup.ContactInfo.Facebook;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,6 +48,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 import java.util.Arrays;
 import static android.content.ContentValues.TAG;
+import static android.widget.Toast.*;
+import static java.lang.System.out;
 
 /**
  * Created by deni on 2/8/18.
@@ -59,22 +62,18 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     //==============================================================================================
     private FirebaseAuth mAuth;
   
-    private TextView displayName, emailAddress, phoneNumber, textViewFacebook, textViewTwitter, facebookLink;
-
-    private Switch switchFacebook;
-
+    private TextView displayName, emailAddress, phoneNumber, textViewTwitter, facebookLink;
+    
     private LoginButton buttonConnectToFacebook;
     private TwitterLoginButton loginButton;
     private ImageView profilePic;
     private Button buttonEditProfile;
-    private Switch facebookSwitch;
-    private Facebook facebook;
-    private String userID, facebookID;
+    private String facebookID;
     private DatabaseReference mDatabase;
     private Context mContext;
     private CallbackManager callbackManager;
 
-    private DatabaseReference userRef, uidRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
+    private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
 
 
     //==============================================================================================
@@ -133,7 +132,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         displayName = (TextView) findViewById(R.id.displayName);
         phoneNumber = (TextView) findViewById(R.id.phoneNumber);
         emailAddress = (TextView) findViewById(R.id.emailAddress);
-        textViewFacebook = (TextView) findViewById(R.id.facebookLink);
         loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
         buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
 
@@ -148,11 +146,11 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 String token = authToken.token;
                 String secret = authToken.secret;
                 login(session);
-                          }
+            }
 
             @Override
             public void failure(TwitterException exception) {
-                Toast.makeText(UserProfileActivity.this, "Authentication Failed!", Toast.LENGTH_LONG).show();
+                makeText(UserProfileActivity.this, "Authentication Failed!", LENGTH_LONG).show();
             }
         });
 
@@ -161,122 +159,133 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private void loadUserData() {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        String uid = currentUser.getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        userRef = mDatabase.child("users").child(uid);
+        try {
+            String uid = currentUser.getUid();
+            mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        nameRef = mDatabase.child("users").child(uid).child("name");
-        loadUserField(nameRef, displayName);
+            userRef = mDatabase.child("users").child(uid);
 
-        emailRef = mDatabase.child("users").child(uid).child("email");
-        loadUserField(emailRef, emailAddress);
+            nameRef = mDatabase.child("users").child(uid).child("name");
+            loadUserField(nameRef, displayName);
 
-        phoneRef = mDatabase.child("users").child(uid).child("phone");
-        loadUserField(phoneRef, phoneNumber);
+            emailRef = mDatabase.child("users").child(uid).child("email");
+            loadUserField(emailRef, emailAddress);
 
-        twitterRef = mDatabase.child("users").child(uid).child("twitter");
-        loadUserField(twitterRef, textViewTwitter);
-      
-        profilePicRef = userRef.child("profile_pic");
-        profilePicRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-//                if (!dataSnapshot.getValue(String.class).is
-                if (dataSnapshot.getValue(String.class) != null) {
-                    profilePic = (ImageView) findViewById(R.id.profilePic);
-                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(profilePic);
+            phoneRef = mDatabase.child("users").child(uid).child("phone");
+            loadUserField(phoneRef, phoneNumber);
+
+            twitterRef = mDatabase.child("users").child(uid).child("twitter");
+            loadUserField(twitterRef, textViewTwitter);
+
+            profilePicRef = userRef.child("profile_pic");
+            profilePicRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(final DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue(String.class) != null && dataSnapshot.exists()) {
+                        profilePic = (ImageView) findViewById(R.id.profilePic);
+                        Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(profilePic);
+                    } else {
+                        Log.d(TAG, "Database Failure: could not load pic");
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            });
 
-        facebookRef = userRef.child("facebook");
-        facebookRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            facebookRef = userRef.child("facebook");
+            facebookRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()) {
+                        facebookLink = (TextView) findViewById(R.id.facebookLink);
+                        buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
 
-                facebookLink = (TextView) findViewById(R.id.facebookLink);
-                buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
+                        if (!dataSnapshot.getValue(String.class).equals("")) {
+                            buttonConnectToFacebook.setVisibility(View.GONE);
+                            facebookLink.setText("https://facebook.com/" + dataSnapshot.getValue(String.class));
+                        } else {
+                            Log.d(TAG, "not connected to fb");
+                            facebookLink.setText("");
+                            FacebookSdk.sdkInitialize(getApplicationContext());
+                            buttonConnectToFacebook.setVisibility(View.VISIBLE);
+                            buttonConnectToFacebook.setReadPermissions(Arrays.asList("public_profile", "email"));
+                            callbackManager = CallbackManager.Factory.create();
+                            buttonConnectToFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                                @Override
+                                public void onSuccess(LoginResult loginResult) {
+                                    try {
+                                        Log.d(TAG, "onSuccess started");
+                                        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                                                new GraphRequest.GraphJSONObjectCallback() {
+                                                    @Override
+                                                    public void onCompleted(JSONObject object, GraphResponse response) {
+                                                        try {
+                                                            facebookID = object.getString("id");
+                                                            Log.d(TAG, "FB id: " + facebookID);
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                            Log.d(TAG, "FB link unsuccessful");
+                                                        }
+                                                    }
+                                                });
+                                        Bundle parameters = new Bundle();
+                                        parameters.putString("fields", "link");
+                                        request.setParameters(parameters);
+                                        request.executeAsync();
+                                    } catch (Exception e) {
+                                        Log.d("FACEBOOK ERROR", "cancelled");
+                                    }
+                                    setResult(RESULT_OK);
+                                    Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                                    handleFacebookAccessToken(loginResult.getAccessToken());
+                                }
 
-                if (!dataSnapshot.getValue(String.class).equals("")) {
-                    buttonConnectToFacebook.setVisibility(View.GONE);
-                    facebookLink.setText("https://facebook.com/" + dataSnapshot.getValue(String.class));
-                } else {
-                    Log.d(TAG, "not connected to fb");
-                    facebookLink.setText("");
-                    FacebookSdk.sdkInitialize(getApplicationContext());
-                    buttonConnectToFacebook.setVisibility(View.VISIBLE);
-                    buttonConnectToFacebook.setReadPermissions(Arrays.asList("public_profile", "email"));
-                    callbackManager = CallbackManager.Factory.create();
-                    buttonConnectToFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                        @Override
-                        public void onSuccess(LoginResult loginResult) {
-                            try {
-                                Log.d(TAG, "onSuccess started");
-                                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
-                                        new GraphRequest.GraphJSONObjectCallback() {
-                                            @Override
-                                            public void onCompleted(JSONObject object, GraphResponse response) {
-                                                try {
-                                                    facebookID = object.getString("id");
-                                                    Log.d(TAG, "FB id: " + facebookID);
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                    Log.d(TAG, "FB link unsuccessful");
-                                                }
-                                            }
-                                        });
-                                Bundle parameters = new Bundle();
-                                parameters.putString("fields", "link");
-                                request.setParameters(parameters);
-                                request.executeAsync();
-                            } catch (Exception e) {
-                                Log.d("FACEBOOK ERROR", "cancelled");
-                            }
-                            setResult(RESULT_OK);
-                            Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                            handleFacebookAccessToken(loginResult.getAccessToken());
+                                @Override
+                                public void onCancel() {
+                                    setResult(RESULT_CANCELED);
+                                    Log.d(TAG, "facebook:onCancel");
+                                    finish();
+                                }
+
+                                @Override
+                                public void onError(FacebookException exception) {
+                                    Log.d(TAG, "facebook:onError", exception);
+                                }
+                            });
                         }
-
-                        @Override
-                        public void onCancel() {
-                            setResult(RESULT_CANCELED);
-                            Log.d(TAG, "facebook:onCancel");
-                            finish();
-                        }
-
-                        @Override
-                        public void onError(FacebookException exception) {
-                            Log.d(TAG, "facebook:onError", exception);
-                        }
-                    });
-
+                    }
 
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //...
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //...
+                }
+            });
+        } catch (Exception e) {
+            Log.d(TAG, "Could not get user data, user was no found.", e);
+
+        }
 
     }
 
 
     public void loadUserField(DatabaseReference databaseReference, final TextView textView) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+            databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                textView.setText(dataSnapshot.getValue(String.class));
+                if(dataSnapshot.exists()) {
+                    textView.setText(dataSnapshot.getValue(String.class));
+                } else {
+                    Log.d(TAG, "Database Failure: could not load value(s)");
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.d(TAG, "Database Failure: could not load value(s)");
             }
         });
     }

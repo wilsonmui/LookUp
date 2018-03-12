@@ -133,9 +133,10 @@ public class Network {
                         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
-                                    rmUserContact(keyDs.getValue().toString(), uid);
+                                if(dataSnapshot.exists()) {
+                                    for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
+                                        rmUserContact(keyDs.getValue().toString(), uid);
+                                    }
                                 }
                             }
 
@@ -181,19 +182,22 @@ public class Network {
                             keyRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    boolean isContact = false;
-                                    for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
-                                        if (keyDs.getValue().toString().equals(targetUid) && parentKey.equals(baseUid)) {
-                                            isContact = true;
-                                            break;
+                                    if (dataSnapshot.exists()) {
+                                        boolean isContact = false;
+                                        for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
+                                            if (keyDs.getValue().toString().equals(targetUid) && parentKey.equals(baseUid)) {
+                                                isContact = true;
+                                                break;
+                                            }
                                         }
-                                    }
 
-                                    if (!isContact) {
-                                        DatabaseReference networkRef = FirebaseDatabase.getInstance().getReference()
-                                                .child("network");
-                                        networkRef.child(baseUid).push().setValue(targetUid);
-                                        System.out.println("Contact added!");
+
+                                        if (!isContact) {
+                                            DatabaseReference networkRef = FirebaseDatabase.getInstance().getReference()
+                                                    .child("network");
+                                            networkRef.child(baseUid).push().setValue(targetUid);
+                                            System.out.println("Contact added!");
+                                        }
                                     }
                                 }
 
@@ -241,25 +245,26 @@ public class Network {
                             keyRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    boolean isContact = false;
-                                    String targetKey = "";
-                                    for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
-                                        if (keyDs.getValue().toString().equals(targetUid) && parentKey.equals(baseUid)) {
-                                            isContact = true;
-                                            targetKey = keyDs.getKey().toString();
-                                            break;
+                                    if(dataSnapshot.exists()) {
+                                        boolean isContact = false;
+                                        String targetKey = "";
+                                        for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
+                                            if (keyDs.getValue().toString().equals(targetUid) && parentKey.equals(baseUid)) {
+                                                isContact = true;
+                                                targetKey = keyDs.getKey().toString();
+                                                break;
+                                            }
+                                        }
+
+                                        if (isContact) {
+                                            DatabaseReference targetRef = FirebaseDatabase.getInstance().getReference()
+                                                    .child("network").child(baseUid).child(targetKey);
+                                            targetRef.removeValue();
+                                            System.out.println("User: " + baseUid + " contact: " + targetUid + " successfully removed");
+                                        } else {
+                                            System.out.println("Removing contact failed, User: " + baseUid + " does not have contact: " + targetUid);
                                         }
                                     }
-
-                                    if (isContact) {
-                                        DatabaseReference targetRef = FirebaseDatabase.getInstance().getReference()
-                                                .child("network").child(baseUid).child(targetKey);
-                                        targetRef.removeValue();
-                                        System.out.println("User: " + baseUid + " contact: " + targetUid + " successfully removed");
-                                    } else {
-                                        System.out.println("Removing contact failed, User: " + baseUid + " does not have contact: " + targetUid);
-                                    }
-
                                 }
 
                                 @Override
