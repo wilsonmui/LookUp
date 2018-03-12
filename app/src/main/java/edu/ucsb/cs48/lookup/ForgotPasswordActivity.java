@@ -1,5 +1,6 @@
 package edu.ucsb.cs48.lookup;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        auth = FirebaseAuth.getInstance();
+        if(auth.getCurrentUser() != null) {
+            finish();
+            startActivity(new Intent(this, HomePageActivity.class));
+        }
+
         setContentView(R.layout.activity_forgot_password);
 
         inputEmail = (EditText) findViewById(R.id.email);

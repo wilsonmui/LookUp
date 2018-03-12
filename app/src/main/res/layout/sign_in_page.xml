@@ -107,7 +107,6 @@
             android:textColor="#fff"
             android:id="@+id/textViewForgotPassword"
             android:textAlignment="center"
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

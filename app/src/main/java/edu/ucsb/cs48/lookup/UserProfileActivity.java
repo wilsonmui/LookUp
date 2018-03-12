@@ -134,8 +134,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         emailAddress = (TextView) findViewById(R.id.emailAddress);
         loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
         buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
+        facebookLink = (TextView) findViewById(R.id.facebookLink);
+        buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
 
-        
         buttonEditProfile.setOnClickListener(this);
 
         loginButton.setCallback(new Callback<TwitterSession>() {
@@ -196,8 +197,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()) {
-                        facebookLink = (TextView) findViewById(R.id.facebookLink);
-                        buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
 
                         if (!dataSnapshot.getValue(String.class).equals("")) {
                             buttonConnectToFacebook.setVisibility(View.GONE);
@@ -261,9 +260,15 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                     //...
                 }
             });
+
+            twitterRef = userRef.child("twitter");
+            loadUserField(twitterRef, textViewTwitter);
+            if(!textViewTwitter.getText().equals("")) {
+                loginButton.setVisibility(View.INVISIBLE);
+            }
+
         } catch (Exception e) {
             Log.d(TAG, "Could not get user data, user was no found.", e);
-
         }
 
     }
