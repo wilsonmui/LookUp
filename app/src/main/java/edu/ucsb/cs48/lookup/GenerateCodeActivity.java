@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.support.v4.content.ContextCompat;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -50,7 +47,7 @@ public class GenerateCodeActivity extends Activity {
         user = mAuth.getCurrentUser();
 
 
-        imageView = (ImageView)findViewById(R.id.codeView);
+        imageView = (ImageView)findViewById(R.id.face_imageview);
         displayCode();
 
 
