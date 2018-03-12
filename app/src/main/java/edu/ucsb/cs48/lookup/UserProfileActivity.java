@@ -178,13 +178,14 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         twitterRef = mDatabase.child("users").child(uid).child("twitter");
         loadUserField(twitterRef, textViewTwitter);
       
-        profilePicRef = userRef.child("profile_pic");
+        profilePicRef = userRef.child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 //                if (!dataSnapshot.getValue(String.class).is
-                if (dataSnapshot.getValue(String.class) != null) {
+                if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
                     profilePic = (ImageView) findViewById(R.id.profilePic);
+                    Log.d(TAG, dataSnapshot.getValue(String.class));
                     Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(profilePic);
                 }
             }
@@ -201,7 +202,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 facebookLink = (TextView) findViewById(R.id.facebookLink);
                 buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
 
-                if (!dataSnapshot.getValue(String.class).equals("")) {
+                if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
                     buttonConnectToFacebook.setVisibility(View.GONE);
                     facebookLink.setText("https://facebook.com/" + dataSnapshot.getValue(String.class));
                 } else {

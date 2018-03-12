@@ -1,4 +1,6 @@
 package edu.ucsb.cs48.lookup;
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class User {
     private String uid;
     private String facebook;
     private String twitter;
+    private String profilePic;
 
     //==============================================================================================
     // Constructors
@@ -31,13 +34,14 @@ public class User {
         // Required empty constructor for Firebase
     }
 
-    public User(String name, String email, String phone, String uid) {
+    public User(String name, String email, String phone, String uid, String profilePic) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.uid = uid;
         this.facebook = "";
         this.twitter = "";
+        this.profilePic = profilePic;
     }
 
     public User(String name, String email, String phone, String uid, String facebook, String twitter) {
@@ -64,6 +68,8 @@ public class User {
 
     public String getTwitter() { return this.twitter; }
 
+    public String getProfilePic() { return this.profilePic; }
+
     //==============================================================================================
     // Setter Methods
     //==============================================================================================
@@ -73,9 +79,12 @@ public class User {
 
     public void setPhone(String phone) { this.phone = phone; }
 
-    public void setFacebook(String phone) { this.facebook = phone; }
+    public void setFacebook(String facebook) { this.facebook = facebook; }
 
-    public void setTwitter(String phone) { this.twitter = phone; }
+    public void setTwitter(String twitter) { this.twitter = twitter; }
+
+    public void setProfilePic(String profilePic) { this.profilePic = profilePic; }
+
     //==============================================================================================
     // Methods
     //==============================================================================================
