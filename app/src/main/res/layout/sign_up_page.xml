@@ -8,25 +8,6 @@
     android:orientation="vertical"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
-    <TextView
-        android:id="@+id/login_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:gravity="center_horizontal"
-        android:text="@string/sign_up"
-        android:textColor="#fff"
-        android:textSize="26sp"
-        android:textStyle="bold" />
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/ScrollView01"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:scrollbars="none" >
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,160 +19,151 @@
             android:layout_below="@+id/login_title"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:layout_marginTop="65dp"
-            android:background="#fff"
             android:elevation="4dp"
-            android:orientation="vertical"
-            android:padding="15dp">
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical"
-            android:paddingTop="30dp">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical"
+                android:paddingTop="30dp">
 
-            <ImageButton
-                android:id="@+id/user_profile_photo"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/user_profile_image_background"
-                android:elevation="10dp" />
-            <!--android:src="@drawable/profile_icon"-->
+                <!--android:src="@drawable/profile_icon"-->
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/user_profile_photo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/user_profile_image_background"
+                    android:scaleType="centerCrop" />
 
-                <EditText
-                    android:id="@+id/editTextName"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:drawableTint="#f5913f"
-                    android:hint="@string/name"
-                    android:inputType="textPersonName"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/editTextName"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:drawableTint="#f5913f"
+                        android:hint="@string/name"
+                        android:inputType="textPersonName"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/editTextEmail"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:drawableTint="#f5913f"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/editTextEmail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:drawableTint="#f5913f"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/editTextPhone"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:drawableTint="#f5913f"
-                    android:hint="@string/phone"
-                    android:inputType="phone"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/editTextPhone"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:drawableTint="#f5913f"
+                        android:hint="@string/phone"
+                        android:inputType="phone"
+                        android:singleLine="true" />
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/editTextPassword"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="16dp"
-                    android:drawableTint="#FF4081"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:singleLine="true" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </android.support.design.widget.TextInputLayout>
+                    <EditText
+                        android:id="@+id/editTextPassword"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="16dp"
+                        android:drawableTint="#FF4081"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:text="Password" />
 
-            <TextView
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/textViewSignIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="5dp"
+                    android:text="@string/already_account"
+                    android:textSize="12sp"
+                    android:textColor="#FFF"/>
+
+                <Button
+                    android:id="@+id/buttonSignUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/borderless_button"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/sign_up"
+                    android:textAllCaps="false"
+                    android:textColor="#FFF"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/set_photo_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/borderless_button"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/set_profile_photo"
+                    android:textAllCaps="false"
+                    android:textColor="#FFF"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp" />
+
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/fb_sign_up_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="5dp"
-                android:text="@string/forgot_password"
-                android:textSize="14sp" />
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/textViewSignIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:paddingTop="5dp"
-                android:text="@string/already_account"
-                android:textSize="12sp" />
-
-
-            <Button
-                android:id="@+id/buttonSignUp"
-                android:visibility="visible"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:background="#f5913f"
-                android:text="@string/sign_up"
-                android:textAllCaps="false"
-                android:textColor="#fff"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/set_photo_button"
-                android:visibility="visible"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:background="#5fb0c9"
-                android:text="@string/set_profile_photo"
-                android:textAllCaps="false"
-                android:textColor="#fff"
-                android:textSize="16sp" />
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_gravity="center_horizontal"/>
-
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/fb_sign_up_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_gravity="center_horizontal"/>
-
-        </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:visibility="gone" />
-
-    </RelativeLayout>
+        </RelativeLayout>
 
     </LinearLayout>
-
-    </ScrollView>
 
 </RelativeLayout>

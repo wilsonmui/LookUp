@@ -3,7 +3,9 @@ package edu.ucsb.cs48.lookup;
 import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,9 +13,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -80,15 +84,14 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private HashMap<String, String> userProfileData;
     private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef;
     private StorageReference storageRef;
-    private String userID, fbUserID, userProfilePicURL, currentStorageChild;
-    private String imageStoragePath = "All image uploads";
+    private String userID, fbUserID, userProfilePicURL;
     private LinearLayout mLinearLayout;
     private Context mContext;
     private PopupWindow editProfilePicPopup;
     private ImageView editUserProfilePic;
-    private Uri imageFilePathUri;
-    private static int CAMERA_CAPTURE = 1, IMAGE_REQUEST_CODE = 7, RESULT_CROP = 400, CAMERA_REQUEST = 1888;
-    private boolean uploadImageIsComplete = false;
+    private Bitmap userProfilePic = null;
+    private static int IMAGE_REQUEST_CODE = 7, CAMERA_REQUEST = 1888;
+    private static String CAMERA = "CAMERA", GALLERY = "GALLERY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +106,8 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         mContext = getApplicationContext();
 
-//        editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
+        editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
+        editUserProfilePic.setDrawingCacheEnabled(true);
 
         buttonEditProfilePicture = (Button) findViewById(R.id.buttonEditProfilePicture);
         buttonEditProfilePicture.setOnClickListener(this);
@@ -234,7 +238,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onDataChange(DataSnapshot dataSnapshot) {
                 fbUserID = dataSnapshot.getValue(String.class);
                 facebookLink = (TextView) findViewById(R.id.facebookLink);
-                if (!fbUserID.isEmpty()) {
+                if (fbUserID != null && !fbUserID.isEmpty()) {
                     facebookLink.setText("https://facebook.com" + fbUserID);
                     userProfileData.put(dataSnapshot.getKey(), fbUserID);
                 }
@@ -247,14 +251,16 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        profilePicRef = userRef.child("profile_pic");
+        profilePicRef = userRef.child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-                editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
-                Log.d(TAG, "profile pic url: " + dataSnapshot.getValue(String.class));
-                Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(editUserProfilePic);
-                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+//                editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
+                if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
+                    Log.d(TAG, "profile pic url: " + dataSnapshot.getValue(String.class));
+                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(editUserProfilePic);
+                    userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+                }
             }
 
             @Override
@@ -289,7 +295,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                             editUserProfilePic.setImageBitmap(BitmapFactory.decodeStream((InputStream)url.getContent()));
                             Log.d(TAG, "TEST");
                             userProfilePicURL = getRedirectedURL(url.toString());
-                            userProfileData.put("profile_pic", userProfilePicURL);
+                            userProfileData.put("profilePic", userProfilePicURL);
 
                         } catch (IOException e) {
                             Log.e(TAG, e.getMessage());
@@ -383,20 +389,13 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         // for uploading from camera roll
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
-            imageFilePathUri = data.getData();
+            Uri imageFilePathUri = data.getData();
+            Log.d(TAG, "gallery uri " + imageFilePathUri.toString());
             try {
-                //crop image
-//                performCrop();
-
-             //    getting selected image into Bitmap
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
-            editUserProfilePic.setImageBitmap(bitmap);
-
-            // rotate bitmap accordingly
-//                Bitmap rotatedBitmap = rotateBitmap(bitmap, imageFilePathUri.getPath());
-//
-//                editUserProfilePic.setImageBitmap(rotatedBitmap);
-//                imageFilePathUri = getImageUri(mContext, rotatedBitmap);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
+                userProfilePic = rotateBitmap(mContext, imageFilePathUri, bitmap, GALLERY);
+//                rotateImage(mContext, imageFilePathUri);
+                editUserProfilePic.setImageBitmap(userProfilePic);
 
             }
             catch (IOException e) {
@@ -406,9 +405,21 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         // for taking a picture
         else if (requestCode == CAMERA_REQUEST) {
-            imageFilePathUri = data.getData();
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            editUserProfilePic.setImageBitmap(bitmap);
+            Uri imageFilePathUri = data.getData();
+            Log.d(TAG, "camera uri " + imageFilePathUri.toString());
+            try {
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
+//                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFilePathUri), null, null);
+
+
+                Log.d(TAG, imageFilePathUri.toString());
+
+                userProfilePic = rotateBitmap(mContext, imageFilePathUri, bitmap, CAMERA);
+//                rotateImage(mContext, imageFilePathUri);
+                editUserProfilePic.setImageBitmap(userProfilePic);
+            }
+            catch (IOException e) {}
         }
 
 //        else if (resultCode == RESULT_OK && requestCode == CAMERA_CAPTURE) {
@@ -432,8 +443,13 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     // Creating uploadImageFileToFirebaseStorage method to upload image on storage.
     public void uploadImageFileToFirebaseStorage() {
 
-        // Checking whether FilePathUri Is empty or not.
-        if (imageFilePathUri != null) {
+//        Bitmap bitmap = editUserProfilePic.getDrawingCache();
+        Uri uri = null;
+        if (userProfilePic != null)
+            uri = getImageUri(mContext, userProfilePic);
+
+        // Checking whether uri Is empty or not.
+        if (uri != null) {
 
             // Setting progressDialog Title.
 //            progressDialog.setTitle("Image is Uploading...");
@@ -442,10 +458,10 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 //            progressDialog.show();
 
             // Creating second StorageReference.
-            StorageReference storageRef2 = storageRef.child(userID + "_" + System.currentTimeMillis() + "." + GetFileExtension(imageFilePathUri));
+            StorageReference storageRef2 = storageRef.child(userID + "_" + System.currentTimeMillis() + "." + GetFileExtension(uri));
 
             // Adding addOnSuccessListener to second StorageReference.
-            storageRef2.putFile(imageFilePathUri)
+            storageRef2.putFile(uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -467,7 +483,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 //                            // Adding image upload id s child element into databaseReference.
 //                            databaseRef.child(ImageUploadId).setValue(imageUploadInfo);
 
-                            userProfileData.put("profile_pic", taskSnapshot.getDownloadUrl().toString());
+                            userProfileData.put("profilePic", taskSnapshot.getDownloadUrl().toString());
                             Log.d(TAG, "pic to upload: " + taskSnapshot.getDownloadUrl().toString());
                             userProfilePicURL = taskSnapshot.getDownloadUrl().toString();
 
@@ -485,7 +501,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
                             // Showing exception erro message.
                             Toast.makeText(EditUserProfileActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
-                            uploadImageIsComplete = true;
                         }
                     })
 
@@ -510,52 +525,126 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         }
 
     }
-//
-//    public Bitmap rotateBitmap(Bitmap bitmap, String photoPath){
-//        ExifInterface ei;
-//        Bitmap rotatedBitmap = null;
-//        try {
-//            ei = new ExifInterface(photoPath);
-//            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-//                    ExifInterface.ORIENTATION_UNDEFINED);
-//
-//            switch(orientation) {
-//
-//                case ExifInterface.ORIENTATION_ROTATE_90:
-//                    rotatedBitmap = rotateImage(bitmap, 90);
-//                    break;
-//
-//                case ExifInterface.ORIENTATION_ROTATE_180:
-//                    rotatedBitmap = rotateImage(bitmap, 180);
-//                    break;
-//
-//                case ExifInterface.ORIENTATION_ROTATE_270:
-//                    rotatedBitmap = rotateImage(bitmap, 270);
-//                    break;
-//
-//                case ExifInterface.ORIENTATION_NORMAL:
-//                default:
-//                    rotatedBitmap = bitmap;
-//            }
-//        }
-//        catch (IOException e) {
-//
-//        }
-//        return rotatedBitmap;
-//    }
-//
-//    public Bitmap rotateImage(Bitmap bitmap, int angle) {
-//        Matrix matrix = new Matrix();
-//        matrix.postRotate(angle);
-//        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
-//                matrix, true);
-//    }
-//
-//    public Uri getImageUri(Context inContext, Bitmap inImage) {
-//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
-//        return Uri.parse(path);
-//    }
+
+    public String getRealPathFromURI(Context context, Uri uri, String source) {
+
+        String path = "";
+
+        if (source.equals(GALLERY)) {
+
+            int currentAPIVersion;
+            try {
+                currentAPIVersion = Build.VERSION.SDK_INT;
+            } catch (NumberFormatException e) {
+                currentAPIVersion = 3;
+            }
+
+            if (currentAPIVersion >= 19)
+                path = getRealPathFromURI_API19(context, uri);
+            else if (currentAPIVersion >= 11 && currentAPIVersion <= 18)
+                path = getRealPathFromURI_API11to18(context, uri);
+            else if (currentAPIVersion < 11)
+                path = getRealPathFromURI_BelowAPI11(context, uri);
+        }
+        else if (source.equals(CAMERA)) {
+            Cursor cursor = null;
+            try {
+                String[] proj = { MediaStore.Images.Media.DATA };
+                cursor = getContentResolver().query(uri,  proj, null, null, null);
+                int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                path = cursor.getString(index);
+                cursor.close();
+            }
+            catch (NullPointerException e) {}
+        }
+
+        return path;
+
+    }
+
+    public static String getRealPathFromURI_API19(Context context, Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
+
+    public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        String result = null;
+
+        CursorLoader cursorLoader = new CursorLoader(
+                context,
+                contentUri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        if(cursor != null){
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            result = cursor.getString(column_index);
+        }
+        return result;
+    }
+
+    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri){
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+        int column_index
+                = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
+
+    private static int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+        return 0;
+    }
+
+    private Bitmap rotateBitmap(Context context, Uri uri, Bitmap bitmap, String source) throws IOException {
+        ExifInterface exif = null;
+        if (source.equals("GALLERY"))
+            exif = new ExifInterface(getRealPathFromURI(context, uri, GALLERY));
+        else if (source.equals("CAMERA")) {
+            exif = new ExifInterface(getRealPathFromURI(context, uri, CAMERA));
+        }
+        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        int rotationInDegrees = exifToDegrees(rotation);
+        Matrix matrix = new Matrix();
+        if (rotation != 0f) {
+            matrix.preRotate(rotationInDegrees);
+        }
+        //    getting selected image into Bitmap
+        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return rotatedBitmap;
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
+        return Uri.parse(path);
+    }
 
 }
