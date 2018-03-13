@@ -200,6 +200,16 @@
                         android:layout_gravity="center_vertical"
                         android:visibility="gone"/>
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonDeleteAccount"
+                    android:layout_width="250sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15sp"
+                    android:background="@android:color/holo_red_light"
+                    android:text="Delete Account"
+                    android:textColor="#FFF" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="45dp">
+                android:layout_marginTop="30dp">
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -107,7 +107,7 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="60dp">
 
                     <Button
                         android:id="@+id/buttonSaveProfileEdits"
@@ -130,16 +130,6 @@
                         android:textColor="#FFF" />
 
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/buttonDeleteAccount"
-                    android:layout_width="250sp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="25sp"
-                    android:background="@android:color/holo_red_light"
-                    android:text="Delete Account"
-                    android:textColor="#FFF" />
 
             </LinearLayout>
 
