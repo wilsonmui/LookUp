@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +28,11 @@ Uses Contacts_Adapter to display RecyclerView
 public class ContactsPageActivity extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseAuth mAuth;
+    ArrayList<String> found_contacts = new ArrayList<>();
+    EditText search;
+    ArrayList<String> contacts = new ArrayList<>();
+    RecyclerView contacts_list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +45,13 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
         }
 
         setContentView(R.layout.activity_contacts_page);
-
         findViewById(R.id.back_button).setOnClickListener(this);
+        findViewById(R.id.search_button).setOnClickListener(this);
+        search = findViewById(R.id.search);
 
 
-        RecyclerView contacts_list = (RecyclerView) findViewById(R.id.contacts_list);
+
+        contacts_list = (RecyclerView) findViewById(R.id.contacts_list);
         contacts_list.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -63,7 +72,6 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onSuccess(DataSnapshot data) {
-                ArrayList<String> contacts = new ArrayList<>();
 
                 for (DataSnapshot contactsDs : data.getChildren()) {
                     contacts.add(contactsDs.getValue().toString());
@@ -97,11 +105,27 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    //update adapter with found users
+    public void updateAdapter(String search){
+        //search contacts
+        for(int i = 0; i < contacts.size(); i++){
+            if (contacts.get(i).toLowerCase().contains(search.toLowerCase())){
+                found_contacts.add(contacts.get(i));
+            }
+        }
+
+        Contacts_Adapter ca = new Contacts_Adapter(found_contacts);
+        contacts_list.setAdapter(ca);
+    }
+
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.back_button:
                 startActivity(new Intent(this, HomePageActivity.class));
+                break;
+            case R.id.search_button:
+                updateAdapter(search.toString());
                 break;
         }
     }
