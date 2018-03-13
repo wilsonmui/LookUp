@@ -192,11 +192,21 @@
 
                     <com.twitter.sdk.android.core.identity.TwitterLoginButton
                         android:id="@+id/login_button"
-                        android:layout_width="wrap_content"
+                        android:layout_width="250sp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"/>
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonDeleteAccount"
+                    android:layout_width="250sp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5sp"
+                    android:background="@android:color/holo_red_light"
+                    android:text="Delete Account"
+                    android:textColor="#FFF" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
