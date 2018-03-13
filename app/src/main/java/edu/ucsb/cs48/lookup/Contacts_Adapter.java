@@ -58,16 +58,16 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
                     User user = new User(dataSnapshot.child("name").getValue().toString(),
                             dataSnapshot.child("email").getValue().toString(),
                             dataSnapshot.child("phone").getValue().toString(),
                             dataSnapshot.child("uid").getValue().toString(),
                             dataSnapshot.child("facebook").getValue().toString(),
                             dataSnapshot.child("twitter").getValue().toString());
-                System.out.println(user.getName());
-
-                holder.username.setText(user.getName());
-
+                    holder.username.setText(user.getName());
+                }
+                System.out.println("CONTACTS_ADAPTER: Database failure.");
             }
 
             @Override

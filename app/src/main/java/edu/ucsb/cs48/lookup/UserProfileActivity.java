@@ -143,6 +143,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
 
         buttonEditProfile.setOnClickListener(this);
+        buttonDeleteAccount.setOnClickListener(this);
 
         loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
@@ -268,10 +269,14 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
             twitterRef = userRef.child("twitter");
             loadUserField(twitterRef, textViewTwitter);
+            System.out.println("----------START---------");
+            System.out.println("Twitter text value: " + textViewTwitter.getText());
             if(!textViewTwitter.getText().equals("")) {
-                loginButton.setVisibility(View.INVISIBLE);
+                System.out.println("bruh");
+                loginButton.setVisibility(View.GONE);
             }
 
+            facebookLink.setText("HELLO");
         } catch (Exception e) {
             Log.d(TAG, "Could not get user data, user was no found.", e);
         }
@@ -300,7 +305,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.buttonEditProfile:
-                Log.d(TAG, "Edit profile button clicked!");
                 finish();
                 startActivity(new Intent(this, EditUserProfileActivity.class));
                 break;
@@ -355,13 +359,13 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Network.getInstance().rmUser(userUid);
                                         if (task.isSuccessful()) {
                                             Log.d(TAG, "User account deleted.");
+                                            System.out.println("USER ACCNT DELETED");
+                                            Network.getInstance().rmUser(userUid);
                                         }
                                     }
                                 });
-
                     }
                 });
     }
