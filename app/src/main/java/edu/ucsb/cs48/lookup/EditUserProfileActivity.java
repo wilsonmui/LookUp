@@ -45,6 +45,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -79,10 +81,9 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
     private FirebaseAuth mAuth;
     private EditText editDisplayName, editEmailAddress, editPhoneNumber;
-    private TextView facebookLink;
-    private Button buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
+    private Button buttonDeleteAccount, buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
     private HashMap<String, String> userProfileData;
-    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef;
+    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, profilePicRef;
     private StorageReference storageRef;
     private String userID, fbUserID, userProfilePicURL;
     private LinearLayout mLinearLayout;
@@ -117,6 +118,10 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         buttonCancelProfileEdits = (Button) findViewById(R.id.buttonCancelProfileEdits);
         buttonCancelProfileEdits.setOnClickListener(this);
+
+        buttonDeleteAccount = (Button) findViewById(R.id.buttonDeleteAccount);
+        buttonDeleteAccount.setOnClickListener(this);
+
 
         mLinearLayout = (LinearLayout) findViewById(R.id.editProfileLL);
 
@@ -232,25 +237,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        facebookRef = userRef.child("facebook");
-        facebookRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                fbUserID = dataSnapshot.getValue(String.class);
-                facebookLink = (TextView) findViewById(R.id.facebookLink);
-                if (fbUserID != null && !fbUserID.isEmpty()) {
-                    facebookLink.setText("https://facebook.com" + fbUserID);
-                    userProfileData.put(dataSnapshot.getKey(), fbUserID);
-                }
-                else {
-                    facebookLink.setText("");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
         profilePicRef = userRef.child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -360,8 +346,67 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                 finish();
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
-
+            case R.id.buttonDeleteAccount:
+                deleteUser();
+                finish();
+                startActivity(new Intent(this, MainActivity.class));
+                break;
         }
+    }
+
+    public void deleteUser() {
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final String userUid = user.getUid();
+
+        userID = user.getUid();
+        userRef = databaseRef.child("users").child(userID);
+        nameRef = userRef.child("name");
+        emailRef = userRef.child("email");
+
+        nameRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot nameDataSnapshot) {
+                emailRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot emailDataSnapshot) {
+                        if(emailDataSnapshot.exists()) {
+                            // Get auth credentials from the user for re-authentication. The example below shows
+                            // email and password credentials but there are multiple possible providers,
+                            // such as GoogleAuthProvider or FacebookAuthProvider.
+                            AuthCredential credential = EmailAuthProvider
+                                    .getCredential(emailDataSnapshot.getValue(String.class), nameDataSnapshot.getValue(String.class));
+
+                            // Prompt the user to re-provide their sign-in credentials
+                            user.reauthenticate(credential)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            user.delete()
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                Log.d(TAG, "User account deleted.");
+                                                                System.out.println("USER ACCNT DELETED");
+                                                                Network.getInstance().rmUser(userUid);
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+
+                });
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     private void updateDatabase() {

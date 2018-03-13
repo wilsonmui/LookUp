@@ -26,7 +26,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="45dp"
+                    android:layout_marginTop="30dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/user_profile_image_background" />
 
@@ -102,7 +102,6 @@
                     <TextView
                         android:id="@+id/phoneNumber"
                         android:textStyle="bold"
-
                         android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -136,6 +135,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
                             android:autoLink="web"
+                            android:paddingLeft="20dp"
                             android:textColorLink="@color/cardview_dark_background"
                             android:scrollHorizontally="true"
                             android:singleLine="true"
@@ -150,7 +150,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="25dp"
                         android:layout_marginStart="25dp"
-                        android:layout_marginTop="25dp"
                         android:orientation="horizontal">
 
 
@@ -177,6 +176,8 @@
                     <TextView
                         android:id="@+id/textViewTwitter"
                         android:textStyle="bold"
+                        android:autoLink="web"
+                        android:textColorLink="@color/cardview_dark_background"
                         android:layout_gravity="center_vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -196,18 +197,9 @@
                         android:layout_width="250sp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_gravity="center_vertical"/>
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone"/>
                 </LinearLayout>
-
-                <Button
-                    android:id="@+id/buttonDeleteAccount"
-                    android:layout_width="250sp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="5sp"
-                    android:background="@android:color/holo_red_light"
-                    android:text="Delete Account"
-                    android:textColor="#FFF" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

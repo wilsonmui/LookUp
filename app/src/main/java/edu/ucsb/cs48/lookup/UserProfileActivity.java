@@ -71,7 +71,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private LoginButton buttonConnectToFacebook;
     private TwitterLoginButton loginButton;
     private ImageView profilePic;
-    private Button buttonEditProfile, buttonDeleteAccount;
+    private Button buttonEditProfile;
     private String facebookID;
     private DatabaseReference mDatabase;
     private Context mContext;
@@ -139,11 +139,9 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
         buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
         facebookLink = (TextView) findViewById(R.id.facebookLink);
-        buttonDeleteAccount = (Button) findViewById(R.id.buttonDeleteAccount);
         buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
 
         buttonEditProfile.setOnClickListener(this);
-        buttonDeleteAccount.setOnClickListener(this);
 
         loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
@@ -268,15 +266,26 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             });
 
             twitterRef = userRef.child("twitter");
-            loadUserField(twitterRef, textViewTwitter);
-            System.out.println("----------START---------");
-            System.out.println("Twitter text value: " + textViewTwitter.getText());
-            if(!textViewTwitter.getText().equals("")) {
-                System.out.println("bruh");
-                loginButton.setVisibility(View.GONE);
-            }
+            twitterRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()) {
 
-            facebookLink.setText("HELLO");
+                        if (!dataSnapshot.getValue(String.class).equals("")) {
+                            loginButton.setVisibility(View.GONE);
+                            textViewTwitter.setText("https://twitter.com/" + dataSnapshot.getValue(String.class));
+                        } else {
+                            textViewTwitter.setText("");
+                            loginButton.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    //...
+                }
+            });
         } catch (Exception e) {
             Log.d(TAG, "Could not get user data, user was no found.", e);
         }
@@ -308,12 +317,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 startActivity(new Intent(this, EditUserProfileActivity.class));
                 break;
-
-            case R.id.buttonDeleteAccount:
-                deleteUser();
-                finish();
-                startActivity(new Intent(this, MainActivity.class));
-                break;
         }
     }
 
@@ -341,32 +344,4 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         userRef.child("facebook").setValue(fbID);
     }
 
-    public void deleteUser() {
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        final String userUid = user.getUid();
-        // Get auth credentials from the user for re-authentication. The example below shows
-        // email and password credentials but there are multiple possible providers,
-        // such as GoogleAuthProvider or FacebookAuthProvider.
-        AuthCredential credential = EmailAuthProvider
-                .getCredential("user@example.com", "password1234");
-
-        // Prompt the user to re-provide their sign-in credentials
-        user.reauthenticate(credential)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        user.delete()
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(TAG, "User account deleted.");
-                                            System.out.println("USER ACCNT DELETED");
-                                            Network.getInstance().rmUser(userUid);
-                                        }
-                                    }
-                                });
-                    }
-                });
-    }
 }
