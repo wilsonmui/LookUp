@@ -322,8 +322,6 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.buttonDeleteAccount:
                 deleteUser();
-                finish();
-                startActivity(new Intent(this, MainActivity.class));
                 break;
         }
     }
@@ -378,14 +376,13 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
+                                            Network.getInstance().rmUser(userUid);
                                             user.delete()
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()) {
-                                                                Log.d(TAG, "User account deleted.");
-                                                                System.out.println("USER ACCNT DELETED");
-                                                                Network.getInstance().rmUser(userUid);
+                                                                updateUI();
                                                             }
                                                         }
                                                     });
@@ -405,4 +402,10 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
+    public void updateUI() {
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
+    }
 }
+
