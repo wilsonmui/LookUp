@@ -1,6 +1,7 @@
 package edu.ucsb.cs48.lookup;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -41,14 +42,12 @@ public class ContactProfileActivity extends AppCompatActivity {
         Bundle b = new Bundle();
         b = getIntent().getExtras();
         uid = b.getString("uid");
-//        Toast.makeText(this, "" + uid, Toast.LENGTH_SHORT).show();
 
-        //Firebase Schtuff
         mAuth = FirebaseAuth.getInstance();
-//        if(mAuth.getCurrentUser() == null) {
-//            finish();
-//            startActivity(new Intent(this, SignInPageActivity.class));
-//        }
+        if(mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, SignInPageActivity.class));
+        }
         user = mAuth.getCurrentUser();
 
         username = (TextView) findViewById(R.id.user_name);
@@ -93,9 +92,11 @@ public class ContactProfileActivity extends AppCompatActivity {
                     }
                     if(b) {
                         button.setText("Remove contact");
+                        button.setBackgroundColor(Color.parseColor("#CB8383"));
                         currentProfileIsContact = true;
                     } else {
                         button.setText("Add contact");
+                        button.setBackgroundColor(Color.parseColor("#8B9DC3"));
                         currentProfileIsContact = false;
                     }
                 }
@@ -114,7 +115,7 @@ public class ContactProfileActivity extends AppCompatActivity {
         String yourUid = user.getUid();
         Network.getInstance().addUserContact(yourUid,uid);
         Network.getInstance().addUserContact(uid,yourUid); //takes care of if the person is or isnt a contact
-        button.setBackground(Drawable.createFromPath("@color/com_facebook_button_background_color_pressed"));
+        button.setBackgroundColor(Color.parseColor("#CB8383"));
         button.setText("Remove contact");
         currentProfileIsContact = true;
     }
@@ -140,7 +141,7 @@ public class ContactProfileActivity extends AppCompatActivity {
         Network.getInstance().rmUserContact(user.getUid(), uid);
         Network.getInstance().rmUserContact(uid, user.getUid());
         button.setText("Add contact");
-        button.setBackground(Drawable.createFromPath("#CB8383"));
+        button.setBackgroundColor(Color.parseColor("#8B9DC3"));
         currentProfileIsContact = false;
     }
 
