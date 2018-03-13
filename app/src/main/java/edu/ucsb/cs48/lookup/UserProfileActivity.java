@@ -71,7 +71,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private LoginButton buttonConnectToFacebook;
     private TwitterLoginButton loginButton;
     private ImageView profilePic;
-    private Button buttonEditProfile;
+    private Button buttonEditProfile, buttonDeleteAccount;
     private String facebookID;
     private DatabaseReference mDatabase;
     private Context mContext;
@@ -139,6 +139,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
         buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
         facebookLink = (TextView) findViewById(R.id.facebookLink);
+        buttonDeleteAccount = (Button) findViewById(R.id.buttonDeleteAccount);
         buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
 
         buttonEditProfile.setOnClickListener(this);
