@@ -515,9 +515,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         }
 
         // for uploading from camera
-        if (requestCode == CAMERA_REQUEST) {
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data.getData() != null) {
             Uri imageFilePathUri = data.getData();
-            Log.d(TAG, "camera uri " + imageFilePathUri.toString());
+            Log.d(TAG, "UGHHHHHHHHHHH");
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFilePathUri), null, null);
                 Log.d(TAG, imageFilePathUri.toString());
@@ -723,6 +723,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
+        if (inImage == null)
+            return null;
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
