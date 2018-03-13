@@ -67,7 +67,6 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
                 System.out.println(user.getName());
 
                 holder.username.setText(user.getName());
-
             }
 
             @Override

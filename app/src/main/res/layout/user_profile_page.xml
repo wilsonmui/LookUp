@@ -136,6 +136,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
                             android:autoLink="web"
+                            android:textColorLink="@color/cardview_dark_background"
                             android:scrollHorizontally="true"
                             android:singleLine="true"
                             android:text=""
