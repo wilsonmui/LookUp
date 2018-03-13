@@ -1,5 +1,7 @@
 package edu.ucsb.cs48.lookup;
 
+import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -7,6 +9,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +27,8 @@ import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Patterns;
@@ -101,7 +106,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private TextView textViewSignIn;
     private FirebaseAuth mAuth;
     private static final int SIGN_IN_REQUEST = 0;
-    private Button buttonSignUp;
+    private Button buttonSignUp, buttonTakePhoto, buttonUploadPhoto;
     private CallbackManager callbackManager;
     private String g_username = "";
     private static String GALLERY = "GALLERY", CAMERA = "CAMERA";
@@ -123,6 +128,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     private ImageView user_profile_photo;
 
     private Bitmap userProfilePic;
+
+    private static final int PERMISSIONS_REQUEST_CAMERA = 1, PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2,
+            PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
 
     //==============================================================================================
     // On Create Setup
@@ -267,6 +275,8 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         editTextPhone = (EditText)findViewById(R.id.editTextPhone);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
+        buttonTakePhoto = (Button) findViewById(R.id.buttonTakePhoto);
+        buttonUploadPhoto = (Button) findViewById(R.id.buttonUploadPhoto);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
         user_profile_photo =(ImageView) findViewById(R.id.user_profile_photo);
         user_profile_photo.setDrawingCacheEnabled(true);
@@ -283,29 +293,40 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                 // remove the import from facebook option
                 ((Button)customView.findViewById(R.id.buttonImportFromFB)).setVisibility(View.GONE);
 
-                Button buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
+                buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
                 buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent =  new Intent();
 
-                        // set intent type as image to select image from phone storage
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
+                        if (isGalleryAccessAllowed() == false) {
+                            requestPermissionReadExternalStorage();
+                        }
+                        else {
+                            Intent intent = new Intent();
 
+                            // set intent type as image to select image from phone storage
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
+
+                        }
                         setProfilePicPopup.dismiss();
                     }
                 });
 
-                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
-                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
+                buttonTakePhoto = (Button) customView.findViewById(R.id.buttonTakePhoto);
+                buttonTakePhoto.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-
-                        setProfilePicPopup.dismiss();
+                        if (isCameraAllowed() == false) {
+                            requestPermissionCamera();
+                        }
+                        else {
+                            Log.d(TAG, "wy isn't this working ");
+                            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                            setProfilePicPopup.dismiss();
+                        }
                     }
                 });
 
@@ -515,16 +536,17 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         }
 
         // for uploading from camera
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && data.getData() != null) {
-            Uri imageFilePathUri = data.getData();
-            Log.d(TAG, "UGHHHHHHHHHHH");
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFilePathUri), null, null);
-                Log.d(TAG, imageFilePathUri.toString());
-                userProfilePic = rotateBitmap(getApplicationContext(), imageFilePathUri, bitmap, CAMERA);
-                user_profile_photo.setImageBitmap(userProfilePic);
+        if (requestCode == CAMERA_REQUEST) {
+                Log.d(TAG, "UHHHHEHHHELELOOOOOO");
+                Uri imageFilePathUri = data.getData();
+                Log.d(TAG, "suck my DICK " + imageFilePathUri);
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFilePathUri), null, null);
+                    Log.d(TAG, imageFilePathUri.toString());
+                    userProfilePic = rotateBitmap(getApplicationContext(), imageFilePathUri, bitmap, CAMERA);
+                    user_profile_photo.setImageBitmap(userProfilePic);
+                } catch (IOException e) {
             }
-            catch (IOException e) {}
         }
     }
 
@@ -729,6 +751,103 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
         return Uri.parse(path);
+    }
+
+    private void requestPermissionCamera() {
+
+        ActivityCompat.requestPermissions(SignUpPageActivity.this,
+                new String[]{android.Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                PERMISSIONS_REQUEST_CAMERA);
+
+    }
+
+
+    private void requestPermissionReadExternalStorage() {
+        if (ContextCompat.checkSelfPermission(SignUpPageActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(SignUpPageActivity.this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(SignUpPageActivity.this,
+                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+            }
+        }
+
+    }
+
+    private void requestPermissionWriteExternalStorage() {
+
+                ActivityCompat.requestPermissions(SignUpPageActivity.this,
+                        new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: { // cameraAllowed
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    buttonTakePhoto.performClick();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                break;
+            }
+            case 2: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+                else {
+
+                }
+                break;
+            }
+            case 3: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                }
+                else {
+
+                }
+            }
+
+        }
+    }
+
+    private boolean isCameraAllowed() {
+
+        return (ContextCompat.checkSelfPermission(SignUpPageActivity.this, android.Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED);
+
+    }
+
+    private boolean isWriteExternalStorageAllowed() {
+        return ContextCompat.checkSelfPermission(SignUpPageActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean isGalleryAccessAllowed() {
+        return ContextCompat.checkSelfPermission(SignUpPageActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+
     }
 
 }
