@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -182,13 +184,18 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             phoneRef = mDatabase.child("users").child(uid).child("phone");
             loadUserField(phoneRef, phoneNumber);
 
-            profilePicRef = userRef.child("profile_pic");
+
+            profilePicRef = userRef.child("profilePic");
             profilePicRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue(String.class) != null && dataSnapshot.exists()) {
                         profilePic = (ImageView) findViewById(R.id.profilePic);
-                        Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(profilePic);
+                        Glide.with(getApplicationContext())
+                                .load(dataSnapshot.getValue(String.class))
+                                .override(100, 100)
+                                .into(profilePic);
+                        //Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(profilePic);
                     } else {
                         Log.d(TAG, "Database Failure: could not load pic");
                     }

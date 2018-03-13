@@ -28,7 +28,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="30dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/user_profile_image_background" />
+                    android:src="@drawable/ic_account_circle_white_24dp" />
 
                 <TextView
                     android:id="@+id/displayName"

@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -237,10 +238,11 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-//                editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
                 if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
-                    Log.d(TAG, "profile pic url: " + dataSnapshot.getValue(String.class));
-                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(editUserProfilePic);
+                    Glide.with(getApplicationContext())
+                            .load(dataSnapshot.getValue(String.class))
+                            .override(100, 100)
+                            .into(editUserProfilePic);
                     userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
                 }
             }

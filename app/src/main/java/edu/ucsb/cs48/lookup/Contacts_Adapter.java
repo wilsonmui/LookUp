@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +21,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static android.support.v4.content.ContextCompat.startActivity;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by Wilson on 2/25/18.
@@ -64,8 +66,13 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
                             dataSnapshot.child("phone").getValue().toString(),
                             dataSnapshot.child("uid").getValue().toString(),
                             dataSnapshot.child("facebook").getValue().toString(),
-                            dataSnapshot.child("twitter").getValue().toString());
+                            dataSnapshot.child("twitter").getValue().toString(),
+                            dataSnapshot.child("profilePic").getValue().toString());
                     holder.username.setText(user.getName());
+                    Glide.with(getApplicationContext())
+                            .load(user.getProfilePic())
+                            .override(100, 100)
+                            .into(holder.userImg);
                 }
                 System.out.println("CONTACTS_ADAPTER: Database failure.");
             }
