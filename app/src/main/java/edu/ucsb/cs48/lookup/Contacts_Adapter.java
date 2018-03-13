@@ -71,7 +71,6 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
                     holder.username.setText(user.getName());
                     Glide.with(getApplicationContext())
                             .load(user.getProfilePic())
-                            .override(100, 100)
                             .into(holder.userImg);
                 }
                 System.out.println("CONTACTS_ADAPTER: Database failure.");
