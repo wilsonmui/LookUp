@@ -25,11 +25,18 @@ Uses Contacts_Adapter to display RecyclerView
  */
 public class ContactsPageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ArrayList<String> contacts;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, SignInPageActivity.class));
+        }
+
         setContentView(R.layout.activity_contacts_page);
 
         findViewById(R.id.back_button).setOnClickListener(this);

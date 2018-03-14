@@ -44,13 +44,14 @@ public class User {
         this.profilePic = profilePic;
     }
 
-    public User(String name, String email, String phone, String uid, String facebook, String twitter) {
+    public User(String name, String email, String phone, String uid, String facebook, String twitter, String profilePic) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.uid = uid;
         this.facebook = facebook;
         this.twitter = twitter;
+        this.profilePic = profilePic;
     }
 
     //==============================================================================================

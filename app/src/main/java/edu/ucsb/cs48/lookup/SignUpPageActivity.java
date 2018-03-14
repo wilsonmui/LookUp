@@ -84,6 +84,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static android.content.ContentValues.TAG;
 
@@ -268,58 +269,58 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
-        user_profile_photo =(ImageView) findViewById(R.id.user_profile_photo);
-        user_profile_photo.setDrawingCacheEnabled(true);
-        Button photoButton = (Button) findViewById(R.id.set_photo_button);
+        //user_profile_photo =(ImageView) findViewById(R.id.user_profile_photo);
+        //user_profile_photo.setDrawingCacheEnabled(true);
+        //Button photoButton = (Button) findViewById(R.id.set_photo_button);
 
-        photoButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                LayoutInflater inflater = (LayoutInflater) getApplication().getSystemService(LAYOUT_INFLATER_SERVICE);
-                View customView = inflater.inflate(R.layout.edit_profile_pic_popup, null);
-                setProfilePicPopup = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                // remove the import from facebook option
-                ((Button)customView.findViewById(R.id.buttonImportFromFB)).setVisibility(View.GONE);
-
-                Button buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
-                buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent =  new Intent();
-
-                        // set intent type as image to select image from phone storage
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
-
-                        setProfilePicPopup.dismiss();
-                    }
-                });
-
-                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
-                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-
-                        setProfilePicPopup.dismiss();
-                    }
-                });
-
-                Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
-                buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setProfilePicPopup.dismiss();
-                    }
-                });
-                setProfilePicPopup.showAtLocation((RelativeLayout) findViewById(R.id.signUpPage), Gravity.CENTER, 0, 0);
-
-            }
-        });
+//        photoButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                LayoutInflater inflater = (LayoutInflater) getApplication().getSystemService(LAYOUT_INFLATER_SERVICE);
+//                View customView = inflater.inflate(R.layout.edit_profile_pic_popup, null);
+//                setProfilePicPopup = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//
+//                // remove the import from facebook option
+//                ((Button)customView.findViewById(R.id.buttonImportFromFB)).setVisibility(View.GONE);
+//
+//                Button buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
+//                buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent intent =  new Intent();
+//
+//                        // set intent type as image to select image from phone storage
+//                        intent.setType("image/*");
+//                        intent.setAction(Intent.ACTION_GET_CONTENT);
+//                        startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
+//
+//                        setProfilePicPopup.dismiss();
+//                    }
+//                });
+//
+//                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
+//                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//
+//                        setProfilePicPopup.dismiss();
+//                    }
+//                });
+//
+//                Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
+//                buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setProfilePicPopup.dismiss();
+//                    }
+//                });
+//                setProfilePicPopup.showAtLocation((RelativeLayout) findViewById(R.id.signUpPage), Gravity.CENTER, 0, 0);
+//
+//            }
+//        });
 
         buttonSignUp.setOnClickListener(this);
         textViewSignIn.setOnClickListener(this);
@@ -395,24 +396,17 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                     String phone = editTextPhone.getText().toString().trim();
                     FirebaseUser currUser = mAuth.getCurrentUser();
                     String uid = currUser.getUid();
-                    Bitmap profilePicBitmap = user_profile_photo.getDrawingCache();
-                    Uri profilePicUri = getImageUri(getApplicationContext(), profilePicBitmap);
-//                    String profilePicString = profilePicUri.toString();
-
-                    // save the user profile pic to storage
-//                    uploadImageFileToFirebaseStorage(uid);
-//                    Log.d(TAG, userProfilePicUrl);
+                    //Bitmap profilePicBitmap = user_profile_photo.getDrawingCache();
+                    //Uri profilePicUri = getImageUri(getApplicationContext(), profilePicBitmap);
 
                     // Save User Data to DataBase
-                    saveUserData(name, email, phone, uid, profilePicUri);
-
+                    saveUserData(name, email, phone, uid);
 
                     // Sign in success, update UI with the signed in User's Information
                     updateUI(currUser);
 
                 } else {
 
-                    // If sign in fails, display a message to the user.
                     Toast.makeText(SignUpPageActivity.this, "Authentication failed." + task.getException(),
                             Toast.LENGTH_SHORT).show();
                     updateUI(null);
@@ -421,57 +415,34 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    private void saveUserData(String name, String email, String phone, String userId, Uri imageFilePathUri) {
-
-        // upload the profile pic to firebase
-
-        // use an array to make it "effectively final"
-        final String[] profilePicUrl = {""};
-        final String[] userProfileData = {name, email, phone, userId, null};
-        Uri uri = getImageUri(getApplicationContext(), userProfilePic);
-
-        // Checking whether FilePathUri Is empty or not.
-        if (uri != null) {
-
-            // Creating second StorageReference.
-            StorageReference storageRef2 = storageRef.child(userId + "_" + System.currentTimeMillis() + "." + GetFileExtension(imageFilePathUri));
-
-            // Adding addOnSuccessListener to second StorageReference.
-            storageRef2.putFile(uri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            userProfilePicURL = taskSnapshot.getDownloadUrl().toString();
-                            profilePicUrl[0] = taskSnapshot.getDownloadUrl().toString();
-                            Log.d(TAG, "profile pic url: " + profilePicUrl[0]);
-                            // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
-                            User user = new User(userProfileData[0], userProfileData[1], userProfileData[2], userProfileData[3],
-                                profilePicUrl[0]);
-                            db.child("users").child(userProfileData[3]).setValue(user);
-                        }
-                    })
-                    // If something goes wrong .
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Showing exception error message.
-                            Toast.makeText(SignUpPageActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    })
-
-                    // On progress change upload time.
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {}
-                    });
-        }
-        else {
-            User user = new User(name, email, phone, userId, null);
+    private void saveUserData(String name, String email, String phone, String userId) {
+            User user = new User(name, email, phone, userId, generatePicId());
             db.child("users").child(userId).setValue(user);
         }
 
+    private String generatePicId() {
+        Random rn = new Random();
 
+        switch(rn.nextInt(10 - 1 + 1) + 1) {
+            case 1:
+                return "https://firebasestorage.googleapis.com/v0/b/lookup-43919.appspot.com/o/identicon.png?alt=media&token=b3f3e71f-b674-4c42-8182-a610f18c7982";
+            case 2:
+                return "https://firebasestorage.googleapis.com/v0/b/lookup-43919.appspot.com/o/identicon_beige.png?alt=media&token=5cc5d24e-5659-483a-bcaa-94256d10218b";
+            case 3:
+                return "https://firebasestorage.googleapis.com/v0/b/lookup-43919.appspot.com/o/identicon_green.png?alt=media&token=3ed0435f-0981-46ff-973f-ded55382f785";
+            case 4:
+                return "https://firebasestorage.googleapis.com/v0/b/lookup-43919.appspot.com/o/identicon_lightblue.png?alt=media&token=57c9ccaf-13b3-4e66-a1a7-d875fcd829a6";
+            case 5:
+                return "https://firebasestorage.googleapis.com/v0/b/lookup-43919.appspot.com/o/identicon_lightgreen.png?alt=media&token=eba53af9-5785-4a33-9c7d-df1319ef4b91";
+            case 6:
+                return "https://firebasestorage.googleapis.com/v0/b/lookup-43919.appspot.com/o/identicon_pink.png?alt=media&token=3f83d8d4-05ca-4f7c-bd32-8820345665a0";
+            case 7:
+                return "https://firebasestorage.googleapis.com/v0/b/lookup-43919.appspot.com/o/identicon_purple.png?alt=media&token=4bcf0631-9323-477b-9f03-b2f43ac51dad";
+            case 8:
+                return "https://firebasestorage.googleapis.com/v0/b/lookup-43919.appspot.com/o/identicon_rose.png?alt=media&token=979e8888-4fb3-4654-99e3-927084755cde";
+            default:
+                return "https://firebasestorage.googleapis.com/v0/b/lookup-43919.appspot.com/o/identicon.png?alt=media&token=b3f3e71f-b674-4c42-8182-a610f18c7982";
+        }
     }
 
     private void saveFBUserID(String id, String userId) {
@@ -487,46 +458,46 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         startActivityForResult(signInIntent, SIGN_IN_REQUEST);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == SIGN_IN_REQUEST) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-
-        // for uploading from camera roll
-        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
-            Uri imageFilePathUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
-                userProfilePic = rotateBitmap(getApplicationContext(), imageFilePathUri, bitmap, GALLERY);
-                user_profile_photo.setImageBitmap(userProfilePic);
-
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // for uploading from camera
-        if (requestCode == CAMERA_REQUEST) {
-            Uri imageFilePathUri = data.getData();
-            Log.d(TAG, "camera uri " + imageFilePathUri.toString());
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFilePathUri), null, null);
-                Log.d(TAG, imageFilePathUri.toString());
-                userProfilePic = rotateBitmap(getApplicationContext(), imageFilePathUri, bitmap, CAMERA);
-                user_profile_photo.setImageBitmap(userProfilePic);
-            }
-            catch (IOException e) {}
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        callbackManager.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+//        if (requestCode == SIGN_IN_REQUEST) {
+//            // The Task returned from this call is always completed, no need to attach
+//            // a listener.
+//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+//            handleSignInResult(task);
+//        }
+//
+//        // for uploading from camera roll
+//        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
+//            Uri imageFilePathUri = data.getData();
+//            try {
+//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
+//                userProfilePic = rotateBitmap(getApplicationContext(), imageFilePathUri, bitmap, GALLERY);
+//                user_profile_photo.setImageBitmap(userProfilePic);
+//
+//            }
+//            catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        // for uploading from camera
+//        if (requestCode == CAMERA_REQUEST) {
+//            Uri imageFilePathUri = data.getData();
+//            Log.d(TAG, "camera uri " + imageFilePathUri.toString());
+//            try {
+//                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFilePathUri), null, null);
+//                Log.d(TAG, imageFilePathUri.toString());
+//                userProfilePic = rotateBitmap(getApplicationContext(), imageFilePathUri, bitmap, CAMERA);
+//                user_profile_photo.setImageBitmap(userProfilePic);
+//            }
+//            catch (IOException e) {}
+//        }
+//    }
 
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -553,7 +524,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             Log.d(TAG, "signInWithCredential:success");
                             user = mAuth.getCurrentUser();
 
-                            saveUserData(user.getDisplayName(), user.getEmail(),user.getPhoneNumber(), user.getUid(), null);
+                            saveUserData(user.getDisplayName(), user.getEmail(),user.getPhoneNumber(), user.getUid());
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -582,7 +553,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                             String email = user.getEmail();
                             String phone = user.getPhoneNumber();
                             String uid = user.getUid();
-                            saveUserData(name, email, phone, uid, null);
+                            saveUserData(name, email, phone, uid);
                             saveFBUserID(fbID, uid);
                             updateUI(user);
                         } else {
@@ -597,136 +568,136 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
                 });
     }
 
-    public String GetFileExtension(Uri uri) {
+//    public String GetFileExtension(Uri uri) {
+//
+//        ContentResolver contentResolver = getContentResolver();
+//
+//        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+//
+//        // Returning the file Extension.
+//        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
+//
+//    }
+//
+//    public String getRealPathFromURI(Context context, Uri uri, String source) {
+//
+//        String path = "";
+//
+//        if (source.equals(GALLERY)) {
+//
+//            int currentAPIVersion;
+//            try {
+//                currentAPIVersion = Build.VERSION.SDK_INT;
+//            } catch (NumberFormatException e) {
+//                currentAPIVersion = 3;
+//            }
+//
+//            if (currentAPIVersion >= 19)
+//                path = getRealPathFromURI_API19(context, uri);
+//            else if (currentAPIVersion >= 11 && currentAPIVersion <= 18)
+//                path = getRealPathFromURI_API11to18(context, uri);
+//            else if (currentAPIVersion < 11)
+//                path = getRealPathFromURI_BelowAPI11(context, uri);
+//        }
+//        else if (source.equals(CAMERA)) {
+//            Cursor cursor = null;
+//            try {
+//                String[] proj = { MediaStore.Images.Media.DATA };
+//                cursor = getContentResolver().query(uri,  proj, null, null, null);
+//                int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//                cursor.moveToFirst();
+//                path = cursor.getString(index);
+//                cursor.close();
+//            }
+//            catch (NullPointerException e) {}
+//        }
+//
+//        return path;
+//
+//    }
+//
+//    public static String getRealPathFromURI_API19(Context context, Uri uri){
+//        String filePath = "";
+//        String wholeID = DocumentsContract.getDocumentId(uri);
+//
+//        // Split at colon, use second item in the array
+//        String id = wholeID.split(":")[1];
+//
+//        String[] column = { MediaStore.Images.Media.DATA };
+//
+//        // where id is equal to
+//        String sel = MediaStore.Images.Media._ID + "=?";
+//
+//        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                column, sel, new String[]{ id }, null);
+//
+//        int columnIndex = cursor.getColumnIndex(column[0]);
+//
+//        if (cursor.moveToFirst()) {
+//            filePath = cursor.getString(columnIndex);
+//        }
+//        cursor.close();
+//        return filePath;
+//    }
+//
+//    public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
+//        String[] proj = { MediaStore.Images.Media.DATA };
+//        String result = null;
+//
+//        CursorLoader cursorLoader = new CursorLoader(
+//                context,
+//                contentUri, proj, null, null, null);
+//        Cursor cursor = cursorLoader.loadInBackground();
+//
+//        if(cursor != null){
+//            int column_index =
+//                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//            cursor.moveToFirst();
+//            result = cursor.getString(column_index);
+//        }
+//        return result;
+//    }
+//
+//    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri){
+//        String[] proj = { MediaStore.Images.Media.DATA };
+//        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+//        int column_index
+//                = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//        cursor.moveToFirst();
+//        return cursor.getString(column_index);
+//    }
+//
+//
+//    private static int exifToDegrees(int exifOrientation) {
+//        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
+//        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
+//        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+//        return 0;
+//    }
+//
+//    private Bitmap rotateBitmap(Context context, Uri uri, Bitmap bitmap, String source) throws IOException {
+//        ExifInterface exif = null;
+//        if (source.equals("GALLERY"))
+//            exif = new ExifInterface(getRealPathFromURI(context, uri, GALLERY));
+//        else if (source.equals("CAMERA")) {
+//            exif = new ExifInterface(getRealPathFromURI(context, uri, CAMERA));
+//        }
+//        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+//        int rotationInDegrees = exifToDegrees(rotation);
+//        Matrix matrix = new Matrix();
+//        if (rotation != 0f) {
+//            matrix.preRotate(rotationInDegrees);
+//        }
+//        //    getting selected image into Bitmap
+//        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+//        return rotatedBitmap;
+//    }
 
-        ContentResolver contentResolver = getContentResolver();
-
-        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
-
-        // Returning the file Extension.
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
-
-    }
-
-    public String getRealPathFromURI(Context context, Uri uri, String source) {
-
-        String path = "";
-
-        if (source.equals(GALLERY)) {
-
-            int currentAPIVersion;
-            try {
-                currentAPIVersion = Build.VERSION.SDK_INT;
-            } catch (NumberFormatException e) {
-                currentAPIVersion = 3;
-            }
-
-            if (currentAPIVersion >= 19)
-                path = getRealPathFromURI_API19(context, uri);
-            else if (currentAPIVersion >= 11 && currentAPIVersion <= 18)
-                path = getRealPathFromURI_API11to18(context, uri);
-            else if (currentAPIVersion < 11)
-                path = getRealPathFromURI_BelowAPI11(context, uri);
-        }
-        else if (source.equals(CAMERA)) {
-            Cursor cursor = null;
-            try {
-                String[] proj = { MediaStore.Images.Media.DATA };
-                cursor = getContentResolver().query(uri,  proj, null, null, null);
-                int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                path = cursor.getString(index);
-                cursor.close();
-            }
-            catch (NullPointerException e) {}
-        }
-
-        return path;
-
-    }
-
-    public static String getRealPathFromURI_API19(Context context, Uri uri){
-        String filePath = "";
-        String wholeID = DocumentsContract.getDocumentId(uri);
-
-        // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
-
-        String[] column = { MediaStore.Images.Media.DATA };
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-
-        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                column, sel, new String[]{ id }, null);
-
-        int columnIndex = cursor.getColumnIndex(column[0]);
-
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        }
-        cursor.close();
-        return filePath;
-    }
-
-    public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        String result = null;
-
-        CursorLoader cursorLoader = new CursorLoader(
-                context,
-                contentUri, proj, null, null, null);
-        Cursor cursor = cursorLoader.loadInBackground();
-
-        if(cursor != null){
-            int column_index =
-                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            result = cursor.getString(column_index);
-        }
-        return result;
-    }
-
-    public static String getRealPathFromURI_BelowAPI11(Context context, Uri contentUri){
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-        int column_index
-                = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-
-
-    private static int exifToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
-        return 0;
-    }
-
-    private Bitmap rotateBitmap(Context context, Uri uri, Bitmap bitmap, String source) throws IOException {
-        ExifInterface exif = null;
-        if (source.equals("GALLERY"))
-            exif = new ExifInterface(getRealPathFromURI(context, uri, GALLERY));
-        else if (source.equals("CAMERA")) {
-            exif = new ExifInterface(getRealPathFromURI(context, uri, CAMERA));
-        }
-        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        int rotationInDegrees = exifToDegrees(rotation);
-        Matrix matrix = new Matrix();
-        if (rotation != 0f) {
-            matrix.preRotate(rotationInDegrees);
-        }
-        //    getting selected image into Bitmap
-        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        return rotatedBitmap;
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
-        return Uri.parse(path);
-    }
+//    public Uri getImageUri(Context inContext, Bitmap inImage) {
+//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+//        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
+//        return Uri.parse(path);
+//    }
 
 }
