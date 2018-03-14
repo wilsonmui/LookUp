@@ -68,8 +68,8 @@ public class ContactProfileActivity extends AppCompatActivity {
         loadUserField(db.child("users").child(uid).child("email"), email);
         loadUserField(db.child("users").child(uid).child("phone"), userphone);
         loadUserField(db.child("users").child(uid).child("name"), username);
-        loadUserField(db.child("users").child(uid).child("facebook"), facebook);
-        loadUserField(db.child("users").child(uid).child("twitter"), twitter);
+        loadUserSocialField(db.child("users").child(uid).child("facebook"), facebook);
+        loadUserSocialField(db.child("users").child(uid).child("twitter"), twitter);
 
         profilePicRef = db.child("users").child(uid).child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
@@ -172,6 +172,21 @@ public class ContactProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 textView.setText(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Database Error:", "Error connecting to database");
+            }
+        });
+    }
+
+    public void loadUserSocialField(DatabaseReference databaseReference, final TextView textView) {
+        System.out.println("LOAD");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                textView.setText("https://" + dataSnapshot.getKey().toString() + "/" + dataSnapshot.getValue(String.class));
             }
 
             @Override
