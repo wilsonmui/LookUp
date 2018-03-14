@@ -19,7 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    packagingOptions{
+    packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE-FIREBASE.txt'
         exclude 'META-INF/NOTICE'
@@ -33,7 +33,7 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile ('com.android.support.test:rules:0.5'){
+    androidTestCompile('com.android.support.test:rules:0.5') {
         exclude module: 'support-annotations'
     }
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -74,9 +74,12 @@ dependencies {
 
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'com.google.android.gms:play-services:11.8.0'
+
+    compile 'com.github.bumptech.glide:glide:3.8.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
+
 
 
 

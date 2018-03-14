@@ -1,14 +1,18 @@
 package edu.ucsb.cs48.lookup;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +31,8 @@ public class ContactProfileActivity extends AppCompatActivity {
     private TextView username, twitter, facebook, email, userphone;
     private String uid;
     private Button button;
-    DatabaseReference db;
+    private ImageView userImg;
+    DatabaseReference db, profilePicRef;
     public boolean currentProfileIsContact = false;
 
     private FirebaseUser user;
@@ -40,14 +45,12 @@ public class ContactProfileActivity extends AppCompatActivity {
         Bundle b = new Bundle();
         b = getIntent().getExtras();
         uid = b.getString("uid");
-//        Toast.makeText(this, "" + uid, Toast.LENGTH_SHORT).show();
 
-        //Firebase Schtuff
         mAuth = FirebaseAuth.getInstance();
-//        if(mAuth.getCurrentUser() == null) {
-//            finish();
-//            startActivity(new Intent(this, SignInPageActivity.class));
-//        }
+        if(mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, SignInPageActivity.class));
+        }
         user = mAuth.getCurrentUser();
 
         username = (TextView) findViewById(R.id.user_name);
@@ -56,6 +59,7 @@ public class ContactProfileActivity extends AppCompatActivity {
         email = (TextView) findViewById(R.id.user_email);
         userphone = (TextView) findViewById(R.id.user_phone);
         button = (Button) findViewById(R.id.add_friend_button);
+        userImg = (ImageView) findViewById(R.id.user_img);
 
         db = FirebaseDatabase.getInstance().getReference();
 
@@ -66,6 +70,22 @@ public class ContactProfileActivity extends AppCompatActivity {
         loadUserField(db.child("users").child(uid).child("name"), username);
         loadUserField(db.child("users").child(uid).child("facebook"), facebook);
         loadUserField(db.child("users").child(uid).child("twitter"), twitter);
+
+        profilePicRef = db.child("users").child(uid).child("profilePic");
+        profilePicRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
+                    Glide.with(getApplicationContext())
+                            .load(dataSnapshot.getValue(String.class))
+                            .override(100, 100)
+                            .into(userImg);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
 
         findViewById(R.id.add_friend_button).setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v) {
@@ -92,9 +112,11 @@ public class ContactProfileActivity extends AppCompatActivity {
                     }
                     if(b) {
                         button.setText("Remove contact");
+                        button.setBackgroundColor(Color.parseColor("#CB8383"));
                         currentProfileIsContact = true;
                     } else {
                         button.setText("Add contact");
+                        button.setBackgroundColor(Color.parseColor("#8B9DC3"));
                         currentProfileIsContact = false;
                     }
                 }
@@ -113,6 +135,7 @@ public class ContactProfileActivity extends AppCompatActivity {
         String yourUid = user.getUid();
         Network.getInstance().addUserContact(yourUid,uid);
         Network.getInstance().addUserContact(uid,yourUid); //takes care of if the person is or isnt a contact
+        button.setBackgroundColor(Color.parseColor("#CB8383"));
         button.setText("Remove contact");
         currentProfileIsContact = true;
     }
@@ -138,6 +161,7 @@ public class ContactProfileActivity extends AppCompatActivity {
         Network.getInstance().rmUserContact(user.getUid(), uid);
         Network.getInstance().rmUserContact(uid, user.getUid());
         button.setText("Add contact");
+        button.setBackgroundColor(Color.parseColor("#8B9DC3"));
         currentProfileIsContact = false;
     }
 

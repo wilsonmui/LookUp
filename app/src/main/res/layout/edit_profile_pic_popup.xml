@@ -8,22 +8,33 @@
 
     <Button
         android:id="@+id/buttonTakePhoto"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:background="@color/tw__composer_black"
         android:text="Take Photo"
-        />
+        android:textColor="#FFF" />
 
     <Button
         android:id="@+id/buttonUploadPhoto"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Upload photo"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:background="@color/tw__composer_black"
+        android:text="Upload photo"
+        android:textColor="#FFF" />
 
     <Button
         android:id="@+id/buttonImportFromFB"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Import from Facebook"/>
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:background="@color/tw__composer_black"
+        android:text="Import from Facebook"
+        android:textColor="#FFF" />
 
     <!--<Button-->
         <!--android:id="@+id/buttonRemoveProfilePic"-->
@@ -33,10 +44,12 @@
 
     <Button
         android:id="@+id/buttonCancelEditProfilePic"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:background="@color/tw__composer_black"
         android:text="Cancel"
-        android:textColor="#000000"
-        style="@style/Widget.AppCompat.Button.Borderless" />
+        android:textColor="#FFF" />
 
 </LinearLayout>

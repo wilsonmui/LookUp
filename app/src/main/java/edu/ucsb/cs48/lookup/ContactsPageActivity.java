@@ -1,9 +1,11 @@
 package edu.ucsb.cs48.lookup;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,14 +23,24 @@ This activity displays the current user's list of contacts. Should provide metho
 contact info and remove them from contacts list.
 Uses Contacts_Adapter to display RecyclerView
  */
-public class ContactsPageActivity extends AppCompatActivity {
+public class ContactsPageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    ArrayList<String> contacts;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, SignInPageActivity.class));
+        }
+
         setContentView(R.layout.activity_contacts_page);
+
+        findViewById(R.id.back_button).setOnClickListener(this);
+
 
         RecyclerView contacts_list = (RecyclerView) findViewById(R.id.contacts_list);
         contacts_list.setHasFixedSize(true);
@@ -83,6 +95,15 @@ public class ContactsPageActivity extends AppCompatActivity {
                 listener.onFailed(databaseError);
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.back_button:
+                startActivity(new Intent(this, HomePageActivity.class));
+                break;
+        }
     }
 
 

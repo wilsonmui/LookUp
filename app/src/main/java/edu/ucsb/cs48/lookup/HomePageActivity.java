@@ -5,17 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.provider.MediaStore;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import android.os.Environment;
-import android.net.Uri;
-import android.support.v4.content.FileProvider;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,8 +14,6 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-
-import static edu.ucsb.cs48.lookup.GenerateCodeActivity.QRcodeWidth;
 
 /**
  * Created by deni on 2/5/18.
@@ -65,12 +53,12 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
 
         //Add ActionListeners
 
-        findViewById(R.id.scan_face_button).setOnClickListener(this);
+        findViewById(R.id.scan_now).setOnClickListener(this);
         findViewById(R.id.user_profile_button).setOnClickListener(this);
         findViewById(R.id.contacts_button).setOnClickListener(this);
         findViewById(R.id.buttonSignOut).setOnClickListener(this);
 
-        imageView = (ImageView)findViewById(R.id.codeView);
+        imageView = (ImageView)findViewById(R.id.face_imageview);
         displayCode();
     }
 
@@ -80,7 +68,7 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.scan_face_button:
+            case R.id.scan_now:
                 scanPerson();
                 break;
 

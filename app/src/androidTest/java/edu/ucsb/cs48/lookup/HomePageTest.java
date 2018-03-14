@@ -34,7 +34,7 @@ public class HomePageTest {
     public void checkForAllComponents(){
         onView(withId(R.id.buttonSignOut)).check(matches(isDisplayed()));
         onView(withId(R.id.view_code)).check(matches(isDisplayed()));
-        onView(withId(R.id.scan_face_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.scan_now)).check(matches(isDisplayed()));
         onView(withId(R.id.user_profile_button)).check(matches(isDisplayed()));
         onView(withId(R.id.contacts_button)).check(matches(isDisplayed()));
         onView(withId(R.id.info_button)).check(matches(isDisplayed()));

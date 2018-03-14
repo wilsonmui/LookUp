@@ -28,9 +28,13 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="oauth" android:host="t4jsample"/>
+
+                <data
+                    android:host="t4jsample"
+                    android:scheme="oauth" />
             </intent-filter>
         </activity>
 
@@ -41,7 +45,7 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"/>
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -60,10 +64,11 @@
         <activity android:name=".InfoPageActivity" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".UserProfileActivity" />
-        <activity android:name=".ContactsPageActivity"/>
+        <activity android:name=".ContactsPageActivity" />
         <activity android:name=".ContactProfileActivity" />
-        <activity android:name=".EditUserProfileActivity"
-                  android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".EditUserProfileActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".GenerateCodeActivity" />
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -74,6 +79,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
+
+        <activity android:name=".ForgotPasswordActivity"></activity>
     </application>
 
 </manifest>
