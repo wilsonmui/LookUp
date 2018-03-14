@@ -112,7 +112,7 @@
                         android:layout_width="36dp"
                         android:layout_height="36dp"
                         android:src="@drawable/facebook"/>
-                    <EditText
+                    <TextView
                         android:id="@+id/editFacebookUserID"
                         android:inputType="number"
                         android:textStyle="normal"

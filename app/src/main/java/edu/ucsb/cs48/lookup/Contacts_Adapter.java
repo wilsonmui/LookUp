@@ -64,7 +64,7 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
                     User user = new User(dataSnapshot.child("name").getValue().toString(),
                             dataSnapshot.child("email").getValue().toString(),
                             dataSnapshot.child("phone").getValue().toString(),
-                            dataSnapshot.child("uid").getValue().toString(),
+                            dataSnapshot.getKey(),
                             dataSnapshot.child("facebook").getValue().toString(),
                             dataSnapshot.child("twitter").getValue().toString(),
                             dataSnapshot.child("profilePic").getValue().toString());

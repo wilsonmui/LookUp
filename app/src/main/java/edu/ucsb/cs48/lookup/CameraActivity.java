@@ -36,10 +36,20 @@ public class CameraActivity extends Activity {
     TextView uid;
     String uidGrabbed;
     private Uri imageFilePathUri;
+    private FirebaseAuth mAuth;
+
 
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        //check if user exists
+
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() == null) {
+            finish();
+            startActivity(new Intent(this, CameraActivity.class));
+        }
+
         setContentView(R.layout.camera_activity_page);
 
         uid = this.findViewById(R.id.uid_result);
@@ -67,9 +77,13 @@ public class CameraActivity extends Activity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST) {
-            bitmapPhoto = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(bitmapPhoto);
-            imageFilePathUri = data.getData();
+            try {
+                bitmapPhoto = (Bitmap) data.getExtras().get("data");
+                imageView.setImageBitmap(bitmapPhoto);
+                imageFilePathUri = data.getData();
+            } catch(Exception e) {
+                Log.e("Camera Failure", "User pressed back when using camera.");
+            }
         }
     }
 
@@ -94,17 +108,6 @@ public class CameraActivity extends Activity {
         Barcode thisCode = barcodes.valueAt(0);
         uidGrabbed = thisCode.rawValue;
         uid.setText(uidGrabbed);
-
-        //check if user exists
-//        FirebaseUser user;
-//        FirebaseAuth mAuth;
-//        mAuth = FirebaseAuth.getInstance();
-//        if(mAuth.getCurrentUser() == null) {
-//            finish();
-//            startActivity(new Intent(this, SignInPageActivity.class));
-//        }
-//        user = mAuth.getCurrentUser();
-//        boolean userExists = true;
 
         DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users");
         db.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -129,7 +129,7 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
 
 
                         if (personInContacts.toLowerCase().contains(search.toLowerCase())){
-                            found_contacts.add(dataSnapshot.child("uid").getValue().toString());
+                            found_contacts.add(dataSnapshot.getKey());
                             //Toast.makeText(getApplicationContext(), "found "+ personInContacts, Toast.LENGTH_SHORT).show();
                         }
                         else{

@@ -81,6 +81,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
 
+    private static int TWITTER_REQUEST_CODE = 140;
 
     //==============================================================================================
     // On Create Setup
@@ -114,8 +115,10 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
 
         // Pass the activity result to the login button.
-        loginButton.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TWITTER_REQUEST_CODE)
+            loginButton.onActivityResult(requestCode, resultCode, data);
+        else
+            callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -152,8 +155,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             public void success(Result<TwitterSession> result) {
                 TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
                 TwitterAuthToken authToken = session.getAuthToken();
-                String token = authToken.token;
-                String secret = authToken.secret;
+                //String token = authToken.token;
+                //String secret = authToken.secret;
                 login(session);
             }
 

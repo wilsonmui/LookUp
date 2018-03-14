@@ -43,20 +43,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -92,7 +82,8 @@ import static android.content.ContentValues.TAG;
 public class EditUserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
-    private EditText editDisplayName, editEmailAddress, editPhoneNumber, editFacebookUserID, editTwitterHandle;
+    private TextView textViewFacebookUserID;
+    private EditText editDisplayName, editEmailAddress, editPhoneNumber, editTwitterHandle;
     private Button buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
     private Button buttonUploadPhoto;
     private HashMap<String, String> userProfileData;
@@ -148,6 +139,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         storageRef = FirebaseStorage.getInstance().getReference();
 
         userID = user.getUid();
+        userProfileData.put("uid", userID);
         userRef = databaseRef.child("users").child(userID);
 
         photoRef = userRef.child("profilePic");
@@ -171,7 +163,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                         String newDisplayName = editable.toString();
                         if (!newDisplayName.equals(""))
                             userProfileData.put("name", newDisplayName);
-                        else userProfileData.remove("name");
+                        else userProfileData.put("name", "");
                         Log.d(TAG, "display name changed!");
                     }
                 });
@@ -204,7 +196,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                         if (!newEmailAddress.equals(""))
                             userProfileData.put("email", newEmailAddress);
                         else
-                            userProfileData.remove("email");
+                            userProfileData.put("email", "");
 
                         Log.d(TAG, "email address changed!");
                     }
@@ -238,7 +230,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                         if (!newPhoneNumber.equals(""))
                             userProfileData.put("phone", newPhoneNumber);
                         else
-                            userProfileData.remove("phone");
+                            userProfileData.put("phone", "");
                         Log.d(TAG, "phone number changed!");
                     }
                 });
@@ -252,34 +244,19 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         facebookRef.addValueEventListener(new ValueEventListener() {
               @Override
               public void onDataChange(DataSnapshot dataSnapshot) {
-                  editFacebookUserID = (EditText) findViewById(R.id.editFacebookUserID);
+                  textViewFacebookUserID = (TextView) findViewById(R.id.editFacebookUserID);
                   fbUserID = dataSnapshot.getValue(String.class);
                   if (fbUserID == null || fbUserID.isEmpty()) {
-                      editFacebookUserID.setVisibility(View.GONE);
+                      textViewFacebookUserID.setVisibility(View.GONE);
                       return;
                   }
-                  editFacebookUserID.setText(dataSnapshot.getValue(String.class));
-                  userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
-                  editFacebookUserID.addTextChangedListener(new TextWatcher() {
-                      @Override
-                      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                          String oldFacebookID = charSequence.toString();
-                          userProfileData.put("facebook", oldFacebookID);
-                      }
+                  textViewFacebookUserID.setText(dataSnapshot.getValue(String.class));
 
-                      @Override
-                      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                      @Override
-                      public void afterTextChanged(Editable editable) {
-                          String newFacebookID = editable.toString();
-                          if (!newFacebookID.equals(""))
-                              userProfileData.put("facebook", newFacebookID);
-                          else
-                              userProfileData.remove("facebook");
-                          Log.d(TAG, "facebook id changed!");
-                      }
-                  });
+                  String facebookId = textViewFacebookUserID.getText().toString();
+                  System.out.println("YUP THIS IS HERE 1");
+                  if (!facebookId.equals(""))
+                      userProfileData.put("facebook", facebookId);
+                  else userProfileData.put("facebook", "");
               }
               @Override
               public void onCancelled(DatabaseError databaseError) {}
@@ -313,7 +290,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                         if (!newTwitterHandle.equals(""))
                             userProfileData.put("twitter" , newTwitterHandle);
                         else
-                            userProfileData.remove("twitter");
+                            userProfileData.put("twitter", "");
                         Log.d(TAG, "twitter handle changed!");
                     }
                 });
