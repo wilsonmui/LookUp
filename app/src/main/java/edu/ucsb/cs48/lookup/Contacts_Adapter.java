@@ -32,7 +32,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.ContactViewHolder> {
 
     //uuid of people in contactList
-    private ArrayList<String> contactList;
+    ArrayList<String> contactList;
     DatabaseReference db;
 
     public Contacts_Adapter(ArrayList<String> contactList){
