@@ -43,8 +43,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,6 +71,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
@@ -74,6 +80,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
@@ -85,11 +92,11 @@ import static android.content.ContentValues.TAG;
 public class EditUserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
-    private EditText editDisplayName, editEmailAddress, editPhoneNumber;
+    private EditText editDisplayName, editEmailAddress, editPhoneNumber, editFacebookUserID, editTwitterHandle;
     private Button buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
     private Button buttonUploadPhoto;
     private HashMap<String, String> userProfileData;
-    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, profilePicRef;
+    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, facebookRef, twitterRef, profilePicRef;
     private StorageReference storageRef;
     private String userID, fbUserID, userProfilePicURL;
     private LinearLayout mLinearLayout;
@@ -241,6 +248,80 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onCancelled(DatabaseError databaseError) {}
         });
 
+        facebookRef = userRef.child("facebook");
+        facebookRef.addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(DataSnapshot dataSnapshot) {
+                  editFacebookUserID = (EditText) findViewById(R.id.editFacebookUserID);
+                  fbUserID = dataSnapshot.getValue(String.class);
+                  if (fbUserID == null || fbUserID.isEmpty()) {
+                      editFacebookUserID.setVisibility(View.GONE);
+                      return;
+                  }
+                  editFacebookUserID.setText(dataSnapshot.getValue(String.class));
+                  userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+                  editFacebookUserID.addTextChangedListener(new TextWatcher() {
+                      @Override
+                      public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                          String oldFacebookID = charSequence.toString();
+                          userProfileData.put("facebook", oldFacebookID);
+                      }
+
+                      @Override
+                      public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                      @Override
+                      public void afterTextChanged(Editable editable) {
+                          String newFacebookID = editable.toString();
+                          if (!newFacebookID.equals(""))
+                              userProfileData.put("facebook", newFacebookID);
+                          else
+                              userProfileData.remove("facebook");
+                          Log.d(TAG, "facebook id changed!");
+                      }
+                  });
+              }
+              @Override
+              public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        twitterRef = userRef.child("twitter");
+        twitterRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                editTwitterHandle = (EditText) findViewById(R.id.editTwitterHandle);
+                LinearLayout twitter = (LinearLayout) findViewById(R.id.twitter);
+                if (dataSnapshot.getValue(String.class) == null || dataSnapshot.getValue(String.class).isEmpty()) {
+                    twitter.setVisibility(View.GONE);
+                    return;
+                }
+                editTwitterHandle.setText(dataSnapshot.getValue(String.class));
+                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+                editTwitterHandle.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        String oldTwitterHandle = charSequence.toString();
+                        userProfileData.put("twitter", oldTwitterHandle);
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        String newTwitterHandle = editable.toString();
+                        if (!newTwitterHandle.equals(""))
+                            userProfileData.put("twitter" , newTwitterHandle);
+                        else
+                            userProfileData.remove("twitter");
+                        Log.d(TAG, "twitter handle changed!");
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+
         profilePicRef = userRef.child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -304,13 +385,18 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 //                            requestPermissionCamera();
 //                        }
 //                        else {
+
+                        if (isGalleryAccessAllowed() == false) {
+                            requestPermissionReadExternalStorage();
+                        }
+                        else {
                             Intent intent = new Intent();
 
                             // set intent type as image to select image from phone storage
                             intent.setType("image/*");
                             intent.setAction(Intent.ACTION_GET_CONTENT);
                             startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
-
+                        }
 //                        }
                         editProfilePicPopup.dismiss();
                     }
@@ -325,15 +411,15 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 //                        editProfilePicPopup.dismiss();
 //                    }
 //                });
-                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
-                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                        editProfilePicPopup.dismiss();
-                    }
-                });
+//                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
+//                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//                        editProfilePicPopup.dismiss();
+//                    }
+//                });
 
                 Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
                 buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
@@ -385,18 +471,18 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         // for uploading from camera roll
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
-            Uri imageFilePathUri = data.getData();
-            Log.d(TAG, "gallery uri " + imageFilePathUri.toString());
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
-                userProfilePic = rotateBitmap(mContext, imageFilePathUri, bitmap, GALLERY);
-//                rotateImage(mContext, imageFilePathUri);
-                editUserProfilePic.setImageBitmap(userProfilePic);
 
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+                Uri imageFilePathUri = data.getData();
+                Log.d(TAG, "gallery uri " + imageFilePathUri.toString());
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
+                    userProfilePic = rotateBitmap(mContext, imageFilePathUri, bitmap, GALLERY);
+//                rotateImage(mContext, imageFilePathUri);
+                    editUserProfilePic.setImageBitmap(userProfilePic);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
 
         // for taking a picture
@@ -688,7 +774,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             }
             case 2: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                    buttonUploadPhoto.performClick();
                 }
                 else {
 
