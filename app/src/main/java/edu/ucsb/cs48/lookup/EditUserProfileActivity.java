@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +46,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -79,10 +82,9 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
     private FirebaseAuth mAuth;
     private EditText editDisplayName, editEmailAddress, editPhoneNumber;
-    private TextView facebookLink;
     private Button buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
     private HashMap<String, String> userProfileData;
-    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef;
+    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, profilePicRef;
     private StorageReference storageRef;
     private String userID, fbUserID, userProfilePicURL;
     private LinearLayout mLinearLayout;
@@ -232,33 +234,15 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onCancelled(DatabaseError databaseError) {}
         });
 
-        facebookRef = userRef.child("facebook");
-        facebookRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                fbUserID = dataSnapshot.getValue(String.class);
-                facebookLink = (TextView) findViewById(R.id.facebookLink);
-                if (fbUserID != null && !fbUserID.isEmpty()) {
-                    facebookLink.setText("https://facebook.com" + fbUserID);
-                    userProfileData.put(dataSnapshot.getKey(), fbUserID);
-                }
-                else {
-                    facebookLink.setText("");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
-
         profilePicRef = userRef.child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-//                editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
                 if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
-                    Log.d(TAG, "profile pic url: " + dataSnapshot.getValue(String.class));
-                    Picasso.with(mContext).load(dataSnapshot.getValue(String.class)).centerCrop().fit().into(editUserProfilePic);
+                    Glide.with(getApplicationContext())
+                            .load(dataSnapshot.getValue(String.class))
+                            .override(100, 100)
+                            .into(editUserProfilePic);
                     userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
                 }
             }
@@ -360,9 +344,9 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
                 finish();
                 startActivity(new Intent(this, UserProfileActivity.class));
                 break;
-
         }
     }
+
 
     private void updateDatabase() {
 

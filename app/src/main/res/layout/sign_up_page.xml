@@ -32,28 +32,36 @@
 
                 <!--android:src="@drawable/profile_icon"-->
 
-                <ImageView
-                    android:id="@+id/user_profile_photo"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/user_profile_image_background"
-                    android:scaleType="centerCrop" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/user_profile_photo"-->
+                    <!--android:layout_width="100dp"-->
+                    <!--android:layout_height="100dp"-->
+                    <!--android:layout_gravity="center_horizontal"-->
+                    <!--android:background="@drawable/user_profile_image_background"-->
+                    <!--android:scaleType="centerCrop" />-->
 
-                <Button
-                    android:id="@+id/set_photo_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <!--<Button-->
+                    <!--android:id="@+id/set_photo_button"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_horizontal"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:background="@drawable/borderless_button"-->
+                    <!--android:paddingLeft="10dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:text="@string/set_profile_photo"-->
+                    <!--android:textAllCaps="false"-->
+                    <!--android:textColor="#FFF"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:visibility="visible" />-->
+
+                <ImageView
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/borderless_button"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:text="@string/set_profile_photo"
-                    android:textAllCaps="false"
-                    android:textColor="#FFF"
-                    android:textStyle="bold"
-                    android:visibility="visible" />
+                    android:layout_marginBottom="20sp"
+                    android:layout_marginTop="20sp"
+                    android:src="@mipmap/ic_launcher" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -106,11 +114,9 @@
                         android:layout_width="fill_parent"
                         android:layout_height="40dp"
                         android:layout_marginTop="16dp"
-                        android:drawableTint="#FF4081"
                         android:hint="Password"
                         android:inputType="textPassword"
-                        android:singleLine="true"
-                        android:text="Password" />
+                        android:textColor="#FFF"/>
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -118,7 +124,7 @@
                     android:id="@+id/buttonSignUp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="25dp"
                     android:background="@drawable/borderless_button"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
