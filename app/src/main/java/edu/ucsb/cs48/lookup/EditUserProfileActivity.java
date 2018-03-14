@@ -1,5 +1,6 @@
 package edu.ucsb.cs48.lookup;
 
+import android.*;
 import android.app.ActionBar;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
@@ -7,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +23,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -83,6 +87,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private FirebaseAuth mAuth;
     private EditText editDisplayName, editEmailAddress, editPhoneNumber;
     private Button buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
+    private Button buttonUploadPhoto;
     private HashMap<String, String> userProfileData;
     private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, profilePicRef;
     private StorageReference storageRef;
@@ -93,6 +98,8 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private ImageView editUserProfilePic;
     private Bitmap userProfilePic = null;
     private static int IMAGE_REQUEST_CODE = 7, CAMERA_REQUEST = 1888;
+    private static final int PERMISSIONS_REQUEST_CAMERA = 1, PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2,
+            PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
     private static String CAMERA = "CAMERA", GALLERY = "GALLERY";
 
     @Override
@@ -289,17 +296,22 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
                     }
                 });
-                Button buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
+                buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
                 buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent =  new Intent();
+//                        if (isCameraAllowed() == false) {
+//                            requestPermissionCamera();
+//                        }
+//                        else {
+                            Intent intent = new Intent();
 
-                        // set intent type as image to select image from phone storage
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
+                            // set intent type as image to select image from phone storage
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
 
+//                        }
                         editProfilePicPopup.dismiss();
                     }
                 });
@@ -629,6 +641,74 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
         return Uri.parse(path);
+    }
+
+    private void requestPermissionReadExternalStorage() {
+        if (ContextCompat.checkSelfPermission(EditUserProfileActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(EditUserProfileActivity.this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(EditUserProfileActivity.this,
+                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+            }
+        }
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: { // cameraAllowed
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                break;
+            }
+            case 2: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+                else {
+
+                }
+                break;
+            }
+            case 3: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                }
+                else {
+
+                }
+            }
+
+        }
+    }
+
+    private boolean isGalleryAccessAllowed() {
+        return ContextCompat.checkSelfPermission(EditUserProfileActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
 }
