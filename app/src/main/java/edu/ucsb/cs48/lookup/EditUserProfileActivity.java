@@ -291,7 +291,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onDataChange(DataSnapshot dataSnapshot) {
                 editTwitterHandle = (EditText) findViewById(R.id.editTwitterHandle);
                 LinearLayout twitter = (LinearLayout) findViewById(R.id.twitter);
-                if (dataSnapshot.getValue(String.class) == null || !dataSnapshot.getValue(String.class).isEmpty()) {
+                if (dataSnapshot.getValue(String.class) == null || dataSnapshot.getValue(String.class).isEmpty()) {
                     twitter.setVisibility(View.GONE);
                     return;
                 }
