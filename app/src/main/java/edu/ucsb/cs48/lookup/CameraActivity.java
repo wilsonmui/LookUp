@@ -96,40 +96,44 @@ public class CameraActivity extends Activity {
             Log.e("ShitDontWork", "Shit dont work");
             return;
         }
+        try {
+            Frame frame = new Frame.Builder().setBitmap(bitmapPhoto).build();
+            SparseArray<Barcode> barcodes = detector.detect(frame);
 
-        Frame frame = new Frame.Builder().setBitmap(bitmapPhoto).build();
-        SparseArray<Barcode> barcodes = detector.detect(frame);
+            if(barcodes.size() <= 0){
+                Toast.makeText(getApplicationContext(), "Please take a better photo.", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if(barcodes.size() <= 0){
-            Toast.makeText(getApplicationContext(), "Please take a better photo.", Toast.LENGTH_SHORT).show();
-            return;
+            Barcode thisCode = barcodes.valueAt(0);
+            uidGrabbed = thisCode.rawValue;
+            uid.setText(uidGrabbed);
+
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users");
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(!dataSnapshot.hasChild(uidGrabbed)){
+                        Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        //start ContactProfileActivity with uid string
+                        Intent intent = new Intent (CameraActivity.this, ContactProfileActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("uid", uidGrabbed);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } catch (Exception e) {
+            Log.e("Camera Failure", "User pressed back when using camera.");
         }
 
-        Barcode thisCode = barcodes.valueAt(0);
-        uidGrabbed = thisCode.rawValue;
-        uid.setText(uidGrabbed);
-
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users");
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.hasChild(uidGrabbed)){
-                    Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_SHORT).show();
-                }else{
-                    //start ContactProfileActivity with uid string
-                    Intent intent = new Intent (CameraActivity.this, ContactProfileActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("uid", uidGrabbed);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     public Uri getImageFilePathUri() { return imageFilePathUri; }
