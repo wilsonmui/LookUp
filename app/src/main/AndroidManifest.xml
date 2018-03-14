@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!-- <paths xmlns:android="http://schemas.android.com/apk/res/android"> --><!-- <external-path name="my_images" path="Android/data/com.example.package.name/files/Pictures" /> --><!-- </paths> -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.ucsb.cs48.lookup">
 
@@ -64,6 +65,15 @@
         <activity android:name=".EditUserProfileActivity"
                   android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".GenerateCodeActivity" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
     </application>
 
 </manifest>
