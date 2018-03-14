@@ -211,7 +211,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()) {
 
-                        if (dataSnapshot.getValue(String.class) != null || !dataSnapshot.getValue(String.class).equals("")) {
+                        if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).equals("")) {
                             buttonConnectToFacebook.setVisibility(View.GONE);
                             facebookLink.setText("https://facebook.com/" + dataSnapshot.getValue(String.class));
                         } else {
@@ -280,7 +280,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()) {
 
-                        if (dataSnapshot.getValue(String.class) != null || !dataSnapshot.getValue(String.class).isEmpty()) {
+                        if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
                             loginButton.setVisibility(View.GONE);
                             textViewTwitter.setText("https://twitter.com/" + dataSnapshot.getValue(String.class));
                         } else {

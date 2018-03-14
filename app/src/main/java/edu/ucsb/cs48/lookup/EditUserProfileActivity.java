@@ -411,15 +411,15 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 //                        editProfilePicPopup.dismiss();
 //                    }
 //                });
-                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
-                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                        editProfilePicPopup.dismiss();
-                    }
-                });
+//                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
+//                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//                        editProfilePicPopup.dismiss();
+//                    }
+//                });
 
                 Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
                 buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
