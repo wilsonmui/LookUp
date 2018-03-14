@@ -284,90 +284,90 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         buttonTakePhoto = (Button) findViewById(R.id.buttonTakePhoto);
         buttonUploadPhoto = (Button) findViewById(R.id.buttonUploadPhoto);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
-        user_profile_photo =(ImageView) findViewById(R.id.user_profile_photo);
-        user_profile_photo.setDrawingCacheEnabled(true);
-        Button photoButton = (Button) findViewById(R.id.set_photo_button);
+//        user_profile_photo =(ImageView) findViewById(R.id.user_profile_photo);
+//        user_profile_photo.setDrawingCacheEnabled(true);
+//        Button photoButton = (Button) findViewById(R.id.set_photo_button);
 
-        photoButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                LayoutInflater inflater = (LayoutInflater) getApplication().getSystemService(LAYOUT_INFLATER_SERVICE);
-                View customView = inflater.inflate(R.layout.edit_profile_pic_popup, null);
-                setProfilePicPopup = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                // remove the import from facebook option
-                ((Button)customView.findViewById(R.id.buttonImportFromFB)).setVisibility(View.GONE);
-
-                buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
-                buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (isGalleryAccessAllowed() == false) {
-                            requestPermissionReadExternalStorage();
-                        }
-                        else {
-                            Intent intent = new Intent();
-
-                            // set intent type as image to select image from phone storage
-                            intent.setType("image/*");
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                            startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
-
-                        }
-                        setProfilePicPopup.dismiss();
-                    }
-                });
-
-                buttonTakePhoto = (Button) customView.findViewById(R.id.buttonTakePhoto);
-                buttonTakePhoto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (isCameraAllowed() == false) {
-                            requestPermissionCamera();
-                        }
-                        else {
-
-                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            // Ensure that there's a camera activity to handle the intent
-                            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-                                // Create the File where the photo should go
-                                File photoFile = null;
-                                try {
-                                    photoFile = createImageFile();
-                                } catch (IOException ex) {
-                                    // Error occurred while creating the File
-                                }
-                                // Continue only if the File was successfully created
-                                if (photoFile != null) {
-                                    Uri photoURI = FileProvider.getUriForFile(SignUpPageActivity.this,
-                                            "com.example.android.fileprovider",
-                                            photoFile);
-                                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                                }
-
-                            }
-//                            Log.d(TAG, "wy isn't this working ");
-//                            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                            startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                            setProfilePicPopup.dismiss();
-                        }
-                    }
-                });
-
-                Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
-                buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setProfilePicPopup.dismiss();
-                    }
-                });
-                setProfilePicPopup.showAtLocation((RelativeLayout) findViewById(R.id.signUpPage), Gravity.CENTER, 0, 0);
-
-            }
-        });
+//        photoButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                LayoutInflater inflater = (LayoutInflater) getApplication().getSystemService(LAYOUT_INFLATER_SERVICE);
+//                View customView = inflater.inflate(R.layout.edit_profile_pic_popup, null);
+//                setProfilePicPopup = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//
+//                // remove the import from facebook option
+//                ((Button)customView.findViewById(R.id.buttonImportFromFB)).setVisibility(View.GONE);
+//
+//                buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
+//                buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        if (isGalleryAccessAllowed() == false) {
+//                            requestPermissionReadExternalStorage();
+//                        }
+//                        else {
+//                            Intent intent = new Intent();
+//
+//                            // set intent type as image to select image from phone storage
+//                            intent.setType("image/*");
+//                            intent.setAction(Intent.ACTION_GET_CONTENT);
+//                            startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
+//
+//                        }
+//                        setProfilePicPopup.dismiss();
+//                    }
+//                });
+//
+//                buttonTakePhoto = (Button) customView.findViewById(R.id.buttonTakePhoto);
+//                buttonTakePhoto.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        if (isCameraAllowed() == false) {
+//                            requestPermissionCamera();
+//                        }
+//                        else {
+//
+//                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                            // Ensure that there's a camera activity to handle the intent
+//                            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+//                                // Create the File where the photo should go
+//                                File photoFile = null;
+//                                try {
+//                                    photoFile = createImageFile();
+//                                } catch (IOException ex) {
+//                                    // Error occurred while creating the File
+//                                }
+//                                // Continue only if the File was successfully created
+//                                if (photoFile != null) {
+//                                    Uri photoURI = FileProvider.getUriForFile(SignUpPageActivity.this,
+//                                            "com.example.android.fileprovider",
+//                                            photoFile);
+//                                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//                                }
+//
+//                            }
+////                            Log.d(TAG, "wy isn't this working ");
+////                            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+////                            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//                            setProfilePicPopup.dismiss();
+//                        }
+//                    }
+//                });
+//
+//                Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
+//                buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        setProfilePicPopup.dismiss();
+//                    }
+//                });
+//                setProfilePicPopup.showAtLocation((RelativeLayout) findViewById(R.id.signUpPage), Gravity.CENTER, 0, 0);
+//
+//            }
+//        });
 
 
         buttonSignUp.setOnClickListener(this);

@@ -6,15 +6,15 @@
     android:orientation="vertical"
     android:gravity="center" >
 
-    <Button
-        android:id="@+id/buttonTakePhoto"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:background="@color/tw__composer_black"
-        android:text="Take Photo"
-        android:textColor="#FFF" />
+    <!--<Button-->
+        <!--android:id="@+id/buttonTakePhoto"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_marginTop="15dp"-->
+        <!--android:background="@color/tw__composer_black"-->
+        <!--android:text="Take Photo"-->
+        <!--android:textColor="#FFF" />-->
 
     <Button
         android:id="@+id/buttonUploadPhoto"
