@@ -21,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by Wilson on 2/26/18.
  */
@@ -29,12 +31,13 @@ import com.google.firebase.database.ValueEventListener;
 //shows User information about contact
 public class ContactProfileActivity extends AppCompatActivity {
     private TextView username, twitter, facebook, email, userphone;
+    private TextView textViewSnapchat, textViewInstagram, textViewGithub, textViewLinkedin;
     private String uid;
     private Button button;
     private ImageView userImg;
-    DatabaseReference db, profilePicRef;
+    DatabaseReference db, profilePicRef, userRef;
     public boolean currentProfileIsContact = false;
-
+    private DatabaseReference snapchatRef, instagramRef, githubRef, linkedinRef;
     private FirebaseUser user;
     private FirebaseAuth mAuth;
 
@@ -60,8 +63,14 @@ public class ContactProfileActivity extends AppCompatActivity {
         userphone = (TextView) findViewById(R.id.user_phone);
         button = (Button) findViewById(R.id.add_friend_button);
         userImg = (ImageView) findViewById(R.id.user_img);
+        textViewGithub = (TextView) findViewById(R.id.textViewGithub);
+        textViewInstagram = (TextView) findViewById(R.id.textViewInstagram);
+        textViewSnapchat = (TextView) findViewById(R.id.textViewSnapchat);
+        textViewLinkedin = (TextView) findViewById(R.id.textViewLinkedIn);
 
+        String uid = user.getUid();
         db = FirebaseDatabase.getInstance().getReference();
+        userRef = db.child("users").child(uid);
 
         checkIfUserIsContact(user.getUid());
 
@@ -70,6 +79,17 @@ public class ContactProfileActivity extends AppCompatActivity {
         loadUserField(db.child("users").child(uid).child("name"), username);
         loadUserField(db.child("users").child(uid).child("facebook"), facebook);
         loadUserField(db.child("users").child(uid).child("twitter"), twitter);
+        snapchatRef = userRef.child("snapchat");
+        loadUserField(snapchatRef, textViewSnapchat);
+
+        instagramRef = userRef.child("instagram");
+        loadUserField(instagramRef, textViewInstagram, "instagram");
+
+        githubRef = userRef.child("github");
+        loadUserField(githubRef, textViewGithub, "github");
+
+        linkedinRef = userRef.child("linkedin");
+        loadUserField(linkedinRef, textViewLinkedin, "linkedin");
 
         profilePicRef = db.child("users").child(uid).child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
@@ -155,8 +175,6 @@ public class ContactProfileActivity extends AppCompatActivity {
         });
     }
 
-
-
     public void removeContact(){
         Network.getInstance().rmUserContact(user.getUid(), uid);
         Network.getInstance().rmUserContact(uid, user.getUid());
@@ -172,11 +190,36 @@ public class ContactProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 textView.setText(dataSnapshot.getValue(String.class));
+                System.out.println(dataSnapshot.getValue(String.class));
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("Database Error:", "Error connecting to database");
+            }
+        });
+    }
+
+
+    public void loadUserField(DatabaseReference databaseReference, final TextView textView, final String domain) {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    if(dataSnapshot.getValue(String.class).equals("")) {
+                        textView.setText(dataSnapshot.getValue(String.class));
+                    } else {
+                        textView.setText("https://" + domain + ".com/" + dataSnapshot.getValue(String.class));
+                        System.out.println("https://" + domain + ".com/" + dataSnapshot.getValue(String.class));
+                    }
+                } else {
+                    Log.d(TAG, "Database Failure: could not load value(s)");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "Database Failure: could not load value(s)");
             }
         });
     }

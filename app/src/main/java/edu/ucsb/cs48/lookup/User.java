@@ -25,6 +25,10 @@ public class User {
     private String uid;
     private String facebook;
     private String twitter;
+    private String snapchat;
+    private String linkedin;
+    private String instagram;
+    private String github;
     private String profilePic;
 
     //==============================================================================================
@@ -41,16 +45,24 @@ public class User {
         this.uid = uid;
         this.facebook = "";
         this.twitter = "";
+        this.snapchat = "";
+        this.linkedin = "";
+        this.instagram = "";
+        this.github = "";
         this.profilePic = profilePic;
     }
 
-    public User(String name, String email, String phone, String uid, String facebook, String twitter, String profilePic) {
+    public User(String name, String email, String phone, String uid, String facebook, String twitter, String snapchat, String linkedin, String instagram, String github, String profilePic) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.uid = uid;
         this.facebook = facebook;
         this.twitter = twitter;
+        this.snapchat = snapchat;
+        this.linkedin = linkedin;
+        this.instagram = instagram;
+        this.github = github;
         this.profilePic = profilePic;
     }
 
@@ -71,6 +83,15 @@ public class User {
 
     public String getProfilePic() { return this.profilePic; }
 
+    public String getSnapchat() { return this.snapchat; }
+
+    public String getLinkedin() { return this.linkedin; }
+
+    public String getInstagram() { return this.instagram; }
+
+    public String getGithub() { return this.github; }
+
+
 
     //==============================================================================================
     // Setter Methods
@@ -83,7 +104,13 @@ public class User {
 
     public void setFacebook(String facebook) { this.facebook = facebook; }
 
-    public void setTwitter(String twitter) { this.twitter = twitter; }
+    public void setSnapchat(String twitter) { this.snapchat = snapchat; }
+
+    public void setLinkedin(String twitter) { this.linkedin = linkedin; }
+
+    public void setInstagram(String twitter) { this.instagram = instagram; }
+
+    public void setGithub(String twitter) { this.github = github; }
 
     public void setProfilePic(String profilePic) { this.profilePic = profilePic; }
 

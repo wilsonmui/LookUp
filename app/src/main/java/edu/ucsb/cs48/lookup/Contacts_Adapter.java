@@ -67,6 +67,10 @@ public class Contacts_Adapter extends RecyclerView.Adapter<Contacts_Adapter.Cont
                             dataSnapshot.child("uid").getValue().toString(),
                             dataSnapshot.child("facebook").getValue().toString(),
                             dataSnapshot.child("twitter").getValue().toString(),
+                            dataSnapshot.child("snapchat").getValue().toString(),
+                            dataSnapshot.child("linkedin").getValue().toString(),
+                            dataSnapshot.child("instagram").getValue().toString(),
+                            dataSnapshot.child("github").getValue().toString(),
                             dataSnapshot.child("profilePic").getValue().toString());
                     holder.username.setText(user.getName());
                     Glide.with(getApplicationContext())

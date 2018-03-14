@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -52,9 +53,12 @@ import java.util.HashMap;
 import java.util.Map;
 import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.Arrays;
 import static android.content.ContentValues.TAG;
 import static android.widget.Toast.*;
+import static java.lang.System.load;
 import static java.lang.System.out;
 
 /**
@@ -69,6 +73,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private FirebaseAuth mAuth;
   
     private TextView displayName, emailAddress, phoneNumber, textViewTwitter, facebookLink;
+    private TextView textViewSnapchat, textViewInstagram, textViewGithub, textViewLinkedin;
     
     private LoginButton buttonConnectToFacebook;
     private TwitterLoginButton loginButton;
@@ -80,7 +85,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private CallbackManager callbackManager;
 
     private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
-
+    private DatabaseReference snapchatRef, instagramRef, githubRef, linkedinRef;
 
     //==============================================================================================
     // On Create Setup
@@ -143,6 +148,11 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         facebookLink = (TextView) findViewById(R.id.facebookLink);
         buttonDeleteAccount = (Button) findViewById(R.id.buttonDeleteAccount);
         buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
+        textViewGithub = (TextView) findViewById(R.id.textViewGithub);
+        textViewInstagram = (TextView) findViewById(R.id.textViewInstagram);
+        textViewSnapchat = (TextView) findViewById(R.id.textViewSnapchat);
+        textViewLinkedin = (TextView) findViewById(R.id.textViewLinkedIn);
+
 
         buttonEditProfile.setOnClickListener(this);
         buttonDeleteAccount.setOnClickListener(this);
@@ -172,17 +182,28 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         try {
             String uid = currentUser.getUid();
             mDatabase = FirebaseDatabase.getInstance().getReference();
-
             userRef = mDatabase.child("users").child(uid);
 
-            nameRef = mDatabase.child("users").child(uid).child("name");
+            nameRef = userRef.child("name");
             loadUserField(nameRef, displayName);
 
-            emailRef = mDatabase.child("users").child(uid).child("email");
+            emailRef = userRef.child("email");
             loadUserField(emailRef, emailAddress);
 
-            phoneRef = mDatabase.child("users").child(uid).child("phone");
+            phoneRef = userRef.child("phone");
             loadUserField(phoneRef, phoneNumber);
+
+            snapchatRef = userRef.child("snapchat");
+            loadUserField(snapchatRef, textViewSnapchat);
+
+            instagramRef = userRef.child("instagram");
+            loadUserField(instagramRef, textViewInstagram, "instagram");
+
+            githubRef = userRef.child("github");
+            loadUserField(githubRef, textViewGithub, "github");
+
+            linkedinRef = userRef.child("linkedin");
+            loadUserField(linkedinRef, textViewLinkedin, "linkedin");
 
 
             profilePicRef = userRef.child("profilePic");
@@ -308,6 +329,29 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     textView.setText(dataSnapshot.getValue(String.class));
+                } else {
+                    Log.d(TAG, "Database Failure: could not load value(s)");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "Database Failure: could not load value(s)");
+            }
+        });
+    }
+
+
+    public void loadUserField(DatabaseReference databaseReference, final TextView textView, final String domain) {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    if(dataSnapshot.getValue(String.class).equals("")) {
+                        textView.setText(dataSnapshot.getValue(String.class));
+                    } else {
+                        textView.setText("https://" + domain + ".com/" + dataSnapshot.getValue(String.class));
+                    }
                 } else {
                     Log.d(TAG, "Database Failure: could not load value(s)");
                 }

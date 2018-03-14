@@ -83,6 +83,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private FirebaseAuth mAuth;
     private EditText editDisplayName, editEmailAddress, editPhoneNumber;
     private Button buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
+    private EditText editTextSnapchat, editTextInstagram, editTextGithub, editTextLinkedin;
     private HashMap<String, String> userProfileData;
     private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, profilePicRef;
     private StorageReference storageRef;
@@ -94,6 +95,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private Bitmap userProfilePic = null;
     private static int IMAGE_REQUEST_CODE = 7, CAMERA_REQUEST = 1888;
     private static String CAMERA = "CAMERA", GALLERY = "GALLERY";
+    private DatabaseReference snapchatRef, instagramRef, githubRef, linkedinRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +109,14 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         userID = user.getUid();
 
         mContext = getApplicationContext();
+
+        editDisplayName = (EditText) findViewById(R.id.editDisplayName);
+        editEmailAddress = (EditText) findViewById(R.id.editEmailAddress);
+        editPhoneNumber = (EditText) findViewById(R.id.editPhoneNumber);
+        editTextGithub = (EditText) findViewById(R.id.editTextGithub);
+        editTextInstagram = (EditText) findViewById(R.id.editTextInstagram);
+        editTextSnapchat = (EditText) findViewById(R.id.editTextSnapchat);
+        editTextLinkedin = (EditText) findViewById(R.id.editTextLinkedIn);
 
         editUserProfilePic = (ImageView) findViewById(R.id.editUserProfilePic);
         editUserProfilePic.setDrawingCacheEnabled(true);
@@ -138,101 +148,29 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         photoRef = userRef.child("profilePic");
 
+        String uid = user.getUid();
+        userRef = databaseRef.child("users").child(uid);
+
         nameRef = userRef.child("name");
-        nameRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                editDisplayName= (EditText) findViewById(R.id.editDisplayName);
-                editDisplayName.setText(dataSnapshot.getValue(String.class));
-                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
-                editDisplayName.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        String newDisplayName = editable.toString();
-                        if (!newDisplayName.equals(""))
-                            userProfileData.put("name", newDisplayName);
-                        else userProfileData.remove("name");
-                        Log.d(TAG, "display name changed!");
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+        loadUserField(nameRef, editDisplayName);
 
         emailRef = userRef.child("email");
-        emailRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                editEmailAddress = (EditText) findViewById(R.id.editEmailAddress);
-                editEmailAddress.setText(dataSnapshot.getValue(String.class));
-                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
-                editEmailAddress.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        String oldEmailAddress = charSequence.toString();
-                        userProfileData.put("email", oldEmailAddress);
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        String newEmailAddress = editable.toString();
-                        if (!newEmailAddress.equals(""))
-                            userProfileData.put("email", newEmailAddress);
-                        else
-                            userProfileData.remove("email");
-
-                        Log.d(TAG, "email address changed!");
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+        loadUserField(emailRef, editEmailAddress);
 
         phoneRef = userRef.child("phone");
-        phoneRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                editPhoneNumber = (EditText) findViewById(R.id.editPhoneNumber);
-                editPhoneNumber.setText(dataSnapshot.getValue(String.class));
-                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
-                editPhoneNumber.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        String oldPhoneNumber = charSequence.toString();
-                        userProfileData.put("phone", oldPhoneNumber);
-                    }
+        loadUserField(phoneRef, editPhoneNumber);
 
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        snapchatRef = userRef.child("snapchat");
+        loadUserField(snapchatRef, editTextSnapchat);
 
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        String newPhoneNumber = editable.toString();
-                        if (!newPhoneNumber.equals(""))
-                            userProfileData.put("phone", newPhoneNumber);
-                        else
-                            userProfileData.remove("phone");
-                        Log.d(TAG, "phone number changed!");
-                    }
-                });
-            }
+        instagramRef = userRef.child("instagram");
+        loadUserField(instagramRef, editTextInstagram);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        });
+        githubRef = userRef.child("github");
+        loadUserField(githubRef, editTextGithub);
+
+        linkedinRef = userRef.child("linkedin");
+        loadUserField(linkedinRef, editTextLinkedin);
 
         profilePicRef = userRef.child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
@@ -350,6 +288,15 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
     private void updateDatabase() {
 
+        userRef.setValue("name", editDisplayName.getText());
+        userRef.setValue("email", editDisplayName.getText());
+        userRef.setValue("phone", editDisplayName.getText());
+        userRef.setValue("github", editDisplayName.getText());
+        userRef.setValue("instagram", editDisplayName.getText());
+        userRef.setValue("snapchat", editDisplayName.getText());
+        userRef.setValue("twitter", editDisplayName.getText());
+        userRef.setValue("facebook", editDisplayName.getText());
+        userRef.setValue("linkedin", editDisplayName.getText());
         userRef.setValue(userProfileData);
 
     }
@@ -629,6 +576,21 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "", null);
         return Uri.parse(path);
+    }
+
+    public void loadUserField(DatabaseReference databaseReference, final EditText editText) {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                editText.setText(dataSnapshot.getValue(String.class));
+                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Database Error:", "Error connecting to database");
+            }
+        });
     }
 
 }

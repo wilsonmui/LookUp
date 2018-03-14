@@ -6,8 +6,14 @@ import android.os.Bundle;
 //import com.facebook.CallbackManager;
 import android.view.View;
 
+import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, SignInPageActivity.class));
                 break;
             case R.id.info_button:
+
                 finish();
                 startActivity(new Intent(this, InfoPageActivity.class));
         }

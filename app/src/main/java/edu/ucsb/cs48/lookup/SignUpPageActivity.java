@@ -416,9 +416,9 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void saveUserData(String name, String email, String phone, String userId) {
-            User user = new User(name, email, phone, userId, generatePicId());
-            db.child("users").child(userId).setValue(user);
-        }
+        User user = new User(name, email, phone, userId, generatePicId());
+        db.child("users").child(userId).setValue(user);
+    }
 
     private String generatePicId() {
         Random rn = new Random();
