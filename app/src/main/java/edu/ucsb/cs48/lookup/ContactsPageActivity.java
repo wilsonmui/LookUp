@@ -10,15 +10,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /*
 This activity displays the current user's list of contacts. Should provide methods to pull up
@@ -32,7 +36,8 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
     EditText search;
     ArrayList<String> contacts = new ArrayList<>();
     RecyclerView contacts_list;
-
+    DatabaseReference db;
+    Contacts_Adapter ca;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,7 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_contacts_page);
         findViewById(R.id.back_button).setOnClickListener(this);
         findViewById(R.id.search_button).setOnClickListener(this);
-        search = findViewById(R.id.search);
+        search = (EditText) findViewById(R.id.search);
 
 
 
@@ -77,7 +82,7 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
                     contacts.add(contactsDs.getValue().toString());
                 }
 
-                Contacts_Adapter ca = new Contacts_Adapter(contacts);
+                ca = new Contacts_Adapter(contacts);
 
                 contacts_list.setAdapter(ca);
             }
@@ -106,16 +111,47 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
     }
 
     //update adapter with found users
-    public void updateAdapter(String search){
+    public void updateAdapter(final String search){
         //search contacts
+        found_contacts = new ArrayList<>();
+
         for(int i = 0; i < contacts.size(); i++){
-            if (contacts.get(i).toLowerCase().contains(search.toLowerCase())){
-                found_contacts.add(contacts.get(i));
-            }
+
+            db = FirebaseDatabase.getInstance().getReference()
+                    .child("users").child(contacts.get(i));
+            db.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()) {
+                        String personInContacts = dataSnapshot.child("name").getValue().toString();
+                        //Toast.makeText(getApplicationContext(), "looking for " + search, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "visited "+ personInContacts, Toast.LENGTH_SHORT).show();
+
+
+                        if (personInContacts.toLowerCase().contains(search.toLowerCase())){
+                            found_contacts.add(dataSnapshot.child("uid").getValue().toString());
+                            //Toast.makeText(getApplicationContext(), "found "+ personInContacts, Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            //Toast.makeText(getApplicationContext(), "not found ", Toast.LENGTH_SHORT).show();
+
+                        }
+                        ca.contactList = found_contacts;
+                        ca.notifyDataSetChanged();
+                    }
+                    System.out.println("CONTACTS_ADAPTER: Database failure.");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
         }
 
-        Contacts_Adapter ca = new Contacts_Adapter(found_contacts);
-        contacts_list.setAdapter(ca);
+
     }
 
     @Override
@@ -125,7 +161,7 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
                 startActivity(new Intent(this, HomePageActivity.class));
                 break;
             case R.id.search_button:
-                updateAdapter(search.toString());
+                updateAdapter(search.getText().toString());
                 break;
         }
     }
