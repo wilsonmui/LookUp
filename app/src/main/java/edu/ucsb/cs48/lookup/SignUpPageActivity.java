@@ -281,7 +281,7 @@ public class SignUpPageActivity extends AppCompatActivity implements View.OnClic
         editTextPhone = (EditText)findViewById(R.id.editTextPhone);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
-        buttonTakePhoto = (Button) findViewById(R.id.buttonTakePhoto);
+//        buttonTakePhoto = (Button) findViewById(R.id.buttonTakePhoto);
         buttonUploadPhoto = (Button) findViewById(R.id.buttonUploadPhoto);
         textViewSignIn = (TextView) findViewById(R.id.textViewSignIn);
 //        user_profile_photo =(ImageView) findViewById(R.id.user_profile_photo);

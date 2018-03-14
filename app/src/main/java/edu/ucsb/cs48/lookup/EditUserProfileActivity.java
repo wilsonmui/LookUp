@@ -291,7 +291,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
             public void onDataChange(DataSnapshot dataSnapshot) {
                 editTwitterHandle = (EditText) findViewById(R.id.editTwitterHandle);
                 LinearLayout twitter = (LinearLayout) findViewById(R.id.twitter);
-                if (dataSnapshot.getValue(String.class) == null || !dataSnapshot.getValue(String.class).isEmpty()) {
+                if (dataSnapshot.getValue(String.class) == null || dataSnapshot.getValue(String.class).isEmpty()) {
                     twitter.setVisibility(View.GONE);
                     return;
                 }
@@ -411,15 +411,15 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 //                        editProfilePicPopup.dismiss();
 //                    }
 //                });
-                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
-                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                        editProfilePicPopup.dismiss();
-                    }
-                });
+//                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
+//                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//                        editProfilePicPopup.dismiss();
+//                    }
+//                });
 
                 Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
                 buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
