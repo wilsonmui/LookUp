@@ -13,7 +13,12 @@
         android:layout_height="match_parent"
         android:id="@+id/info_layout" >
 
-        <RelativeLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_title"
@@ -21,6 +26,7 @@
             android:layout_marginRight="25dp"
             android:elevation="4dp"
             android:orientation="vertical">
+
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -167,7 +173,9 @@
                 android:layout_centerVertical="true"
                 android:visibility="gone" />
 
-        </RelativeLayout>
+            </RelativeLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 
