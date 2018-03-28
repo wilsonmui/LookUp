@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,8 +34,8 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
 
     FirebaseAuth mAuth;
     ArrayList<String> found_contacts = new ArrayList<>();
-    EditText search;
     ArrayList<String> contacts = new ArrayList<>();
+    EditText search;
     RecyclerView contacts_list;
     DatabaseReference db;
     Contacts_Adapter ca;
@@ -50,26 +51,34 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
         }
 
         setContentView(R.layout.activity_contacts_page);
+
+        initListeners();
+
+        try {
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            loadContacts(uid, contacts_list);
+        } catch(Exception e) {
+            Log.e("Exception", "Load Contacts ", e);
+        }
+
+    }
+
+    public void initListeners() {
         findViewById(R.id.back_button).setOnClickListener(this);
         findViewById(R.id.search_button).setOnClickListener(this);
+
         search = (EditText) findViewById(R.id.search);
-
-
-
         contacts_list = (RecyclerView) findViewById(R.id.contacts_list);
+
         contacts_list.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         contacts_list.setLayoutManager(llm);
-
-        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        loadContacts(currentFirebaseUser.getUid(), contacts_list);
     }
 
     public void loadContacts(final String uid, final RecyclerView contacts_list) {
 
-        mReadDataOnce("network", uid, new OnGetDataListener() {
+        mReadDataOnce(uid, new OnGetDataListener() {
             @Override
             public void onStart() {
                 //DO SOME THING WHEN START GET DATA HERE
@@ -95,9 +104,9 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-    public void mReadDataOnce(String child, String innerChild, final OnGetDataListener listener) {
+    public void mReadDataOnce(String child, final OnGetDataListener listener) {
         listener.onStart();
-        FirebaseDatabase.getInstance().getReference().child(child).child(innerChild).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(child).child("contacts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);

@@ -67,9 +67,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     // Declare Variables
     //==============================================================================================
     private FirebaseAuth mAuth;
-  
     private TextView displayName, emailAddress, phoneNumber, textViewTwitter, facebookLink;
-    
     private LoginButton buttonConnectToFacebook;
     private TwitterLoginButton loginButton;
     private ImageView profilePic;
@@ -78,13 +76,12 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private DatabaseReference mDatabase;
     private Context mContext;
     private CallbackManager callbackManager;
-
     private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
 
     private static int TWITTER_REQUEST_CODE = 140;
 
     //==============================================================================================
-    // On Create Setup
+    // On Create
     //==============================================================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -386,7 +383,13 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
+
+
+
                                             Network.getInstance().rmUser(userUid);
+
+
+
                                             user.delete()
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override

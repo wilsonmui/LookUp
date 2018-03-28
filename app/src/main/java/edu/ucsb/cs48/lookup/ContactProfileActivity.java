@@ -63,7 +63,7 @@ public class ContactProfileActivity extends AppCompatActivity {
 
         db = FirebaseDatabase.getInstance().getReference();
 
-        checkIfUserIsContact(user.getUid());
+        isContact(user.getUid(), uid);
 
         loadUserField(db.child("users").child(uid).child("email"), email);
         loadUserField(db.child("users").child(uid).child("phone"), userphone);
@@ -95,8 +95,8 @@ public class ContactProfileActivity extends AppCompatActivity {
     }
 
 
-    public void checkIfUserIsContact(final String baseUid){
-            mReadDataOnce("network", baseUid, new OnGetDataListener() {
+    public void isContact(final String baseUid, final String targetUid){
+            mReadDataOnce(baseUid, new OnGetDataListener() {
                 @Override
                 public void onStart() {
                     //DO SOME THING WHEN START GET DATA HERE
@@ -106,7 +106,8 @@ public class ContactProfileActivity extends AppCompatActivity {
                 public void onSuccess(DataSnapshot data) {
                     boolean b = false;
                     for (DataSnapshot contactsDs : data.getChildren()) {
-                        if(contactsDs.getValue().toString().equals(uid)) {
+                        if(contactsDs.getValue().toString().equals(targetUid)) {
+                            System.out.println(contactsDs.getValue());
                             b = true;
                         }
                     }
@@ -140,9 +141,9 @@ public class ContactProfileActivity extends AppCompatActivity {
         currentProfileIsContact = true;
     }
 
-    public void mReadDataOnce(String child, String innerChild, final OnGetDataListener listener) {
+    public void mReadDataOnce(String uid, final OnGetDataListener listener) {
         listener.onStart();
-        FirebaseDatabase.getInstance().getReference().child(child).child(innerChild).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("contacts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);
