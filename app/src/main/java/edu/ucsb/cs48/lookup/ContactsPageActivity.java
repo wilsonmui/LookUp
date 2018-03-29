@@ -73,7 +73,7 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
 
         for(int i = 0; i < contacts.size(); i++){
 
-            mReadDataOnce(contacts.get(i), new OnGetDataListener() {
+            mReadUsersOnce(contacts.get(i), new OnGetDataListener() {
                 @Override
                 public void onStart() {
                     //DO SOME THING WHEN START GET DATA HERE
@@ -109,6 +109,21 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
     public void mReadDataOnce(String child, final OnGetDataListener listener) {
         listener.onStart();
         FirebaseDatabase.getInstance().getReference().child("users").child(child).child("contacts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
+    }
+
+    public void mReadUsersOnce(String child, final OnGetDataListener listener) {
+        listener.onStart();
+        FirebaseDatabase.getInstance().getReference().child("users").child(child).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listener.onSuccess(dataSnapshot);
