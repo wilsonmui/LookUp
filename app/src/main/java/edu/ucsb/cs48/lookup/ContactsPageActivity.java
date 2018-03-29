@@ -5,14 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,9 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /*
 This activity displays the current user's list of contacts. Should provide methods to pull up
@@ -31,13 +25,20 @@ Uses Contacts_Adapter to display RecyclerView
  */
 public class ContactsPageActivity extends AppCompatActivity implements View.OnClickListener {
 
+    //==============================================================================================
+    // Declare Variables
+    //==============================================================================================
     FirebaseAuth mAuth;
-    ArrayList<String> found_contacts = new ArrayList<>();
-    EditText search;
+    ArrayList<String> filteredContacts = new ArrayList<>();
     ArrayList<String> contacts = new ArrayList<>();
+    EditText search;
     RecyclerView contacts_list;
     DatabaseReference db;
     Contacts_Adapter ca;
+
+    //==============================================================================================
+    // On Create
+    //==============================================================================================
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,26 +51,94 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
         }
 
         setContentView(R.layout.activity_contacts_page);
-        findViewById(R.id.back_button).setOnClickListener(this);
-        findViewById(R.id.search_button).setOnClickListener(this);
-        search = (EditText) findViewById(R.id.search);
+
+        initListeners();
+
+        try {
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            loadContacts(uid, contacts_list);
+        } catch(Exception e) {
+            Log.e("Exception", "Load Contacts ", e);
+        }
+
+    }
+
+    //==============================================================================================
+    // Adapter Functions
+    //==============================================================================================
+
+    public void filterContacts(final String query){
+
+        filteredContacts = new ArrayList<>();
+
+        for(int i = 0; i < contacts.size(); i++){
+
+            mReadUsersOnce(contacts.get(i), new OnGetDataListener() {
+                @Override
+                public void onStart() {
+                    //DO SOME THING WHEN START GET DATA HERE
+                }
+
+                @Override
+                public void onSuccess(DataSnapshot data) {
+                    if(data.exists()) {
+                        String contactName = data.child("name").getValue().toString();
+
+                        if (contactName.toLowerCase().contains(query.toLowerCase())){
+                            filteredContacts.add(data.getKey());
+                        }
+
+                        ca.contactList = filteredContacts;
+                        ca.notifyDataSetChanged();
+                    }
+                }
 
 
+                @Override
+                public void onFailed(DatabaseError databaseError) {
+                    System.out.println("CONTACTS_ADAPTER: Database failure.");
+                }
+            });
+        }
+    }
 
-        contacts_list = (RecyclerView) findViewById(R.id.contacts_list);
-        contacts_list.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        contacts_list.setLayoutManager(llm);
+    //==============================================================================================
+    // Database Functions
+    //==============================================================================================
 
-        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    public void mReadDataOnce(String child, final OnGetDataListener listener) {
+        listener.onStart();
+        FirebaseDatabase.getInstance().getReference().child("users").child(child).child("contacts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
 
-        loadContacts(currentFirebaseUser.getUid(), contacts_list);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
+    }
+
+    public void mReadUsersOnce(String child, final OnGetDataListener listener) {
+        listener.onStart();
+        FirebaseDatabase.getInstance().getReference().child("users").child(child).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
+            }
+        });
     }
 
     public void loadContacts(final String uid, final RecyclerView contacts_list) {
 
-        mReadDataOnce("network", uid, new OnGetDataListener() {
+        mReadDataOnce(uid, new OnGetDataListener() {
             @Override
             public void onStart() {
                 //DO SOME THING WHEN START GET DATA HERE
@@ -95,63 +164,21 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-    public void mReadDataOnce(String child, String innerChild, final OnGetDataListener listener) {
-        listener.onStart();
-        FirebaseDatabase.getInstance().getReference().child(child).child(innerChild).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                listener.onSuccess(dataSnapshot);
-            }
+    //==============================================================================================
+    // Helper Functions
+    //==============================================================================================
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                listener.onFailed(databaseError);
-            }
-        });
-    }
+    public void initListeners() {
+        findViewById(R.id.back_button).setOnClickListener(this);
+        findViewById(R.id.search_button).setOnClickListener(this);
 
-    //update adapter with found users
-    public void updateAdapter(final String search){
-        //search contacts
-        found_contacts = new ArrayList<>();
+        search = (EditText) findViewById(R.id.search);
+        contacts_list = (RecyclerView) findViewById(R.id.contacts_list);
 
-        for(int i = 0; i < contacts.size(); i++){
-
-            db = FirebaseDatabase.getInstance().getReference()
-                    .child("users").child(contacts.get(i));
-            db.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()) {
-                        String personInContacts = dataSnapshot.child("name").getValue().toString();
-                        //Toast.makeText(getApplicationContext(), "looking for " + search, Toast.LENGTH_SHORT).show();
-                        //Toast.makeText(getApplicationContext(), "visited "+ personInContacts, Toast.LENGTH_SHORT).show();
-
-
-                        if (personInContacts.toLowerCase().contains(search.toLowerCase())){
-                            found_contacts.add(dataSnapshot.getKey());
-                            //Toast.makeText(getApplicationContext(), "found "+ personInContacts, Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            //Toast.makeText(getApplicationContext(), "not found ", Toast.LENGTH_SHORT).show();
-
-                        }
-                        ca.contactList = found_contacts;
-                        ca.notifyDataSetChanged();
-                    }
-                    System.out.println("CONTACTS_ADAPTER: Database failure.");
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-        }
-
-
+        contacts_list.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        contacts_list.setLayoutManager(llm);
     }
 
     @Override
@@ -161,7 +188,7 @@ public class ContactsPageActivity extends AppCompatActivity implements View.OnCl
                 startActivity(new Intent(this, HomePageActivity.class));
                 break;
             case R.id.search_button:
-                updateAdapter(search.getText().toString());
+                filterContacts(search.getText().toString());
                 break;
         }
     }
