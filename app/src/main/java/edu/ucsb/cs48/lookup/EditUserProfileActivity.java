@@ -1,12 +1,10 @@
 package edu.ucsb.cs48.lookup;
 
-import android.app.ActionBar;
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,11 +14,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,15 +38,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -62,6 +56,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayOutputStream;
@@ -70,6 +65,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
@@ -81,11 +77,13 @@ import static android.content.ContentValues.TAG;
 public class EditUserProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
-    private EditText editDisplayName, editEmailAddress, editPhoneNumber;
+    private TextView textViewFacebookUserID;
+    private EditText editDisplayName, editEmailAddress, editPhoneNumber, editTwitterHandle;
     private Button buttonEditProfilePicture, buttonSaveProfileEdits, buttonCancelProfileEdits;
     private EditText editTextSnapchat, editTextInstagram, editTextGithub, editTextLinkedin;
+    private Button buttonUploadPhoto;
     private HashMap<String, String> userProfileData;
-    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, profilePicRef;
+    private DatabaseReference databaseRef, userRef, photoRef, nameRef, emailRef, phoneRef, facebookRef, twitterRef, profilePicRef;
     private StorageReference storageRef;
     private String userID, fbUserID, userProfilePicURL;
     private LinearLayout mLinearLayout;
@@ -94,6 +92,8 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     private ImageView editUserProfilePic;
     private Bitmap userProfilePic = null;
     private static int IMAGE_REQUEST_CODE = 7, CAMERA_REQUEST = 1888;
+    private static final int PERMISSIONS_REQUEST_CAMERA = 1, PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 2,
+            PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 3;
     private static String CAMERA = "CAMERA", GALLERY = "GALLERY";
     private DatabaseReference snapchatRef, instagramRef, githubRef, linkedinRef;
 
@@ -144,6 +144,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         storageRef = FirebaseStorage.getInstance().getReference();
 
         userID = user.getUid();
+        userProfileData.put("uid", userID);
         userRef = databaseRef.child("users").child(userID);
 
         photoRef = userRef.child("profilePic");
@@ -151,11 +152,39 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         String uid = user.getUid();
         userRef = databaseRef.child("users").child(uid);
 
-        nameRef = userRef.child("name");
-        loadUserField(nameRef, editDisplayName);
-
         emailRef = userRef.child("email");
-        loadUserField(emailRef, editEmailAddress);
+        emailRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                editEmailAddress = (EditText) findViewById(R.id.editEmailAddress);
+                editEmailAddress.setText(dataSnapshot.getValue(String.class));
+                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+                editEmailAddress.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        String oldEmailAddress = charSequence.toString();
+                        userProfileData.put("email", oldEmailAddress);
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        String newEmailAddress = editable.toString();
+                        if (!newEmailAddress.equals(""))
+                            userProfileData.put("email", newEmailAddress);
+                        else
+                            userProfileData.put("email", "");
+
+                        Log.d(TAG, "email address changed!");
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
 
         phoneRef = userRef.child("phone");
         loadUserField(phoneRef, editPhoneNumber);
@@ -166,11 +195,71 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         instagramRef = userRef.child("instagram");
         loadUserField(instagramRef, editTextInstagram);
 
+
         githubRef = userRef.child("github");
         loadUserField(githubRef, editTextGithub);
 
         linkedinRef = userRef.child("linkedin");
         loadUserField(linkedinRef, editTextLinkedin);
+
+        facebookRef = userRef.child("facebook");
+        facebookRef.addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(DataSnapshot dataSnapshot) {
+                  textViewFacebookUserID = (TextView) findViewById(R.id.editFacebookUserID);
+                  fbUserID = dataSnapshot.getValue(String.class);
+                  if (fbUserID == null || fbUserID.isEmpty()) {
+                      textViewFacebookUserID.setVisibility(View.GONE);
+                      return;
+                  }
+                  textViewFacebookUserID.setText(dataSnapshot.getValue(String.class));
+
+                  String facebookId = textViewFacebookUserID.getText().toString();
+                  System.out.println("YUP THIS IS HERE 1");
+                  if (!facebookId.equals(""))
+                      userProfileData.put("facebook", facebookId);
+                  else userProfileData.put("facebook", "");
+              }
+              @Override
+              public void onCancelled(DatabaseError databaseError) {}
+        });
+
+        twitterRef = userRef.child("twitter");
+        twitterRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                editTwitterHandle = (EditText) findViewById(R.id.editTwitterHandle);
+                LinearLayout twitter = (LinearLayout) findViewById(R.id.twitter);
+                if (dataSnapshot.getValue(String.class) == null || dataSnapshot.getValue(String.class).isEmpty()) {
+                    twitter.setVisibility(View.GONE);
+                    return;
+                }
+                editTwitterHandle.setText(dataSnapshot.getValue(String.class));
+                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+                editTwitterHandle.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        String oldTwitterHandle = charSequence.toString();
+                        userProfileData.put("twitter", oldTwitterHandle);
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        String newTwitterHandle = editable.toString();
+                        if (!newTwitterHandle.equals(""))
+                            userProfileData.put("twitter" , newTwitterHandle);
+                        else
+                            userProfileData.put("twitter", "");
+                        Log.d(TAG, "twitter handle changed!");
+                    }
+                });
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
 
         profilePicRef = userRef.child("profilePic");
         profilePicRef.addValueEventListener(new ValueEventListener() {
@@ -190,11 +279,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
 
     @Override
     public void onClick(View view) {
@@ -227,17 +311,27 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
                     }
                 });
-                Button buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
+                buttonUploadPhoto = (Button) customView.findViewById(R.id.buttonUploadPhoto);
                 buttonUploadPhoto.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent =  new Intent();
+//                        if (isCameraAllowed() == false) {
+//                            requestPermissionCamera();
+//                        }
+//                        else {
 
-                        // set intent type as image to select image from phone storage
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
+                        if (isGalleryAccessAllowed() == false) {
+                            requestPermissionReadExternalStorage();
+                        }
+                        else {
+                            Intent intent = new Intent();
 
+                            // set intent type as image to select image from phone storage
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent, "Please select an image"), IMAGE_REQUEST_CODE);
+                        }
+//                        }
                         editProfilePicPopup.dismiss();
                     }
                 });
@@ -251,15 +345,15 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 //                        editProfilePicPopup.dismiss();
 //                    }
 //                });
-                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
-                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                        editProfilePicPopup.dismiss();
-                    }
-                });
+//                Button buttonTakePicture = (Button) customView.findViewById(R.id.buttonTakePhoto);
+//                buttonTakePicture.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//                        editProfilePicPopup.dismiss();
+//                    }
+//                });
 
                 Button buttonCancelEditProfilePic = (Button) customView.findViewById(R.id.buttonCancelEditProfilePic);
                 buttonCancelEditProfilePic.setOnClickListener(new View.OnClickListener() {
@@ -286,17 +380,30 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
     }
 
 
+    public void loadUserField(DatabaseReference databaseReference, final TextView textView) {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                textView.setText(dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Database Error:", "Error connecting to database");
+            }
+        });
+    }
+
     private void updateDatabase() {
 
-        userRef.setValue("name", editDisplayName.getText());
-        userRef.setValue("email", editDisplayName.getText());
-        userRef.setValue("phone", editDisplayName.getText());
-        userRef.setValue("github", editDisplayName.getText());
-        userRef.setValue("instagram", editDisplayName.getText());
-        userRef.setValue("snapchat", editDisplayName.getText());
-        userRef.setValue("twitter", editDisplayName.getText());
-        userRef.setValue("facebook", editDisplayName.getText());
-        userRef.setValue("linkedin", editDisplayName.getText());
+        userProfileData.put("name", editDisplayName.getText().toString());
+        userProfileData.put("email", editEmailAddress.getText().toString());
+        userProfileData.put("phone", editPhoneNumber.getText().toString());
+        userProfileData.put("github", editTextGithub.getText().toString());
+        userProfileData.put("instagram", editTextInstagram.getText().toString());
+        userProfileData.put("snapchat", editTextSnapchat.getText().toString());
+        userProfileData.put("twitter", editTwitterHandle.getText().toString());
+        userProfileData.put("linkedin", editTextLinkedin.getText().toString());
         userRef.setValue(userProfileData);
 
     }
@@ -320,18 +427,18 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
 
         // for uploading from camera roll
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data.getData() != null) {
-            Uri imageFilePathUri = data.getData();
-            Log.d(TAG, "gallery uri " + imageFilePathUri.toString());
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
-                userProfilePic = rotateBitmap(mContext, imageFilePathUri, bitmap, GALLERY);
-//                rotateImage(mContext, imageFilePathUri);
-                editUserProfilePic.setImageBitmap(userProfilePic);
 
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+                Uri imageFilePathUri = data.getData();
+                Log.d(TAG, "gallery uri " + imageFilePathUri.toString());
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageFilePathUri);
+                    userProfilePic = rotateBitmap(mContext, imageFilePathUri, bitmap, GALLERY);
+//                rotateImage(mContext, imageFilePathUri);
+                    editUserProfilePic.setImageBitmap(userProfilePic);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
 
         // for taking a picture
@@ -578,19 +685,72 @@ public class EditUserProfileActivity extends AppCompatActivity implements View.O
         return Uri.parse(path);
     }
 
-    public void loadUserField(DatabaseReference databaseReference, final EditText editText) {
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                editText.setText(dataSnapshot.getValue(String.class));
-                userProfileData.put(dataSnapshot.getKey(), dataSnapshot.getValue(String.class));
+    private void requestPermissionReadExternalStorage() {
+        if (ContextCompat.checkSelfPermission(EditUserProfileActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(EditUserProfileActivity.this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(EditUserProfileActivity.this,
+                        new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+            }
+        }
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1: { // cameraAllowed
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                break;
+            }
+            case 2: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    buttonUploadPhoto.performClick();
+                }
+                else {
+
+                }
+                break;
+            }
+            case 3: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                }
+                else {
+
+                }
             }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("Database Error:", "Error connecting to database");
-            }
-        });
+        }
+    }
+
+    private boolean isGalleryAccessAllowed() {
+        return ContextCompat.checkSelfPermission(EditUserProfileActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
     }
 
 }

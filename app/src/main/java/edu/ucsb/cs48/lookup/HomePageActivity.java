@@ -78,10 +78,6 @@ public class HomePageActivity extends AppCompatActivity implements View.OnClickL
             case R.id.contacts_button:
                 startActivity(new Intent(this, ContactsPageActivity.class));
                 break;
-            case R.id.info_button:
-                finish();
-                startActivity(new Intent(this, InfoPageActivity.class));
-            break;
             case R.id.buttonSignOut:
                 finish();
                 mAuth.getInstance().signOut();

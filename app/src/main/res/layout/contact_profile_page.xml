@@ -11,7 +11,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="15sp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -110,14 +111,14 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/facebook"/>
-
             <TextView
                 android:id="@+id/user_facebook"
-
-                android:layout_width="127dp"
+                android:textColorLink="@color/cardview_dark_background"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="20dp"
+                android:autoLink="web"
                 android:text=""
                 android:textStyle="bold" />
         </LinearLayout>
@@ -134,11 +135,12 @@
 
             <TextView
                 android:id="@+id/user_twitter"
-
-                android:layout_width="133dp"
+                android:textColorLink="@color/cardview_dark_background"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="20dp"
+                android:autoLink="web"
                 android:text=""
                 android:textStyle="bold" />
         </LinearLayout>

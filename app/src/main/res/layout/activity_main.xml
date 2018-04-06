@@ -1,101 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.ucsb.cs48.lookup.MainActivity">
+    android:id="@+id/signUpPage"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/account_login_gradient"
+    android:orientation="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/account_login_gradient">
+        android:layout_height="match_parent"
+        android:id="@+id/info_layout"
+        android:background="@color/colorPrimary">
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="25dp"
+                android:layout_marginTop="30dp">
 
-            <TextView
-                android:id="@+id/appTitle"
-                android:layout_width="290dp"
-                android:layout_height="137dp"
-                android:layout_gravity="center_horizontal"
-                android:fontFamily="sans-serif-condensed"
-                android:lineSpacingExtra="10sp"
-                android:paddingTop="30dp"
-                android:shadowColor="@color/dropShadow"
-                android:text="@string/app_name"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.WindowTitle"
-                android:textColor="#fff"
-                android:textSize="50sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.2" />
+                <ImageView
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="25dp"
+                    android:src="@mipmap/ic_launcher" />
 
-            <ImageButton
-                android:id="@+id/info_button"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/buttonGetStarted"
-                app:layout_constraintRight_toRightOf="parent"
-                app:srcCompat="@android:drawable/ic_dialog_info" />
-
-            <Button
-                android:id="@+id/buttonGetStarted"
-                android:layout_width="0dp"
-                android:layout_height="63dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/borderless_button"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="@string/get_started"
-                android:textColor="#FFF"
-                android:visibility="visible"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/buttonSignIn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:id="@+id/appTitle"
+                    android:layout_width="290dp"
+                    android:layout_height="137dp"
+                    android:layout_gravity="center_horizontal"
+                    android:fontFamily="sans-serif-condensed"
+                    android:lineSpacingExtra="10sp"
+                    android:paddingTop="30dp"
+                    android:shadowColor="@android:color/white"
+                    android:text="@string/app_name"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.WindowTitle"
+                    android:textColor="@color/cast_expanded_controller_background_color"
+                    android:textSize="50sp"
+                    android:textStyle="bold" />
 
 
-            <Button
-                android:id="@+id/buttonSignIn"
-                android:layout_width="0dp"
-                android:layout_height="63dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/signin"
-                android:textColor="#FFF"
-                android:visibility="visible"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:background="@drawable/borderless_button" />
-        </android.support.constraint.ConstraintLayout>
+                <Button
+                    android:id="@+id/buttonGetStarted"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/borderless_button"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/get_started"
+                    android:textColor="@color/cast_expanded_controller_background_color"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    android:layout_marginTop="90dp"/>
 
-        <ProgressBar
+
+                <Button
+                    android:id="@+id/buttonSignIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="63dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/borderless_button"
+                    android:text="@string/signin"
+                    android:textColor="@color/cast_expanded_controller_background_color"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
+    </LinearLayout>
+
+    <ProgressBar
             android:id="@+id/progressbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:visibility="gone" />
-
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

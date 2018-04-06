@@ -71,10 +71,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     // Declare Variables
     //==============================================================================================
     private FirebaseAuth mAuth;
-  
     private TextView displayName, emailAddress, phoneNumber, textViewTwitter, facebookLink;
     private TextView textViewSnapchat, textViewInstagram, textViewGithub, textViewLinkedin;
-    
     private LoginButton buttonConnectToFacebook;
     private TwitterLoginButton loginButton;
     private ImageView profilePic;
@@ -83,12 +81,12 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
     private DatabaseReference mDatabase;
     private Context mContext;
     private CallbackManager callbackManager;
-
     private DatabaseReference userRef, nameRef, emailRef, phoneRef, facebookRef, profilePicRef, twitterRef;
     private DatabaseReference snapchatRef, instagramRef, githubRef, linkedinRef;
+    private static int TWITTER_REQUEST_CODE = 140;
 
     //==============================================================================================
-    // On Create Setup
+    // On Create
     //==============================================================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,18 +112,23 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    //==============================================================================================
+    // On Activity Result
+    //==============================================================================================
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Pass the activity result to the login button.
-        loginButton.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == TWITTER_REQUEST_CODE)
+            loginButton.onActivityResult(requestCode, resultCode, data);
+        else
+            callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-
     //==============================================================================================
-    // Helper Functions
+    // Twitter Functions
     //==============================================================================================
 
     private void initTwitterConfig() {
@@ -138,41 +141,52 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         Twitter.initialize(config);
     }
 
-    private void initListeners() {
-        textViewTwitter = (TextView) findViewById(R.id.textViewTwitter);
-        displayName = (TextView) findViewById(R.id.displayName);
-        phoneNumber = (TextView) findViewById(R.id.phoneNumber);
-        emailAddress = (TextView) findViewById(R.id.emailAddress);
-        loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
-        buttonEditProfile =  (Button) findViewById(R.id.buttonEditProfile);
-        facebookLink = (TextView) findViewById(R.id.facebookLink);
-        buttonDeleteAccount = (Button) findViewById(R.id.buttonDeleteAccount);
-        buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
-        textViewGithub = (TextView) findViewById(R.id.textViewGithub);
-        textViewInstagram = (TextView) findViewById(R.id.textViewInstagram);
-        textViewSnapchat = (TextView) findViewById(R.id.textViewSnapchat);
-        textViewLinkedin = (TextView) findViewById(R.id.textViewLinkedIn);
+    private void twitterLogin(TwitterSession session) {
+        String username = session.getUserName();
+        textViewTwitter.setText(username);
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/users/" + uid + "/twitter", username);
+        mDatabase.updateChildren(childUpdates);
+    }
+
+    //==============================================================================================
+    // Facebook Functions
+    //==============================================================================================
+
+    private void handleFacebookAccessToken(AccessToken token) {
+        Log.d(TAG, "handleFacebookAccessToken:" + token);
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        String  facebookID = token.getUserId();
+        saveFBUserID(facebookID);
+    }
+
+    private void saveFBUserID(String fbID) {
+        userRef.child("facebook").setValue(fbID);
+    }
+
+    //==============================================================================================
+    // Database Functions
+    //==============================================================================================
 
 
-        buttonEditProfile.setOnClickListener(this);
-        buttonDeleteAccount.setOnClickListener(this);
-
-        loginButton.setCallback(new Callback<TwitterSession>() {
+    public void mReadDataOnce(String child, final OnGetDataListener listener) {
+        listener.onStart();
+        FirebaseDatabase.getInstance().getReference().child(child).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void success(Result<TwitterSession> result) {
-                TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
-                TwitterAuthToken authToken = session.getAuthToken();
-                String token = authToken.token;
-                String secret = authToken.secret;
-                login(session);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listener.onSuccess(dataSnapshot);
             }
 
             @Override
-            public void failure(TwitterException exception) {
-                makeText(UserProfileActivity.this, "Authentication Failed!", LENGTH_LONG).show();
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFailed(databaseError);
             }
         });
-
     }
 
     private void loadUserData() {
@@ -232,7 +246,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()) {
 
-                        if (!dataSnapshot.getValue(String.class).equals("")) {
+                        if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
                             buttonConnectToFacebook.setVisibility(View.GONE);
                             facebookLink.setText("https://facebook.com/" + dataSnapshot.getValue(String.class));
                         } else {
@@ -301,7 +315,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()) {
 
-                        if (!dataSnapshot.getValue(String.class).equals("")) {
+                        if (dataSnapshot.getValue(String.class) != null && !dataSnapshot.getValue(String.class).isEmpty()) {
                             loginButton.setVisibility(View.GONE);
                             textViewTwitter.setText("https://twitter.com/" + dataSnapshot.getValue(String.class));
                         } else {
@@ -322,9 +336,8 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-
     public void loadUserField(DatabaseReference databaseReference, final TextView textView) {
-            databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
@@ -364,42 +377,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
         });
     }
   
-    public void onClick(View view) {
-        switch(view.getId()){
-            case R.id.buttonEditProfile:
-                finish();
-                startActivity(new Intent(this, EditUserProfileActivity.class));
-                break;
 
-            case R.id.buttonDeleteAccount:
-                deleteUser();
-                break;
-        }
-    }
-
-    public void login(TwitterSession session) {
-        String username = session.getUserName();
-        textViewTwitter.setText(username);
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        String uid = currentUser.getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/users/" + uid + "/twitter", username);
-        mDatabase.updateChildren(childUpdates);
-    }
-
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        String  facebookID = token.getUserId();
-        saveFBUserID(facebookID);
-    }
-
-    private void saveFBUserID(String fbID) {
-        userRef.child("facebook").setValue(fbID);
-    }
 
     public void deleteUser() {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -427,7 +405,7 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            Network.getInstance().rmUser(userUid);
+                                            rmUser(userUid);
                                             user.delete()
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                         @Override
@@ -452,6 +430,135 @@ public class UserProfileActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+    }
+
+    public void rmUser(final String uid) {
+
+        mReadDataOnce("users", new OnGetDataListener() {
+            @Override
+            public void onStart() {
+                //DO SOME THING WHEN START GET DATA HERE
+            }
+
+            @Override
+            public void onSuccess(DataSnapshot data) {
+                boolean userExists = false;
+
+                for (DataSnapshot usersDs : data.getChildren()) {
+                    if (usersDs.getKey().equals(uid)) {
+                        userExists = true;
+                    } else {
+                        rmUserContact(uid, usersDs.getKey());
+                    }
+                }
+
+                if (!userExists) {
+                    System.out.println("Removing User: " + uid + "failed: User does not exist");
+                } else {
+                    DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+                            .child("users").child(uid);
+                    userRef.removeValue();
+
+                    System.out.println("User: " + uid + "was successfully removed");                    }
+            }
+
+            @Override
+            public void onFailed(DatabaseError databaseError) {
+                System.out.println("Removing User: " + uid + "failed");
+            }
+        });
+    }
+
+    public void rmUserContact(final String baseUid, final String targetUid) {
+
+        DatabaseReference contactsRef;
+        contactsRef = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(baseUid).child("contacts");
+
+        contactsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    boolean isContact = false;
+                    String targetKey = "";
+                    for (DataSnapshot keyDs : dataSnapshot.getChildren()) {
+                        if (keyDs.getValue().toString().equals(targetUid)) {
+                            isContact = true;
+                            targetKey = keyDs.getKey().toString();
+                            break;
+                        }
+                    }
+
+                    if (isContact) {
+                        DatabaseReference targetRef = FirebaseDatabase.getInstance().getReference()
+                                .child("users").child(baseUid).child("contacts").child(targetKey);
+                        targetRef.removeValue();
+                        System.out.println("User: " + baseUid + " contact: " + targetUid + " successfully removed");
+                    } else {
+                        System.out.println("Removing contact failed, User: " + baseUid + " does not have contact: " + targetUid);
+                    }
+                } else {
+                    Log.d(TAG, "User: " + baseUid + " does not Exist");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // handle error
+            }
+        });
+    }
+
+    //==============================================================================================
+    // Helper Functions
+    //==============================================================================================
+
+    private void initListeners() {
+        textViewTwitter = (TextView) findViewById(R.id.textViewTwitter);
+        displayName = (TextView) findViewById(R.id.displayName);
+        phoneNumber = (TextView) findViewById(R.id.phoneNumber);
+        emailAddress = (TextView) findViewById(R.id.emailAddress);
+        loginButton = (TwitterLoginButton) findViewById(R.id.login_button);
+        buttonEditProfile = (Button) findViewById(R.id.buttonEditProfile);
+        facebookLink = (TextView) findViewById(R.id.facebookLink);
+        buttonDeleteAccount = (Button) findViewById(R.id.buttonDeleteAccount);
+        buttonConnectToFacebook = (LoginButton) findViewById(R.id.buttonConnectToFacebook);
+        textViewGithub = (TextView) findViewById(R.id.textViewGithub);
+        textViewInstagram = (TextView) findViewById(R.id.textViewInstagram);
+        textViewSnapchat = (TextView) findViewById(R.id.textViewSnapchat);
+        textViewLinkedin = (TextView) findViewById(R.id.textViewLinkedIn);
+
+        buttonEditProfile.setOnClickListener(this);
+        buttonDeleteAccount.setOnClickListener(this);
+
+        loginButton.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+                TwitterAuthToken authToken = session.getAuthToken();
+                //String token = authToken.token;
+                //String secret = authToken.secret;
+                twitterLogin(session);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                makeText(UserProfileActivity.this, "Authentication Failed!", LENGTH_LONG).show();
+            }
+        });
+    }
+  
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.buttonEditProfile:
+                finish();
+                startActivity(new Intent(this, EditUserProfileActivity.class));
+                break;
+
+            case R.id.buttonDeleteAccount:
+                deleteUser();
+                break;
+        }
     }
 
     public void updateUI() {

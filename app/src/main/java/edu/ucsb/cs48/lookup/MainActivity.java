@@ -1,9 +1,15 @@
 package edu.ucsb.cs48.lookup;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.nfc.Tag;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+//import edu.ucsb.cs48.lookup.Manifest.permission;
 //import com.facebook.CallbackManager;
+import android.util.Log;
 import android.view.View;
 
 import com.firebase.client.Firebase;
@@ -16,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import static android.content.ContentValues.TAG;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     //==============================================================================================
@@ -23,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //==============================================================================================
 
     private FirebaseAuth mAuth;
+
+    private static int PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1, PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2,
+        PERMISSIONS_REQUEST_CAMERA = 3;
 
     //==============================================================================================
     // On Create Setup
@@ -43,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         initListeners();
+
     }
 
     @Override
@@ -54,10 +66,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonSignIn:
                 startActivity(new Intent(this, SignInPageActivity.class));
                 break;
-            case R.id.info_button:
-
-                finish();
-                startActivity(new Intent(this, InfoPageActivity.class));
         }
     }
 
@@ -68,6 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initListeners() {
         findViewById(R.id.buttonGetStarted).setOnClickListener(this);
         findViewById(R.id.buttonSignIn).setOnClickListener(this);
-        findViewById(R.id.info_button).setOnClickListener(this);
     }
+
 }

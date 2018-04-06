@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#5fb0c9">
+    android:background="@color/colorPrimary">
 
     <ImageView
         android:id="@+id/face_imageview"
@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="4dp"
         android:layout_marginTop="4dp"
+        android:background="@drawable/cast_abc_scrubber_control_to_pressed_mtrl_000"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_face_white_24dp" />
@@ -33,7 +34,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:background="@drawable/ic_exit_to_app_white_24dp"
+        android:background="@android:drawable/screen_background_dark"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +47,7 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/borderless_button"
         android:text="scan"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/cast_expanded_controller_background_color"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/face_imageview" />
@@ -58,7 +59,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/borderless_button"
         android:text="contacts"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/cast_expanded_controller_background_color"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
